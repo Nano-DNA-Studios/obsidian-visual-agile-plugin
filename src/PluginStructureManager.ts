@@ -1,7 +1,7 @@
 import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import { App, Notice, TFolder } from "obsidian";
 
-class StructureChecker {
+class PluginStructureManager {
 
     App: App;
 
@@ -11,6 +11,19 @@ class StructureChecker {
         this.App = app;
         this.Settings = settings;
     }
+
+
+    public CreateStructure(): void {
+
+        this.App.vault.createFolder(this.Settings.agileDirectoryName).then((agileFolder) => {
+            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileEpycsDirectoryName}`);
+            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileStoriesDirectoryName}`);
+            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileTasksDirectoryName}`);
+
+            new Notice('Agile Project Structure created successfully!');
+        });
+    }
+
 
     public IsValidStructure(): boolean {
         let result = false;
@@ -56,4 +69,4 @@ class StructureChecker {
     }
 }
 
-export default StructureChecker;
+export default PluginStructureManager;

@@ -33,17 +33,18 @@ class CreateStructureModal extends Modal {
 
         contentEl.createEl('p', { text: 'Click "Yes" to create this structure automatically' });
 
-        let resultDiv = contentEl.createDiv({cls: 'result-div'});
+        let resultDiv = contentEl.createDiv({ cls: 'result-div' });
         let yesBtn = resultDiv.createEl('button', { text: 'Yes', cls: 'result-button' });
         let noBtn = resultDiv.createEl('button', { text: 'No', cls: 'result-button' })
 
         yesBtn.addEventListener('click', async () => {
             this.close();
+            this.Plugin.StructureChecker.CreateStructure();
         });
 
         noBtn.addEventListener('click', () => {
             this.close();
-             this.Plugin.unload();
+            this.Plugin.unload();
         });
     }
 

@@ -2,7 +2,7 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Set
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
 import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import CreateStructureModal from 'src/CreateStructureModal';
-import StructureChecker from 'src/StructureChecker';
+import PluginStructureManager from 'src/PluginStructureManager';
 
 // Remember to rename these classes and interfaces!
 
@@ -10,14 +10,14 @@ export default class AgileProjectPlugin extends Plugin {
 
 	Settings: AgileProjectPluginSettings;
 
-	StructureChecker: StructureChecker;
+	StructureChecker: PluginStructureManager;
 
 	async onload() {
 		await this.loadSettings();
 
 		new Notice('Agile Project Plugin loaded!');
 
-		this.StructureChecker = new StructureChecker(this.app, this.Settings);
+		this.StructureChecker = new PluginStructureManager(this.app, this.Settings);
 
 		if (!this.StructureChecker.IsValidStructure()) {
 			new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryName}' in the root of your vault.`);
