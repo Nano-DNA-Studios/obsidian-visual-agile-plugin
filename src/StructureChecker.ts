@@ -1,11 +1,13 @@
-import { it } from "node:test";
+import { IAgileProjectPluginSettings } from "src/AgileProjectPluginSettings";
 import { App, Notice, TFolder } from "obsidian";
 
 class StructureChecker {
 
     App: App;
 
-    constructor(app: App) {
+    Settings : IAgileProjectPluginSettings;
+
+    constructor(app: App, ) {
         this.App = app;
     }
 

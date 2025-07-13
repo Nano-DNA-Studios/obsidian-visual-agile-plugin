@@ -1,13 +1,15 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-import StructureChecker from 'StructureChecker';
+import StructureChecker from 'src/StructureChecker';
 
 // Remember to rename these classes and interfaces!
 
 interface AgileProjectPluginSettings {
+	agileDirectoryName: string;
 	mySetting: string;
 }
 
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
+	agileDirectoryName: 'Projects and Stories',
 	mySetting: 'default'
 }
 
