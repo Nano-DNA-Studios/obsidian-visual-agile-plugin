@@ -1,6 +1,7 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
 import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
+import CreateMewAgileFileModal from 'src/CreateNewAgileFileModal';
 import CreateStructureModal from 'src/CreateStructureModal';
 import PluginStructureManager from 'src/PluginStructureManager';
 
@@ -24,8 +25,9 @@ export default class AgileProjectPlugin extends Plugin {
 			new CreateStructureModal(this.app, this).open();
 		}
 
-		this.addRibbonIcon('', 'Update Agile', () => {
+		this.addRibbonIcon('sheets-in-box', 'Update Agile', () => {
 			new Notice('Update Agile functionality is not implemented yet!');
+			new CreateMewAgileFileModal(this.app, this).open();
 		});
 
 		this.addSettingTab(new AgilePluginSettingTab(this.app, this));

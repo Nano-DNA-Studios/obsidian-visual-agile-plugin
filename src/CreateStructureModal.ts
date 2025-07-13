@@ -16,7 +16,7 @@ class CreateStructureModal extends Modal {
     onOpen() {
         const { contentEl } = this;
 
-        contentEl.addClass('create-structure-modal');
+        contentEl.addClass('centered-modal');
 
         contentEl.createEl('h1', { text: 'Creating Agile Project Structure' });
         contentEl.createEl('p', { text: 'Agile Project Directories are not detected in the Vault.' });
@@ -37,7 +37,7 @@ class CreateStructureModal extends Modal {
         let yesBtn = resultDiv.createEl('button', { text: 'Yes', cls: 'result-button' });
         let noBtn = resultDiv.createEl('button', { text: 'No', cls: 'result-button' })
 
-        yesBtn.addEventListener('click', async () => {
+        yesBtn.addEventListener('click', () => {
             this.close();
             this.Plugin.StructureChecker.CreateStructure();
         });
