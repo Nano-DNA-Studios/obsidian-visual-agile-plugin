@@ -1,24 +1,9 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
+import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import StructureChecker from 'src/StructureChecker';
 
 // Remember to rename these classes and interfaces!
-
-interface AgileProjectPluginSettings {
-	agileDirectoryName: string;
-	agileEpycsDirectoryName: string;
-	agileStoriesDirectoryName: string;
-	agileTasksDirectoryName: string;
-	mySetting: string;
-}
-
-const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
-	agileDirectoryName: 'Projects and Stories',
-	agileEpycsDirectoryName: 'Epycs',
-	agileStoriesDirectoryName: 'Stories',
-	agileTasksDirectoryName: 'Tasks',
-	mySetting: 'default'
-}
 
 export default class AgileProjectPlugin extends Plugin {
 	settings: AgileProjectPluginSettings;
@@ -40,8 +25,7 @@ export default class AgileProjectPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-
-		this.settings = Object.assign({}, await this.loadData());
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
 	async saveSettings() {

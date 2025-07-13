@@ -1,36 +1,38 @@
-import { IAgileProjectPluginSettings } from "src/AgileProjectPluginSettings";
+import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import { App, Notice, TFolder } from "obsidian";
+import CreateStructureModal from "./CreateStructureModal";
 
 class StructureChecker {
 
     App: App;
 
-    Settings : IAgileProjectPluginSettings;
+    Settings: AgileProjectPluginSettings;
 
-    constructor(app: App, settings: IAgileProjectPluginSettings) {
+    constructor(app: App, settings: AgileProjectPluginSettings) {
         this.App = app;
         this.Settings = settings;
     }
 
     public CheckStructure() {
 
-        if (!this.IsValidStructure())
+        if (!this.IsValidStructure()) {
             new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryName}' in the root of your vault.`);
+            new CreateStructureModal(this.App, this.Settings).open();
+        }
         else
             new Notice("Structure is valid!");
     }
 
     private IsValidStructure(): boolean {
         let result = false;
-        const root : TFolder = this.App.vault.getRoot();
+        const root: TFolder = this.App.vault.getRoot();
 
         root.children.forEach((item) => {
 
-            if (!(item instanceof TFolder)) 
+            if (!(item instanceof TFolder))
                 return;
 
-            if (item.name == this.Settings.agileDirectoryName)
-            {
+            if (item.name == this.Settings.agileDirectoryName) {
                 if (!this.IsValidSubstructure(item)) {
                     new Notice(`Invalid substructure in folder: ${item.name}. It should contain 'Epics', 'Stories', and 'Tasks' folders.`);
                     return;
@@ -50,7 +52,7 @@ class StructureChecker {
         let tasks = false;
 
         folder.children.forEach((item) => {
-            if (!(item instanceof TFolder)) 
+            if (!(item instanceof TFolder))
                 return;
 
             if (item.name == 'Epycs')

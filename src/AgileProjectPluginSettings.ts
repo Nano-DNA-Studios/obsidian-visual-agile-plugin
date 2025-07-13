@@ -1,14 +1,20 @@
 import { App } from "obsidian";
 
-interface IAgileProjectPluginSettings {
+interface AgileProjectPluginSettings {
 	agileDirectoryName: string;
+	agileEpycsDirectoryName: string;
+	agileStoriesDirectoryName: string;
+	agileTasksDirectoryName: string;
 	mySetting: string;
 }
 
-const DEFAULT_SETTINGS: IAgileProjectPluginSettings = {
+const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
     agileDirectoryName: 'Projects and Stories',
-    mySetting: 'default'
+	agileEpycsDirectoryName: 'Epycs',
+	agileStoriesDirectoryName: 'Stories',
+	agileTasksDirectoryName: 'Tasks',
+	mySetting: 'default'
 }
 
 export {DEFAULT_SETTINGS}
-export type { IAgileProjectPluginSettings };
+export type { AgileProjectPluginSettings};

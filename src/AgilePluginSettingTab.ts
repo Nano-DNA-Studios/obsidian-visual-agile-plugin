@@ -19,8 +19,6 @@ class AgilePluginSettingTab extends PluginSettingTab {
         containerEl.empty();
         containerEl.createEl('h2', { text: 'Agile Project Plugin Settings' });
 
-        let oldName = this.Plugin.settings.agileDirectoryName;
-
         const agileDirectoryName = new Setting(containerEl)
             .setName('Agile Directory Name')
             .setDesc('The name of the directory where Agile projects and stories are stored.')
