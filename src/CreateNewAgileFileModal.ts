@@ -1,6 +1,7 @@
 import AgileProjectPlugin from "main";
 import { App, Modal, Notice } from "obsidian";
 import CreateEpicModal from "./CreateEpicModal";
+import CreateStoryModal from "./CreateStoryModal";
 
 
 class CreateMewAgileFileModal extends Modal {
@@ -43,6 +44,7 @@ class CreateMewAgileFileModal extends Modal {
 
         storyBtn.addEventListener('click', () => {
             new Notice('Story file creation is not implemented yet!');
+            new CreateStoryModal(this.App, this.Plugin).open();
             this.close();
         });
 

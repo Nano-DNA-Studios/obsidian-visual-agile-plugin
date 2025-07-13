@@ -23,10 +23,7 @@ class PluginStructureManager {
     }
 
     public IsValidStructure(): boolean {
-        let result = false;
-        const root: TFolder = this.App.vault.getRoot();
-
-        let parentDir : TFolder | null = this.App.vault.getFolderByPath(this.Settings.agileDirectoryPath)
+        let parentDir: TFolder | null = this.App.vault.getFolderByPath(this.Settings.agileDirectoryPath)
 
         if (!parentDir) {
             new Notice(`Parent directory '${this.Settings.agileDirectoryPath}' not found.`);
@@ -50,12 +47,37 @@ class PluginStructureManager {
         return true;
     }
 
-    public CreateEpic (name: string, desc: string): void
-    {
-        this.App.vault.create(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}/${name}.md`, `# ${name}\n\n${desc}`).then(() => {
+    public CreateEpic(name: string, desc: string): void {
+        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}/${name}.md`;
+        const properties = `---\ntags:\n    - Epic\n    - Agile\n---`;
+        const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Stories\n---\n`;
+
+        if (this.App.vault.getAbstractFileByPath(filePath)) {
+            new Notice(`Epyc '${name}' already exists!`);
+            return;
+        }
+
+        this.App.vault.create(filePath, fileContent).then(() => {
             new Notice(`Epyc '${name}' created successfully!`);
         }).catch((error) => {
             new Notice(`Failed to create Epyc: ${error}`);
+        });
+    }
+
+    public CreateStory(name: string, desc: string): void {
+        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}/${name}.md`;
+        const properties = `---\ntags:\n    - Story\n    - Agile\n---`;
+        const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Tasks\n---\n`;
+
+        if (this.App.vault.getAbstractFileByPath(filePath)) {
+            new Notice(`Story '${name}' already exists!`);
+            return;
+        }
+
+        this.App.vault.create(filePath, fileContent).then(() => {
+            new Notice(`Story '${name}' created successfully!`);
+        }).catch((error) => {
+            new Notice(`Failed to create Story: ${error}`);
         });
     }
 }
