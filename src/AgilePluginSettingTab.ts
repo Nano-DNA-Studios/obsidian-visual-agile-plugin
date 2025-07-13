@@ -24,10 +24,10 @@ class AgilePluginSettingTab extends PluginSettingTab {
             .setDesc('The name of the directory where Agile projects and stories are stored.')
             .addText(text => text
                 .setPlaceholder('Enter directory name')
-                .setValue(this.Plugin.Settings.agileDirectoryName)
+                .setValue(this.Plugin.Settings.agileDirectoryPath)
                 .onChange(async (value) => {
-                    this.RenameDirectory(this.Plugin.Settings.agileDirectoryName, value);
-                    this.Plugin.Settings.agileDirectoryName = value;
+                    this.RenameDirectory(this.Plugin.Settings.agileDirectoryPath, value);
+                    this.Plugin.Settings.agileDirectoryPath = value;
                     await this.Plugin.saveSettings();
                 }));
 
@@ -38,7 +38,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileEpycsDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryName, this.Plugin.Settings.agileEpycsDirectoryName, value);
+                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileEpycsDirectoryName, value);
                     this.Plugin.Settings.agileEpycsDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));
@@ -50,7 +50,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileStoriesDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryName, this.Plugin.Settings.agileStoriesDirectoryName, value);
+                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileStoriesDirectoryName, value);
                     this.Plugin.Settings.agileStoriesDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));
@@ -62,7 +62,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name') 
                 .setValue(this.Plugin.Settings.agileTasksDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryName, this.Plugin.Settings.agileTasksDirectoryName, value);
+                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileTasksDirectoryName, value);
                     this.Plugin.Settings.agileTasksDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));

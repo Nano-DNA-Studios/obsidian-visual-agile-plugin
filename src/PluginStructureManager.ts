@@ -12,10 +12,8 @@ class PluginStructureManager {
         this.Settings = settings;
     }
 
-
     public CreateStructure(): void {
-
-        this.App.vault.createFolder(this.Settings.agileDirectoryName).then((agileFolder) => {
+        this.App.vault.createFolder(this.Settings.agileDirectoryPath).then((agileFolder) => {
             this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileEpycsDirectoryName}`);
             this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileStoriesDirectoryName}`);
             this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileTasksDirectoryName}`);
@@ -24,48 +22,32 @@ class PluginStructureManager {
         });
     }
 
-
     public IsValidStructure(): boolean {
         let result = false;
         const root: TFolder = this.App.vault.getRoot();
 
-        root.children.forEach((item) => {
+        let parentDir : TFolder | null = this.App.vault.getFolderByPath(this.Settings.agileDirectoryPath)
 
-            if (!(item instanceof TFolder))
-                return;
+        if (!parentDir) {
+            new Notice(`Parent directory '${this.Settings.agileDirectoryPath}' not found.`);
+            return false;
+        }
 
-            if (item.name == this.Settings.agileDirectoryName) {
-                if (!this.IsValidSubstructure(item)) {
-                    new Notice(`Invalid substructure in folder: ${item.name}. It should contain 'Epics', 'Stories', and 'Tasks' folders.`);
-                    return;
-                }
+        if (parentDir.children.length == 0) {
+            new Notice(`Parent directory '${this.Settings.agileDirectoryPath}' is empty.`);
+            return false;
+        }
 
-                new Notice(`Found Projects and Stories folder: ${item.name}`);
-                result = true;
-            }
-        });
+        let epycDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}`);
+        let storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}`);
+        let tasksDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}`);
 
-        return result;
-    }
+        if (!epycDir || !storiesDir || !tasksDir) {
+            new Notice(`One or more required directories are missing in '${this.Settings.agileDirectoryPath}'.`);
+            return false;
+        }
 
-    private IsValidSubstructure(folder: TFolder): boolean {
-        let epycs = false;
-        let stories = false;
-        let tasks = false;
-
-        folder.children.forEach((item) => {
-            if (!(item instanceof TFolder))
-                return;
-
-            if (item.name == 'Epycs')
-                epycs = true;
-            else if (item.name == 'Stories')
-                stories = true;
-            else if (item.name == 'Tasks')
-                tasks = true;
-        });
-
-        return epycs && stories && tasks;
+        return true;
     }
 }
 

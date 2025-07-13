@@ -23,7 +23,7 @@ class CreateStructureModal extends Modal {
         contentEl.createEl('p', { text: `The following directory structure must be made.` });
 
         contentEl.createEl('ul', {}, (ul) => {
-            const parentLi = ul.createEl('li', { text: this.Plugin.Settings.agileDirectoryName });
+            const parentLi = ul.createEl('li', { text: this.Plugin.Settings.agileDirectoryPath });
 
             const nestedUl = parentLi.createEl('ul');
             nestedUl.createEl('li', { text: this.Plugin.Settings.agileEpycsDirectoryName });

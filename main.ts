@@ -20,9 +20,13 @@ export default class AgileProjectPlugin extends Plugin {
 		this.StructureChecker = new PluginStructureManager(this.app, this.Settings);
 
 		if (!this.StructureChecker.IsValidStructure()) {
-			new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryName}' in the root of your vault.`);
+			new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
 			new CreateStructureModal(this.app, this).open();
 		}
+
+		this.addRibbonIcon('', 'Update Agile', () => {
+			new Notice('Update Agile functionality is not implemented yet!');
+		});
 
 		this.addSettingTab(new AgilePluginSettingTab(this.app, this));
 

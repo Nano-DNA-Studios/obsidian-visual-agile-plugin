@@ -1,7 +1,7 @@
 import { App } from "obsidian";
 
 interface AgileProjectPluginSettings {
-	agileDirectoryName: string;
+	agileDirectoryPath: string;
 	agileEpycsDirectoryName: string;
 	agileStoriesDirectoryName: string;
 	agileTasksDirectoryName: string;
@@ -9,7 +9,7 @@ interface AgileProjectPluginSettings {
 }
 
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
-    agileDirectoryName: 'Projects and Stories',
+    agileDirectoryPath: 'Projects and Stories',
 	agileEpycsDirectoryName: 'Epycs',
 	agileStoriesDirectoryName: 'Stories',
 	agileTasksDirectoryName: 'Tasks',
