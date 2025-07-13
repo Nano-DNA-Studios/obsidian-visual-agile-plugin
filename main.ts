@@ -1,19 +1,28 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
 import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
+import CreateStructureModal from 'src/CreateStructureModal';
 import StructureChecker from 'src/StructureChecker';
 
 // Remember to rename these classes and interfaces!
 
 export default class AgileProjectPlugin extends Plugin {
-	settings: AgileProjectPluginSettings;
+
+	Settings: AgileProjectPluginSettings;
+
+	StructureChecker: StructureChecker;
 
 	async onload() {
 		await this.loadSettings();
 
 		new Notice('Agile Project Plugin loaded!');
 
-		new StructureChecker(this.app, this.settings).CheckStructure();
+		this.StructureChecker = new StructureChecker(this.app, this.Settings);
+
+		if (!this.StructureChecker.IsValidStructure()) {
+			new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryName}' in the root of your vault.`);
+			new CreateStructureModal(this.app, this).open();
+		}
 
 		this.addSettingTab(new AgilePluginSettingTab(this.app, this));
 
@@ -21,14 +30,13 @@ export default class AgileProjectPlugin extends Plugin {
 	}
 
 	onunload() {
-
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.Settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
 	async saveSettings() {
-		await this.saveData(this.settings);
+		await this.saveData(this.Settings);
 	}
 }

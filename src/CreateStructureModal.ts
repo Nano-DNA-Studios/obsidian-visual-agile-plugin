@@ -1,49 +1,41 @@
+import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
-import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
+import "../styles.css";
 
 class CreateStructureModal extends Modal {
-    private Settings: AgileProjectPluginSettings;
-    private App: App; // Replace with actual type if available
 
-    constructor(app: App, plugin: AgileProjectPluginSettings) {
+    private Plugin: AgileProjectPlugin;
+    private App: App;
+
+    constructor(app: App, plugin: AgileProjectPlugin) {
         super(app);
-        this.Settings = plugin;
         this.App = app;
+        this.Plugin = plugin;
     }
 
     onOpen() {
         const { contentEl } = this;
 
-        contentEl.style.textAlign = 'center';
-        contentEl.style.padding = '5px';
-        contentEl.style.display = 'flex';
-        contentEl.style.flexDirection = 'column';
-        contentEl.style.alignItems = 'center';
+        contentEl.addClass('create-structure-modal');
 
         contentEl.createEl('h1', { text: 'Creating Agile Project Structure' });
-        contentEl.createEl('p', { text: 'No Agile Project Structure is detected on the Device.' });
-        contentEl.createEl('p', { text: `The Following folders will be created:` });
+        contentEl.createEl('p', { text: 'Agile Project Directories are not detected in the Vault.' });
+        contentEl.createEl('p', { text: `The following directory structure must be made.` });
 
         contentEl.createEl('ul', {}, (ul) => {
-            // Parent item
-            const parentLi = ul.createEl('li', { text: this.Settings.agileDirectoryName });
+            const parentLi = ul.createEl('li', { text: this.Plugin.Settings.agileDirectoryName });
 
-            // Nested list inside parent
             const nestedUl = parentLi.createEl('ul');
-            nestedUl.createEl('li', { text: this.Settings.agileEpycsDirectoryName });
-            nestedUl.createEl('li', { text: this.Settings.agileStoriesDirectoryName });
-            nestedUl.createEl('li', { text: this.Settings.agileTasksDirectoryName });
+            nestedUl.createEl('li', { text: this.Plugin.Settings.agileEpycsDirectoryName });
+            nestedUl.createEl('li', { text: this.Plugin.Settings.agileStoriesDirectoryName });
+            nestedUl.createEl('li', { text: this.Plugin.Settings.agileTasksDirectoryName });
         });
 
-        contentEl.createEl('p', { text: 'Would you like to create it now?' });
+        contentEl.createEl('p', { text: 'Click "Yes" to create this structure automatically' });
 
-        let resultDiv = contentEl.createDiv();
-        resultDiv.style.display = 'flex';
-        resultDiv.style.justifyContent = 'space-around';
-        resultDiv.style.flexDirection = 'row';
-
-        let yesBtn = resultDiv.createEl('button', { text: 'Yes' });
-        let noBtn = resultDiv.createEl('button', { text: 'No' })
+        let resultDiv = contentEl.createDiv({cls: 'result-div'});
+        let yesBtn = resultDiv.createEl('button', { text: 'Yes', cls: 'result-button' });
+        let noBtn = resultDiv.createEl('button', { text: 'No', cls: 'result-button' })
 
         yesBtn.addEventListener('click', async () => {
             this.close();
@@ -51,10 +43,8 @@ class CreateStructureModal extends Modal {
 
         noBtn.addEventListener('click', () => {
             this.close();
+             this.Plugin.unload();
         });
-
-        yesBtn.style.marginRight = '10px';
-        noBtn.style.marginLeft = '10px';
     }
 
     onClose() {

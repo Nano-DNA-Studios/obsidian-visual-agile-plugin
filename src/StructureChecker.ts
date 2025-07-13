@@ -1,6 +1,5 @@
 import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import { App, Notice, TFolder } from "obsidian";
-import CreateStructureModal from "./CreateStructureModal";
 
 class StructureChecker {
 
@@ -13,17 +12,7 @@ class StructureChecker {
         this.Settings = settings;
     }
 
-    public CheckStructure() {
-
-        if (!this.IsValidStructure()) {
-            new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryName}' in the root of your vault.`);
-            new CreateStructureModal(this.App, this.Settings).open();
-        }
-        else
-            new Notice("Structure is valid!");
-    }
-
-    private IsValidStructure(): boolean {
+    public IsValidStructure(): boolean {
         let result = false;
         const root: TFolder = this.App.vault.getRoot();
 
@@ -65,7 +54,6 @@ class StructureChecker {
 
         return epycs && stories && tasks;
     }
-
 }
 
 export default StructureChecker;
