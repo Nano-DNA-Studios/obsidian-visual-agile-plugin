@@ -49,6 +49,15 @@ class PluginStructureManager {
 
         return true;
     }
+
+    public CreateEpic (name: string, desc: string): void
+    {
+        this.App.vault.create(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}/${name}.md`, `# ${name}\n\n${desc}`).then(() => {
+            new Notice(`Epyc '${name}' created successfully!`);
+        }).catch((error) => {
+            new Notice(`Failed to create Epyc: ${error}`);
+        });
+    }
 }
 
 export default PluginStructureManager;

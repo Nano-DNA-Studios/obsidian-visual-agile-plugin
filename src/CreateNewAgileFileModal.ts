@@ -1,5 +1,6 @@
 import AgileProjectPlugin from "main";
 import { App, Modal, Notice } from "obsidian";
+import CreateEpicModal from "./CreateEpicModal";
 
 
 class CreateMewAgileFileModal extends Modal {
@@ -26,18 +27,17 @@ class CreateMewAgileFileModal extends Modal {
         div.style.justifyContent = 'space-around';
         div.style.flexDirection = 'row';
 
-        let epycIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/DNA.jpg?raw=true"
+        let epycIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/imgs/Epyc.png?raw=true"
+        let storyIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/imgs/Story.png?raw=true";
+        let taskIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/imgs/Task.png?raw=true";
 
-        let epycBtn = div.createEl('button', { cls: "image"});
-        let storyBtn = div.createEl('button', { cls: "image" });
-        let taskBtn = div.createEl('button', { cls: "image" });
-
-        //let epycBtn = div.createEl('img', { cls: "image", attr: { src: epycIcon, alt: 'Epyc' } });
-        //let storyBtn = div.createEl('img', { cls: "image", attr: { src: "https://private-user-images.githubusercontent.com/93613553/362830406-a0212c54-9529-4e4a-9beb-1a195dca528b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTIzNzkyMzIsIm5iZiI6MTc1MjM3ODkzMiwicGF0aCI6Ii85MzYxMzU1My8zNjI4MzA0MDYtYTAyMTJjNTQtOTUyOS00ZTRhLTliZWItMWExOTVkY2E1MjhiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MTMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzEzVDAzNTUzMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBlOGY2NzlmOTNmMGM4ZTdjMjI3MmFmNWI0MzA4NDNkYWMzZDQzYmY4ODc2NDMwMDQ2MjQ4NjA3NWViOTFkMDImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.FoqOWCTomiwMcm4Dy6MRf3Y6chj1wwbxYWOLkidA_Pk", alt: 'Epyc' } });
-        //let taskBtn = div.createEl('img', { cls: "image", attr: { src: "https://private-user-images.githubusercontent.com/93613553/362830406-a0212c54-9529-4e4a-9beb-1a195dca528b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTIzNzkyMzIsIm5iZiI6MTc1MjM3ODkzMiwicGF0aCI6Ii85MzYxMzU1My8zNjI4MzA0MDYtYTAyMTJjNTQtOTUyOS00ZTRhLTliZWItMWExOTVkY2E1MjhiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MTMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzEzVDAzNTUzMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBlOGY2NzlmOTNmMGM4ZTdjMjI3MmFmNWI0MzA4NDNkYWMzZDQzYmY4ODc2NDMwMDQ2MjQ4NjA3NWViOTFkMDImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.FoqOWCTomiwMcm4Dy6MRf3Y6chj1wwbxYWOLkidA_Pk", alt: 'Epyc' } });
+        let epycBtn = div.createEl('img', { cls: "image", attr: { src: epycIcon, alt: 'Epyc' } });
+        let storyBtn = div.createEl('img', { cls: "image", attr: { src: storyIcon, alt: 'Story' } });
+        let taskBtn = div.createEl('img', { cls: "image", attr: { src: taskIcon, alt: 'Task' } });
 
         epycBtn.addEventListener('click', () => {
             new Notice('Epyc file creation is not implemented yet!');
+            new CreateEpicModal(this.App, this.Plugin).open();
             this.close();
         });
 
@@ -50,7 +50,6 @@ class CreateMewAgileFileModal extends Modal {
             new Notice('Task file creation is not implemented yet!');
             this.close();
         });
-
 
         // Additional UI elements and logic for creating a new Agile file can be added here
     }

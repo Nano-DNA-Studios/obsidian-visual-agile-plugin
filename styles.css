@@ -15,6 +15,25 @@ If your plugin does not need CSS, delete this file.
   font-size: 16px;
 }
 
+.file-create-field-div {
+  width: 100%;
+  margin-bottom: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-create-field-text {
+  width: auto;
+}
+
+.file-create-field-input {
+  flex: 1;
+}
+
+
 .result-div {
   display: flex;
   justify-content: space-around;
@@ -23,11 +42,15 @@ If your plugin does not need CSS, delete this file.
 }
 
 .result-button {
-margin-right: 10px;
-width: 100px;
+  margin-right: 10px;
+  width: 100px;
 }
 
 .image {
   width: 33%;
   height: 33%;
+}
+
+.full-width {
+  width: 100%;
 }
