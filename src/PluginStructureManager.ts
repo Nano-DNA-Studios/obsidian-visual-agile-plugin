@@ -23,6 +23,7 @@ class PluginStructureManager {
     }
 
     public IsValidStructure(): boolean {
+        
         let parentDir: TFolder | null = this.App.vault.getFolderByPath(this.Settings.agileDirectoryPath)
 
         if (!parentDir) {
