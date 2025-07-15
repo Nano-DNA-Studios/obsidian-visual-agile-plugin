@@ -9,7 +9,7 @@ interface AgileProjectPluginSettings {
 }
 
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
-    agileDirectoryPath: 'Agile',
+    agileDirectoryPath: 'Projects and Stories',
 	agileEpycsDirectoryName: 'Epycs',
 	agileStoriesDirectoryName: 'Stories',
 	agileTasksDirectoryName: 'Tasks',

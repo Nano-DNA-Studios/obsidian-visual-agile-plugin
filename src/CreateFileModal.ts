@@ -14,13 +14,29 @@ abstract class CreateFileModal extends Modal {
     abstract onOpen(): void;
     abstract onClose(): void;
 
-    protected SingleLineInput (parent: HTMLElement, labelText: string, placeholderText: string): HTMLInputElement {
+    protected SingleLineInput(parent: HTMLElement, labelText: string, placeholderText: string): HTMLInputElement {
         const div = parent.createDiv({ cls: 'file-create-field-div' });
-        const label = div.createEl('label', { text: labelText , cls: 'file-create-field-text' });
+        const label = div.createEl('label', { text: labelText, cls: 'file-create-field-text' });
         const input = div.createEl('input', { type: 'text', placeholder: placeholderText, cls: 'file-create-field-input' });
 
         return input;
     }
+
+    protected SingleLineDropdown(parent: HTMLElement, labelText : string, options: string[]): HTMLSelectElement {
+        const div = parent.createDiv({ cls: 'file-create-field-div' });
+        const label = div.createEl('label', { text: labelText, cls: 'file-create-field-text' });
+        const select = div.createEl("select", {cls: 'file-create-field-input'});
+
+        options.forEach((epic) => {
+            select.createEl("option", {
+                text: epic,
+                value: epic
+            });
+        });
+
+        return select;
+    }
+
 }
 
 export default CreateFileModal;

@@ -1,5 +1,5 @@
 import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
-import { App, Notice, TFolder } from "obsidian";
+import { App, Notice, TFile, TFolder } from "obsidian";
 
 class PluginStructureManager {
 
@@ -23,7 +23,7 @@ class PluginStructureManager {
     }
 
     public IsValidStructure(): boolean {
-        
+
         let parentDir: TFolder | null = this.App.vault.getFolderByPath(this.Settings.agileDirectoryPath)
 
         if (!parentDir) {
@@ -65,7 +65,7 @@ class PluginStructureManager {
         });
     }
 
-    public CreateStory(name: string, desc: string): void {
+    public CreateStory(name: string, desc: string, epic: string): void {
         const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}/${name}.md`;
         const properties = `---\ntags:\n    - Story\n    - Agile\n---`;
         const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Tasks\n---\n`;
@@ -80,6 +80,19 @@ class PluginStructureManager {
         }).catch((error) => {
             new Notice(`Failed to create Story: ${error}`);
         });
+    }
+
+    public GetEpics(): string[] {
+        const epycsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}`);
+        if (!epycsDir) {
+            new Notice(`Epycs directory '${this.Settings.agileEpycsDirectoryName}' not found.`);
+            return [];
+        }
+
+        let epicFiles = epycsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
+        let epicNames = epicFiles.map(file => file.name.split('.')[0]); // Remove file extension
+
+        return epicNames;
     }
 }
 

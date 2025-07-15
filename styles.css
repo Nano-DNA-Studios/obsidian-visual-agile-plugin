@@ -13,11 +13,12 @@ If your plugin does not need CSS, delete this file.
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  gap: 10px;
 }
 
 .file-create-field-div {
   width: 100%;
-  margin-bottom: 10px;
+  
   gap: 10px;
   display: flex;
   flex-direction: row;
@@ -32,7 +33,6 @@ If your plugin does not need CSS, delete this file.
 .file-create-field-input {
   flex: 1;
 }
-
 
 .result-div {
   display: flex;
