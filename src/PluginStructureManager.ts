@@ -67,7 +67,7 @@ class PluginStructureManager {
 
     public CreateStory(name: string, desc: string, epic: string): void {
         const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}/${name}.md`;
-        const properties = `---\ntags:\n    - Story\n    - Agile\n---`;
+        const properties = `---\nEpic: \"[[${epic}]]\"\ntags:\n    - Story\n    - Agile\n---`;
         const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Tasks\n---\n`;
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
@@ -90,9 +90,22 @@ class PluginStructureManager {
         }
 
         let epicFiles = epycsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
-        let epicNames = epicFiles.map(file => file.name.split('.')[0]); // Remove file extension
+        let epicNames = epicFiles.map(file => file.name.split('.')[0]);
 
         return epicNames;
+    }
+
+    public GetStories(): string[] {
+        const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}`);
+        if (!storiesDir) {
+            new Notice(`Stories directory '${this.Settings.agileStoriesDirectoryName}' not found.`);
+            return [];
+        }
+
+        let storyFiles = storiesDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
+        let storyNames = storyFiles.map(file => file.name.split('.')[0]);
+
+        return storyNames;
     }
 }
 

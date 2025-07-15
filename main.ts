@@ -1,8 +1,8 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
 import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
-import CreateMewAgileFileModal from 'src/CreateNewAgileFileModal';
-import CreateStructureModal from 'src/CreateStructureModal';
+import CreateMewAgileFileModal from 'src/Modals/CreateNewAgileFileModal';
+import CreateStructureModal from 'src/Modals/CreateStructureModal';
 import PluginStructureManager from 'src/PluginStructureManager';
 
 // Remember to rename these classes and interfaces!
