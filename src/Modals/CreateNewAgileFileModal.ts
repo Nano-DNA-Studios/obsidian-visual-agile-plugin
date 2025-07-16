@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, Modal, Notice } from "obsidian";
+import { App, Modal } from "obsidian";
 import CreateEpicModal from "./CreateEpicModal";
 import CreateStoryModal from "./CreateStoryModal";
 import CreateTaskModal from "./CreateTaskModal";
@@ -22,12 +22,12 @@ class CreateNewAgileFileModal extends Modal {
         contentEl.createEl('h1', { text: 'Create New Agile File' });
         contentEl.createEl('p', { text: 'Select the type of Agile File you want to create' });
 
-        let div = contentEl.createDiv( { cls: 'file-create-type-div' });
+        let div = contentEl.createDiv({ cls: 'file-create-type-div' });
 
         let epicBtn = div.createDiv();
         let storyBtn = div.createDiv();
         let taskBtn = div.createDiv();
-        
+
         epicBtn.innerHTML = this.GetEpicSVG();
         storyBtn.innerHTML = this.GetStorySVG();
         taskBtn.innerHTML = this.GetTaskSVG();

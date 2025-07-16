@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, Notice } from "obsidian";
+import { App } from "obsidian";
 import CreateFileModal from "./CreateFileModal";
 
 class CreateEpicModal extends CreateFileModal {

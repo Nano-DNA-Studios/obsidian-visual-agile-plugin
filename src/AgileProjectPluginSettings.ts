@@ -1,4 +1,3 @@
-import { App } from "obsidian";
 
 interface AgileProjectPluginSettings {
 	agileDirectoryPath: string;
@@ -9,12 +8,12 @@ interface AgileProjectPluginSettings {
 }
 
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
-    agileDirectoryPath: 'Projects and Stories',
+	agileDirectoryPath: 'Projects and Stories',
 	agileEpicsDirectoryName: 'Epics',
 	agileStoriesDirectoryName: 'Stories',
 	agileTasksDirectoryName: 'Tasks',
 	mySetting: 'default'
 }
 
-export {DEFAULT_SETTINGS}
-export type { AgileProjectPluginSettings};
+export { DEFAULT_SETTINGS }
+export type { AgileProjectPluginSettings };

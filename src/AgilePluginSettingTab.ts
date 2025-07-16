@@ -1,7 +1,6 @@
 import AgileProjectPlugin from "main";
 import { App, Notice, PluginSettingTab, Setting, TFolder } from "obsidian";
 
-
 class AgilePluginSettingTab extends PluginSettingTab {
     App: App;
 
@@ -59,7 +58,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
             .setName('Tasks Directory Name')
             .setDesc('The name of the directory where Agile Tasks are stored.')
             .addText(text => text
-                .setPlaceholder('Enter directory name') 
+                .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileTasksDirectoryName)
                 .onChange(async (value) => {
                     this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileTasksDirectoryName, value);
@@ -72,7 +71,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
         const root = this.app.vault.getRoot();
 
         root.children.forEach((item) => {
-            if (!(item instanceof TFolder)) 
+            if (!(item instanceof TFolder))
                 return;
 
             if (item.name == oldName)
@@ -80,9 +79,8 @@ class AgilePluginSettingTab extends PluginSettingTab {
         });
     }
 
-    private RenameSubdirectory(parentDir : string, oldName: string, newName: string): void {
-       
-        let parent : TFolder | null = this.app.vault.getFolderByPath(parentDir);
+    private RenameSubdirectory(parentDir: string, oldName: string, newName: string): void {
+        const parent: TFolder | null = this.app.vault.getFolderByPath(parentDir);
 
         if (!parent) {
             new Notice(`Parent directory '${parentDir}' not found.`);
@@ -90,7 +88,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
         }
 
         parent.children.forEach((item) => {
-            if (!(item instanceof TFolder)) 
+            if (!(item instanceof TFolder))
                 return;
 
             if (item.name == oldName)
