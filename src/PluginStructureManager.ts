@@ -82,6 +82,23 @@ class PluginStructureManager {
         });
     }
 
+    public CreateTask(name: string, desc: string, epic: string, story: string): void {
+        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${name}.md`;
+        const properties = `---\nEpic: \"[[${epic}]]\"\nStory: \"[[${story}]]\"\ntags:\n    - Task\n    - Agile\n---`;
+        const fileContent = `${properties}\n# Overview\n---\n${desc}\n`;
+
+        if (this.App.vault.getAbstractFileByPath(filePath)) {
+            new Notice(`Task '${name}' already exists!`);
+            return;
+        }
+
+        this.App.vault.create(filePath, fileContent).then(() => {
+            new Notice(`Task '${name}' created successfully!`);
+        }).catch((error) => {
+            new Notice(`Failed to create Task: ${error}`);
+        });
+    }
+
     public GetEpics(): string[] {
         const epycsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}`);
         if (!epycsDir) {
@@ -95,15 +112,26 @@ class PluginStructureManager {
         return epicNames;
     }
 
-    public GetStories(): string[] {
+    public async GetStories(epicName: string): Promise<string[]> {
         const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}`);
+
         if (!storiesDir) {
             new Notice(`Stories directory '${this.Settings.agileStoriesDirectoryName}' not found.`);
             return [];
         }
 
-        let storyFiles = storiesDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
-        let storyNames = storyFiles.map(file => file.name.split('.')[0]);
+        const storyFiles: TFile[] = storiesDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md")) as TFile[];
+
+        const matches = await Promise.all(
+            storyFiles.map(async file => {
+                const content = await this.App.vault.read(file);
+                return content.includes(`Epic: \"[[${epicName}]]\"`);
+            })
+        );
+
+        const storyFilesOfEpic = storyFiles.filter((_, i) => matches[i]);
+
+        const storyNames = storyFilesOfEpic.map(file => file.name.split('.')[0]);
 
         return storyNames;
     }

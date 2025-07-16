@@ -1,5 +1,6 @@
 import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
+import { text } from "stream/consumers";
 
 abstract class CreateFileModal extends Modal {
     protected App: App;
@@ -22,10 +23,19 @@ abstract class CreateFileModal extends Modal {
         return input;
     }
 
-    protected SingleLineDropdown(parent: HTMLElement, labelText : string, options: string[]): HTMLSelectElement {
+    protected MultiLineInput(parent: HTMLElement, labelText: string, placeholderText: string): HTMLTextAreaElement {
+        const wrapper = parent.createDiv({ cls: 'file-create-description-div' });
+        const label = wrapper.createEl('label', { text: labelText, cls: 'file-create-field-text' });
+        const textarea = wrapper.createEl('textarea', { placeholder: placeholderText, cls: 'form-textarea' });
+
+        return textarea;
+    }
+
+
+    protected SingleLineDropdown(parent: HTMLElement, labelText: string, options: string[]): HTMLSelectElement {
         const div = parent.createDiv({ cls: 'file-create-field-div' });
         const label = div.createEl('label', { text: labelText, cls: 'file-create-field-text' });
-        const select = div.createEl("select", {cls: 'file-create-field-input'});
+        const select = div.createEl("select", { cls: 'file-create-field-input' });
 
         options.forEach((epic) => {
             select.createEl("option", {

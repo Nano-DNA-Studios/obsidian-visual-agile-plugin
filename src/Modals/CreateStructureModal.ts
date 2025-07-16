@@ -1,6 +1,6 @@
 import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
-import "../styles.css";
+import "../../styles.css";
 
 class CreateStructureModal extends Modal {
 

@@ -2,6 +2,7 @@ import AgileProjectPlugin from "main";
 import { App, Modal, Notice } from "obsidian";
 import CreateEpicModal from "./CreateEpicModal";
 import CreateStoryModal from "./CreateStoryModal";
+import CreateTaskModal from "./CreateTaskModal";
 
 
 class CreateMewAgileFileModal extends Modal {
@@ -50,6 +51,7 @@ class CreateMewAgileFileModal extends Modal {
 
         taskBtn.addEventListener('click', () => {
             new Notice('Task file creation is not implemented yet!');
+            new CreateTaskModal(this.App, this.Plugin).open();
             this.close();
         });
 

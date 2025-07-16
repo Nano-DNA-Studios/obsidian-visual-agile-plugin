@@ -25,7 +25,6 @@ class CreateEpicModal extends CreateFileModal {
             new Notice('Epic file creation is not implemented yet!');
             this.close();
         });
-
     }
 
     onClose(): void {
