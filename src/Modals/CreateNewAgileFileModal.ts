@@ -4,8 +4,6 @@ import CreateEpicModal from "./CreateEpicModal";
 import CreateStoryModal from "./CreateStoryModal";
 import CreateTaskModal from "./CreateTaskModal";
 
-
-
 class CreateMewAgileFileModal extends Modal {
     private Plugin: AgileProjectPlugin;
     private App: App;
@@ -24,27 +22,15 @@ class CreateMewAgileFileModal extends Modal {
         contentEl.createEl('h1', { text: 'Create New Agile File' });
         contentEl.createEl('p', { text: 'Select the type of Agile File you want to create' });
 
-        let div = contentEl.createDiv();
-
-        div.style.display = 'flex';
-        div.style.justifyContent = 'space-around';
-        div.style.flexDirection = 'row';
-
-        //let epycIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/imgs/Epyc.png?raw=true"
-        //let storyIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/imgs/Story.png?raw=true";
-        //let taskIcon = "https://github.com/Nano-DNA-Studios/obsidian-agile-project-plugin/blob/Creating-MVP/imgs/Task.png?raw=true";
+        let div = contentEl.createDiv( { cls: 'file-create-type-div' });
 
         let epycBtn = div.createDiv();
         let storyBtn = div.createDiv();
         let taskBtn = div.createDiv();
+        
         epycBtn.innerHTML = this.GetEpicSVG();
         storyBtn.innerHTML = this.GetStorySVG();
         taskBtn.innerHTML = this.GetTaskSVG();
-
-
-        //let epycBtn = div.createEl('img', { cls: "image", attr: { src: this.GetEpicSVG(), alt: 'Epyc' } });
-        // let storyBtn = div.createEl('img', { cls: "image", attr: { src: this.GetStorySVG(), alt: 'Story' } });
-        //let taskBtn = div.createEl('img', { cls: "image", attr: { src: this.GetTaskSVG(), alt: 'Task' } });
 
         epycBtn.addEventListener('click', () => {
             new CreateEpicModal(this.App, this.Plugin).open();
@@ -60,8 +46,6 @@ class CreateMewAgileFileModal extends Modal {
             new CreateTaskModal(this.App, this.Plugin).open();
             this.close();
         });
-
-        // Additional UI elements and logic for creating a new Agile file can be added here
     }
 
     onClose(): void {

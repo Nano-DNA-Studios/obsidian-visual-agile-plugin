@@ -35,6 +35,14 @@ If your plugin does not need CSS, delete this file.
   justify-content: center;
 }
 
+.file-create-type-div {
+  width: 100%;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
 .file-create-field-text {
   width: auto;
@@ -64,7 +72,6 @@ If your plugin does not need CSS, delete this file.
 .full-width {
   width: 100%;
 }
-
 
 .form-textarea {
     min-height: 100px;
