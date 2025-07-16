@@ -14,7 +14,7 @@ class PluginStructureManager {
 
     public CreateStructure(): void {
         this.App.vault.createFolder(this.Settings.agileDirectoryPath).then((agileFolder) => {
-            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileEpycsDirectoryName}`);
+            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileEpicsDirectoryName}`);
             this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileStoriesDirectoryName}`);
             this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileTasksDirectoryName}`);
 
@@ -36,11 +36,11 @@ class PluginStructureManager {
             return false;
         }
 
-        let epycDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}`);
+        let epicDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}`);
         let storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}`);
         let tasksDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}`);
 
-        if (!epycDir || !storiesDir || !tasksDir) {
+        if (!epicDir || !storiesDir || !tasksDir) {
             new Notice(`One or more required directories are missing in '${this.Settings.agileDirectoryPath}'.`);
             return false;
         }
@@ -49,19 +49,19 @@ class PluginStructureManager {
     }
 
     public CreateEpic(name: string, desc: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}/${name}.md`;
+        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}/${name}.md`;
         const properties = `---\ntags:\n    - Epic\n    - Agile\n---`;
         const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Stories\n---\n`;
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Epyc '${name}' already exists!`);
+            new Notice(`Epic '${name}' already exists!`);
             return;
         }
 
         this.App.vault.create(filePath, fileContent).then(() => {
-            new Notice(`Epyc '${name}' created successfully!`);
+            new Notice(`Epic '${name}' created successfully!`);
         }).catch((error) => {
-            new Notice(`Failed to create Epyc: ${error}`);
+            new Notice(`Failed to create Epic: ${error}`);
         });
     }
 
@@ -100,13 +100,13 @@ class PluginStructureManager {
     }
 
     public GetEpics(): string[] {
-        const epycsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpycsDirectoryName}`);
-        if (!epycsDir) {
-            new Notice(`Epycs directory '${this.Settings.agileEpycsDirectoryName}' not found.`);
+        const epicsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}`);
+        if (!epicsDir) {
+            new Notice(`Epics directory '${this.Settings.agileEpicsDirectoryName}' not found.`);
             return [];
         }
 
-        const epicFiles = epycsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
+        const epicFiles = epicsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
         const epicNames = epicFiles.map(file => file.name.split('.')[0]);
 
         return epicNames;

@@ -24,15 +24,15 @@ class CreateNewAgileFileModal extends Modal {
 
         let div = contentEl.createDiv( { cls: 'file-create-type-div' });
 
-        let epycBtn = div.createDiv();
+        let epicBtn = div.createDiv();
         let storyBtn = div.createDiv();
         let taskBtn = div.createDiv();
         
-        epycBtn.innerHTML = this.GetEpicSVG();
+        epicBtn.innerHTML = this.GetEpicSVG();
         storyBtn.innerHTML = this.GetStorySVG();
         taskBtn.innerHTML = this.GetTaskSVG();
 
-        epycBtn.addEventListener('click', () => {
+        epicBtn.addEventListener('click', () => {
             new CreateEpicModal(this.App, this.Plugin).open();
             this.close();
         });

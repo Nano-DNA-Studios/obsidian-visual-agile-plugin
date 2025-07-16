@@ -26,7 +26,7 @@ class CreateStructureModal extends Modal {
             const parentLi = ul.createEl('li', { text: this.Plugin.Settings.agileDirectoryPath });
 
             const nestedUl = parentLi.createEl('ul');
-            nestedUl.createEl('li', { text: this.Plugin.Settings.agileEpycsDirectoryName });
+            nestedUl.createEl('li', { text: this.Plugin.Settings.agileEpicsDirectoryName });
             nestedUl.createEl('li', { text: this.Plugin.Settings.agileStoriesDirectoryName });
             nestedUl.createEl('li', { text: this.Plugin.Settings.agileTasksDirectoryName });
         });

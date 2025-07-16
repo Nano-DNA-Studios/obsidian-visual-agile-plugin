@@ -31,15 +31,15 @@ class AgilePluginSettingTab extends PluginSettingTab {
                     await this.Plugin.saveSettings();
                 }));
 
-        const agileEpycsDirectoryName = new Setting(containerEl)
-            .setName('Epycs Directory Name')
-            .setDesc('The name of the directory where Agile Epycs are stored.')
+        const agileEpicsDirectoryName = new Setting(containerEl)
+            .setName('Epics Directory Name')
+            .setDesc('The name of the directory where Agile Epics are stored.')
             .addText(text => text
                 .setPlaceholder('Enter directory name')
-                .setValue(this.Plugin.Settings.agileEpycsDirectoryName)
+                .setValue(this.Plugin.Settings.agileEpicsDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileEpycsDirectoryName, value);
-                    this.Plugin.Settings.agileEpycsDirectoryName = value;
+                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileEpicsDirectoryName, value);
+                    this.Plugin.Settings.agileEpicsDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));
 
