@@ -29,7 +29,6 @@ export default class AgileProjectPlugin extends Plugin {
 		this.StructureChecker = new PluginStructureManager(this.app, this.Settings);
 
 		this.addRibbonIcon('sheets-in-box', 'Update Agile', () => {
-			new Notice('Update Agile functionality is not implemented yet!');
 			new CreateMewAgileFileModal(this.app, this).open();
 		});
 

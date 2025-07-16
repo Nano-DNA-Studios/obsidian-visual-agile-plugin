@@ -15,14 +15,12 @@ class CreateEpicModal extends CreateFileModal {
         contentEl.createEl('h1', { text: 'Creating Agile Epic' });
 
         let nameInput = this.SingleLineInput(contentEl, 'Epic Name :', 'Enter epic name');
-        let descInput = this.SingleLineInput(contentEl, 'Epic Description :', 'Enter epic description');
-
+        let descInput = this.MultiLineInput(contentEl, 'Epic Description', 'Enter epic description');
         let createBtn = contentEl.createEl('button', { text: 'Create', cls: 'full-width' });
 
         createBtn.addEventListener('click', async () => {
 
             this.Plugin.StructureChecker.CreateEpic(nameInput.value, descInput.value);
-            new Notice('Epic file creation is not implemented yet!');
             this.close();
         });
     }
