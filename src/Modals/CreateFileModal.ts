@@ -1,6 +1,5 @@
 import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
-import { text } from "stream/consumers";
 
 abstract class CreateFileModal extends Modal {
     protected App: App;
@@ -30,7 +29,6 @@ abstract class CreateFileModal extends Modal {
 
         return textarea;
     }
-
 
     protected SingleLineDropdown(parent: HTMLElement, labelText: string, options: string[]): HTMLSelectElement {
         const div = parent.createDiv({ cls: 'file-create-field-div' });

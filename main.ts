@@ -48,3 +48,8 @@ export default class AgileProjectPlugin extends Plugin {
 		await this.saveData(this.Settings);
 	}
 }
+
+
+
+
+
