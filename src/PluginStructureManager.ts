@@ -85,7 +85,7 @@ class PluginStructureManager {
     public CreateTask(name: string, desc: string, epic: string, story: string): void {
         const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${name}.md`;
         const properties = `---\nEpic: \"[[${epic}]]\"\nStory: \"[[${story}]]\"\ntags:\n    - Task\n    - Agile\n---`;
-        const fileContent = `${properties}\n# Overview\n---\n${desc}\n`;
+        const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Notes and Exploration\n---\n`;
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
             new Notice(`Task '${name}' already exists!`);
@@ -106,8 +106,8 @@ class PluginStructureManager {
             return [];
         }
 
-        let epicFiles = epycsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
-        let epicNames = epicFiles.map(file => file.name.split('.')[0]);
+        const epicFiles = epycsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
+        const epicNames = epicFiles.map(file => file.name.split('.')[0]);
 
         return epicNames;
     }
@@ -121,7 +121,6 @@ class PluginStructureManager {
         }
 
         const storyFiles: TFile[] = storiesDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md")) as TFile[];
-
         const matches = await Promise.all(
             storyFiles.map(async file => {
                 const content = await this.App.vault.read(file);
@@ -130,7 +129,6 @@ class PluginStructureManager {
         );
 
         const storyFilesOfEpic = storyFiles.filter((_, i) => matches[i]);
-
         const storyNames = storyFilesOfEpic.map(file => file.name.split('.')[0]);
 
         return storyNames;
