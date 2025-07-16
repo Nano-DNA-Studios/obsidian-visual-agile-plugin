@@ -4,7 +4,7 @@ import CreateEpicModal from "./CreateEpicModal";
 import CreateStoryModal from "./CreateStoryModal";
 import CreateTaskModal from "./CreateTaskModal";
 
-class CreateMewAgileFileModal extends Modal {
+class CreateNewAgileFileModal extends Modal {
     private Plugin: AgileProjectPlugin;
     private App: App;
 
@@ -75,4 +75,4 @@ class CreateMewAgileFileModal extends Modal {
     }
 }
 
-export default CreateMewAgileFileModal;
+export default CreateNewAgileFileModal;
