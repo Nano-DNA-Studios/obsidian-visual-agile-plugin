@@ -20,7 +20,7 @@ class CreateEpicModal extends CreateFileModal {
 
         createBtn.addEventListener('click', async () => {
 
-            this.Plugin.StructureChecker.CreateEpic(nameInput.value, descInput.value);
+            this.Plugin.FileFactory.CreateEpic(nameInput.value, descInput.value);
             this.close();
         });
     }

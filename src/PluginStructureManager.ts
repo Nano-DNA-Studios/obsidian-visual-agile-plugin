@@ -48,56 +48,7 @@ class PluginStructureManager {
         return true;
     }
 
-    public CreateEpic(name: string, desc: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}/${name}.md`;
-        const properties = `---\ntags:\n    - Epic\n    - Agile\n---`;
-        const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Stories\n---\n`;
-
-        if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Epic '${name}' already exists!`);
-            return;
-        }
-
-        this.App.vault.create(filePath, fileContent).then(() => {
-            new Notice(`Epic '${name}' created successfully!`);
-        }).catch((error) => {
-            new Notice(`Failed to create Epic: ${error}`);
-        });
-    }
-
-    public CreateStory(name: string, desc: string, epic: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}/${name}.md`;
-        const properties = `---\nEpic: \"[[${epic}]]\"\ntags:\n    - Story\n    - Agile\n---`;
-        const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Tasks\n---\n`;
-
-        if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Story '${name}' already exists!`);
-            return;
-        }
-
-        this.App.vault.create(filePath, fileContent).then(() => {
-            new Notice(`Story '${name}' created successfully!`);
-        }).catch((error) => {
-            new Notice(`Failed to create Story: ${error}`);
-        });
-    }
-
-    public CreateTask(name: string, desc: string, epic: string, story: string, priority: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${name}.md`;
-        const properties = `---\nEpic: \"[[${epic}]]\"\nStory: \"[[${story}]]\"\ntags:\n    - Task\n    - Agile\nCompleted: false\nPriority: ${priority}\n---`;
-        const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Notes and Exploration\n---\n`;
-
-        if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Task '${name}' already exists!`);
-            return;
-        }
-
-        this.App.vault.create(filePath, fileContent).then(() => {
-            new Notice(`Task '${name}' created successfully!`);
-        }).catch((error) => {
-            new Notice(`Failed to create Task: ${error}`);
-        });
-    }
+    
 
     public GetEpics(): string[] {
         const epicsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}`);

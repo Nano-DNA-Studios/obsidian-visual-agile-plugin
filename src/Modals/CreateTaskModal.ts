@@ -25,7 +25,7 @@ class CreateTaskModal extends CreateFileModal {
         epicDropdown.addEventListener('change', () => this.UpdateStoryDropdown(epicDropdown.value, storyDropdown));
 
         createBtn.addEventListener('click', async () => {
-            this.Plugin.StructureChecker.CreateTask(nameInput.value, descInput.value, epicDropdown.value, storyDropdown.value, priorityDropdown.value);
+            this.Plugin.FileFactory.CreateTask(nameInput.value, descInput.value, epicDropdown.value, storyDropdown.value, priorityDropdown.value);
             this.close();
         });
 

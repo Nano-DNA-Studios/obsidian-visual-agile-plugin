@@ -20,7 +20,7 @@ class CreateStoryModal extends CreateFileModal {
 
         let createBtn = contentEl.createEl('button', { text: 'Create', cls: 'full-width' });
         createBtn.addEventListener('click', async () => {
-            this.Plugin.StructureChecker.CreateStory(nameInput.value, descInput.value, epicSelect.value);
+            this.Plugin.FileFactory.CreateStory(nameInput.value, descInput.value, epicSelect.value);
             this.close();
         });
     }

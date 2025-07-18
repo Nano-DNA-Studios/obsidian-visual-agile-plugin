@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { Notice, Plugin } from 'obsidian';
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
 import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import CreateEpicModal from 'src/Modals/CreateEpicModal';
@@ -6,9 +6,8 @@ import CreateNewAgileFileModal from 'src/Modals/CreateNewAgileFileModal';
 import CreateStoryModal from 'src/Modals/CreateStoryModal';
 import CreateStructureModal from 'src/Modals/CreateStructureModal';
 import CreateTaskModal from 'src/Modals/CreateTaskModal';
+import PluginFileFactory from 'src/PluginFileFactory';
 import PluginStructureManager from 'src/PluginStructureManager';
-
-// Remember to rename these classes and interfaces!
 
 export default class AgileProjectPlugin extends Plugin {
 
@@ -16,8 +15,15 @@ export default class AgileProjectPlugin extends Plugin {
 
 	StructureChecker: PluginStructureManager;
 
+	FileFactory: PluginFileFactory;
+
 	async onload() {
 		await this.loadSettings();
+
+		new Notice('Agile Project Plugin loaded!');
+
+		this.StructureChecker = new PluginStructureManager(this.app, this.Settings);
+		this.FileFactory = new PluginFileFactory(this.app, this.Settings);
 
 		setTimeout(() => {
 			if (!this.StructureChecker.IsValidStructure()) {
@@ -27,16 +33,15 @@ export default class AgileProjectPlugin extends Plugin {
 			}
 		}, 100);
 
-		new Notice('Agile Project Plugin loaded!');
-
-		this.StructureChecker = new PluginStructureManager(this.app, this.Settings);
-
+		//Ribbon icon
 		this.addRibbonIcon('sheets-in-box', 'Update Agile', () => {
 			new CreateNewAgileFileModal(this.app, this).open();
 		});
 
+		//Settings Tab
 		this.addSettingTab(new AgilePluginSettingTab(this.app, this));
 
+		//Commands
 		this.addCommand({
 			id: 'create-agile-file',
 			name: 'Create New Agile File',
