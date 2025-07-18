@@ -15,7 +15,7 @@ class PluginFileFactory {
     private GetTodaysDate(): string {
         const date = new Date();
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-indexed
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
@@ -31,8 +31,9 @@ class PluginFileFactory {
             return;
         }
 
-        this.App.vault.create(filePath, fileContent).then(() => {
+        this.App.vault.create(filePath, fileContent).then((file) => {
             new Notice(`Epic '${name}' created successfully!`);
+            this.App.workspace.getLeaf(false).openFile(file);
         }).catch((error) => {
             new Notice(`Failed to create Epic: ${error}`);
         });
@@ -49,8 +50,9 @@ class PluginFileFactory {
             return;
         }
 
-        this.App.vault.create(filePath, fileContent).then(() => {
+        this.App.vault.create(filePath, fileContent).then((file) => {
             new Notice(`Story '${name}' created successfully!`);
+            this.App.workspace.getLeaf(false).openFile(file);
         }).catch((error) => {
             new Notice(`Failed to create Story: ${error}`);
         });
@@ -67,13 +69,14 @@ class PluginFileFactory {
             return;
         }
 
-        this.App.vault.create(filePath, fileContent).then(() => {
+        this.App.vault.create(filePath, fileContent).then((file) => {
             new Notice(`Task '${name}' created successfully!`);
+            this.App.workspace.getLeaf(false).openFile(file);
         }).catch((error) => {
             new Notice(`Failed to create Task: ${error}`);
         });
     }
-
+    
     private GetTaskProperties(epicName: string, storyName: string, priority: string): string {
         return [
             "---",

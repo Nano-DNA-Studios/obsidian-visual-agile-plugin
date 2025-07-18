@@ -48,8 +48,6 @@ class PluginStructureManager {
         return true;
     }
 
-    
-
     public GetEpics(): string[] {
         const epicsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}`);
         if (!epicsDir) {
