@@ -12,6 +12,7 @@ abstract class CreateFileModal extends Modal {
     }
 
     abstract onOpen(): void;
+
     abstract onClose(): void;
 
     protected SingleLineInput(parent: HTMLElement, labelText: string, placeholderText: string): HTMLInputElement {
