@@ -107,7 +107,7 @@ class PluginStructureManager {
         }
 
         const epicFiles = epicsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
-        const epicNames = epicFiles.map(file => file.name.split('.')[0]);
+        const epicNames = epicFiles.map(file => file.name.replace(".md", ""));
 
         return epicNames;
     }
@@ -129,7 +129,7 @@ class PluginStructureManager {
         );
 
         const storyFilesOfEpic = storyFiles.filter((_, i) => matches[i]);
-        const storyNames = storyFilesOfEpic.map(file => file.name.split('.')[0]);
+        const storyNames = storyFilesOfEpic.map(file => file.name.replace(".md", ""));
 
         return storyNames;
     }
