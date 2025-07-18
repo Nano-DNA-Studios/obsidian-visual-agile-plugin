@@ -82,9 +82,9 @@ class PluginStructureManager {
         });
     }
 
-    public CreateTask(name: string, desc: string, epic: string, story: string): void {
+    public CreateTask(name: string, desc: string, epic: string, story: string, priority: string): void {
         const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${name}.md`;
-        const properties = `---\nEpic: \"[[${epic}]]\"\nStory: \"[[${story}]]\"\ntags:\n    - Task\n    - Agile\nCompleted: false\n---`;
+        const properties = `---\nEpic: \"[[${epic}]]\"\nStory: \"[[${story}]]\"\ntags:\n    - Task\n    - Agile\nCompleted: false\nPriority: ${priority}\n---`;
         const fileContent = `${properties}\n# Overview\n---\n${desc}\n\n# Notes and Exploration\n---\n`;
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {

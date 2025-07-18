@@ -18,13 +18,14 @@ class CreateTaskModal extends CreateFileModal {
         let nameInput = this.SingleLineInput(contentEl, 'Task Name :', 'Enter task name');
         let epicDropdown = this.SingleLineDropdown(contentEl, 'Epic Name :', this.Plugin.StructureChecker.GetEpics());
         let storyDropdown = this.SingleLineDropdown(contentEl, 'Story Name :', []);
+        let priorityDropdown = this.SingleLineDropdown(contentEl, 'Task Priority :', ['Low', 'Medium', 'High']);
         let descInput = this.MultiLineInput(contentEl, 'Task Description', 'Enter task description');
         let createBtn = contentEl.createEl('button', { text: 'Create', cls: 'full-width' });
 
         epicDropdown.addEventListener('change', () => this.UpdateStoryDropdown(epicDropdown.value, storyDropdown));
 
         createBtn.addEventListener('click', async () => {
-            this.Plugin.StructureChecker.CreateTask(nameInput.value, descInput.value, epicDropdown.value, storyDropdown.value);
+            this.Plugin.StructureChecker.CreateTask(nameInput.value, descInput.value, epicDropdown.value, storyDropdown.value, priorityDropdown.value);
             this.close();
         });
 
