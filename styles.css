@@ -1,10 +1,6 @@
 /*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
+CSS for the Agile Project Plugin
+This file contains styles for various components of the plugin, including modals, buttons, and input
 */
 
 .centered-modal {
