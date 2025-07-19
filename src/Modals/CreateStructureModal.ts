@@ -49,7 +49,7 @@ class CreateStructureModal extends Modal {
 
         yesBtn.addEventListener('click', () => {
             this.close();
-            this.Plugin.StructureChecker.CreateStructure();
+            this.Plugin.StructureManager.CreateStructure();
         });
 
         noBtn.addEventListener('click', () => {

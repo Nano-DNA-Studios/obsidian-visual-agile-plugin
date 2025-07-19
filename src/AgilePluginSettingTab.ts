@@ -1,17 +1,32 @@
 import AgileProjectPlugin from "main";
-import { App, Notice, PluginSettingTab, Setting, TFolder } from "obsidian";
+import { App, PluginSettingTab, Setting } from "obsidian";
 
+/**
+ * Setting tab for the Agile Project Plugin.
+ * Allows users to configure plugin settings such as directory names.
+ */
 class AgilePluginSettingTab extends PluginSettingTab {
-    App: App;
 
+    /**
+     * @public
+     * The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     Plugin: AgileProjectPlugin;
 
+    /**
+     * @public
+     * @param app The App instance for accessing Obsidian's API.
+     * @param plugin The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app, plugin);
-        this.App = app;
         this.Plugin = plugin;
     }
 
+    /**
+     * @public
+     * Displays the settings UI for the Agile Project Plugin.
+     */
     display(): void {
         const { containerEl } = this;
 
@@ -25,7 +40,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileDirectoryPath)
                 .onChange(async (value) => {
-                    this.RenameDirectory(this.Plugin.Settings.agileDirectoryPath, value);
+                    this.Plugin.StructureManager.RenameDirectory(this.Plugin.Settings.agileDirectoryPath, value);
                     this.Plugin.Settings.agileDirectoryPath = value;
                     await this.Plugin.saveSettings();
                 }));
@@ -37,7 +52,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileEpicsDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileEpicsDirectoryName, value);
+                    this.Plugin.StructureManager.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileEpicsDirectoryName, value);
                     this.Plugin.Settings.agileEpicsDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));
@@ -49,7 +64,7 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileStoriesDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileStoriesDirectoryName, value);
+                    this.Plugin.StructureManager.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileStoriesDirectoryName, value);
                     this.Plugin.Settings.agileStoriesDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));
@@ -61,39 +76,10 @@ class AgilePluginSettingTab extends PluginSettingTab {
                 .setPlaceholder('Enter directory name')
                 .setValue(this.Plugin.Settings.agileTasksDirectoryName)
                 .onChange(async (value) => {
-                    this.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileTasksDirectoryName, value);
+                    this.Plugin.StructureManager.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileTasksDirectoryName, value);
                     this.Plugin.Settings.agileTasksDirectoryName = value;
                     await this.Plugin.saveSettings();
                 }));
-    }
-
-    private RenameDirectory(oldName: string, newName: string): void {
-        const root = this.app.vault.getRoot();
-
-        root.children.forEach((item) => {
-            if (!(item instanceof TFolder))
-                return;
-
-            if (item.name == oldName)
-                this.app.vault.rename(item, newName);
-        });
-    }
-
-    private RenameSubdirectory(parentDir: string, oldName: string, newName: string): void {
-        const parent: TFolder | null = this.app.vault.getFolderByPath(parentDir);
-
-        if (!parent) {
-            new Notice(`Parent directory '${parentDir}' not found.`);
-            return;
-        }
-
-        parent.children.forEach((item) => {
-            if (!(item instanceof TFolder))
-                return;
-
-            if (item.name == oldName)
-                this.app.vault.rename(item, `${parent.name}/${newName}`);
-        });
     }
 }
 

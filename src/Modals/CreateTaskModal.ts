@@ -28,7 +28,7 @@ class CreateTaskModal extends CreateFileModal {
         contentEl.createEl('h1', { text: 'Creating Agile Task' });
 
         let nameInput = this.SingleLineInput(contentEl, 'Task Name :', 'Enter task name');
-        let epicDropdown = this.SingleLineDropdown(contentEl, 'Epic Name :', this.Plugin.StructureChecker.GetEpics());
+        let epicDropdown = this.SingleLineDropdown(contentEl, 'Epic Name :', this.Plugin.StructureManager.GetEpics());
         let storyDropdown = this.SingleLineDropdown(contentEl, 'Story Name :', []);
         let priorityDropdown = this.SingleLineDropdown(contentEl, 'Task Priority :', ['Low', 'Medium', 'High']);
         let descInput = this.MultiLineInput(contentEl, 'Task Description', 'Enter task description');
@@ -60,7 +60,7 @@ class CreateTaskModal extends CreateFileModal {
      */
     private UpdateStoryDropdown(epicName: string, storyDropdown: HTMLSelectElement): void {
         storyDropdown.empty();
-        this.Plugin.StructureChecker.GetStories(epicName).then((stories) => {
+        this.Plugin.StructureManager.GetStories(epicName).then((stories) => {
             stories.forEach(story => {
                 storyDropdown.createEl('option', { text: story, value: story });
             });

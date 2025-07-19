@@ -27,7 +27,7 @@ class CreateStoryModal extends CreateFileModal {
         contentEl.createEl('p', { text: 'Please enter the details for the new story.' });
 
         let nameInput = this.SingleLineInput(contentEl, 'Story Name:', 'Enter story name');
-        let epicSelect = this.SingleLineDropdown(contentEl, 'Epic Name:', this.Plugin.StructureChecker.GetEpics());
+        let epicSelect = this.SingleLineDropdown(contentEl, 'Epic Name:', this.Plugin.StructureManager.GetEpics());
         let descInput = this.MultiLineInput(contentEl, 'Story Description', 'Enter story description');
 
         let createBtn = contentEl.createEl('button', { text: 'Create', cls: 'full-width' });
