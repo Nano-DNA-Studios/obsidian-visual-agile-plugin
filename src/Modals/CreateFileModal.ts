@@ -5,11 +5,6 @@ import { App, Modal } from "obsidian";
  * Abstract class for creating file Modals in the Agile Project Plugin. Used to create Epics, Stories, and Tasks.
  */
 abstract class CreateFileModal extends Modal {
-    /**
-     * @protected
-     * The App instance for accessing Obsidian's API.
-     */
-    protected App: App;
 
     /**
      * @protected
@@ -19,7 +14,6 @@ abstract class CreateFileModal extends Modal {
 
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app);
-        this.App = app;
         this.Plugin = plugin;
     }
 

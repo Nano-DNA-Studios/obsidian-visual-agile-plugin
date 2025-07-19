@@ -8,12 +8,6 @@ import CreateTaskModal from "./CreateTaskModal";
  * Modal for creating a new Agile file, allowing the user to choose between Epic, Story, or Task.
  */
 class CreateNewAgileFileModal extends Modal {
-    
-    /**
-     * @public
-     * The App instance for accessing Obsidian's API.
-     */
-    private App: App;
 
     /**
      * @public
@@ -28,7 +22,6 @@ class CreateNewAgileFileModal extends Modal {
      */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app);
-        this.App = app;
         this.Plugin = plugin;
     }
 
@@ -55,17 +48,17 @@ class CreateNewAgileFileModal extends Modal {
         taskBtn.innerHTML = this.GetTaskSVG();
 
         epicBtn.addEventListener('click', () => {
-            new CreateEpicModal(this.App, this.Plugin).open();
+            new CreateEpicModal(this.app, this.Plugin).open();
             this.close();
         });
 
         storyBtn.addEventListener('click', () => {
-            new CreateStoryModal(this.App, this.Plugin).open();
+            new CreateStoryModal(this.app, this.Plugin).open();
             this.close();
         });
 
         taskBtn.addEventListener('click', () => {
-            new CreateTaskModal(this.App, this.Plugin).open();
+            new CreateTaskModal(this.app, this.Plugin).open();
             this.close();
         });
     }
