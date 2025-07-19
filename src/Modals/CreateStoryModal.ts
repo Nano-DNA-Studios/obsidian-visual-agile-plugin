@@ -2,11 +2,23 @@ import AgileProjectPlugin from "main";
 import { App } from "obsidian";
 import CreateFileModal from "./CreateFileModal";
 
+/**
+ * Modal for creating a new Story in the Agile Project Plugin.
+ */
 class CreateStoryModal extends CreateFileModal {
+
+    /**
+     * @param app The App instance for accessing Obsidian's API.
+     * @param plugin The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app, plugin);
     }
 
+    /**
+     * Opens the Modal and sets up the UI for creating a new Story.
+     * @public
+     */
     onOpen() {
         const { contentEl } = this;
 
@@ -25,6 +37,9 @@ class CreateStoryModal extends CreateFileModal {
         });
     }
 
+    /**
+     * Closes the Modal and cleans up the content element.
+     */
     onClose() {
         const { contentEl } = this;
         contentEl.empty();

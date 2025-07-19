@@ -2,14 +2,24 @@ import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
 import "../../styles.css";
 
+/**
+ * Modal for creating the Agile Project structure in the vault.
+ */
 class CreateStructureModal extends Modal {
 
+    /**
+     * @public
+     * The App instance for accessing Obsidian's API.
+     */
     private Plugin: AgileProjectPlugin;
-    private App: App;
 
+    /**
+     * @public
+     * @param app The App instance for accessing Obsidian's API.
+     * @param plugin The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app);
-        this.App = app;
         this.Plugin = plugin;
     }
 

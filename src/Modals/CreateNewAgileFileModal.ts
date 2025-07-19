@@ -4,16 +4,38 @@ import CreateEpicModal from "./CreateEpicModal";
 import CreateStoryModal from "./CreateStoryModal";
 import CreateTaskModal from "./CreateTaskModal";
 
+/**
+ * Modal for creating a new Agile file, allowing the user to choose between Epic, Story, or Task.
+ */
 class CreateNewAgileFileModal extends Modal {
-    private Plugin: AgileProjectPlugin;
+    
+    /**
+     * @public
+     * The App instance for accessing Obsidian's API.
+     */
     private App: App;
 
+    /**
+     * @public
+     * The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
+    private Plugin: AgileProjectPlugin;
+
+    /**
+     * @public
+     * @param app The App instance for accessing Obsidian's API.
+     * @param plugin The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app);
         this.App = app;
         this.Plugin = plugin;
     }
 
+    /**
+     * @public
+     * Opens the Modal and sets up the UI for creating a new Agile file.
+     */
     onOpen() {
         let { contentEl } = this;
 
@@ -48,11 +70,20 @@ class CreateNewAgileFileModal extends Modal {
         });
     }
 
+    /**
+     * @public
+     * Closes the Modal and cleans up the content element.
+     */
     onClose(): void {
         let { contentEl } = this;
         contentEl.empty();
     }
 
+    /**
+     * Gets the SVG string for the Epic icon.
+     * @returns SVG string for the Epic icon.
+     * @private
+     */
     private GetEpicSVG(): string {
         return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
   <rect width="24" height="24" rx="4" fill="#A259FF"/>
@@ -60,6 +91,11 @@ class CreateNewAgileFileModal extends Modal {
 </svg>`;
     }
 
+    /**
+     * Gets the SVG string for the Story icon.
+     * @returns SVG string for the Story icon.
+     * @private
+     */
     private GetStorySVG(): string {
         return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
   <rect width="24" height="24" rx="4" fill="#4CD964"/>
@@ -67,6 +103,11 @@ class CreateNewAgileFileModal extends Modal {
 </svg>`;
     }
 
+    /**
+     * Gets the SVG string for the Task icon.
+     * @returns SVG string for the Task icon.
+     * @private
+     */
     private GetTaskSVG(): string {
         return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
   <rect width="24" height="24" rx="4" fill="#32ADE6"/>

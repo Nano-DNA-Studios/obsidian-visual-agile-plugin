@@ -2,12 +2,22 @@ import AgileProjectPlugin from "main";
 import { App } from "obsidian";
 import CreateFileModal from "./CreateFileModal";
 
+/**
+ * Modal for creating a new Epic in the Agile Project Plugin.
+ */
 class CreateEpicModal extends CreateFileModal {
 
+    /**
+     * @public
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app, plugin);
     }
 
+    /**
+     * Opens the Modal and sets up the UI for creating a new Epic.
+     * @public
+     */
     onOpen() {
         const { contentEl } = this;
 
@@ -25,6 +35,9 @@ class CreateEpicModal extends CreateFileModal {
         });
     }
 
+    /**
+     * Closes the Modal and cleans up the content element.
+     */
     onClose(): void {
         const { contentEl } = this;
         contentEl.empty();
