@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-agile-project-plugin",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "A Obsidian Plugin for Agile Project Management",
 	"main": "main.js",
 	"scripts": {
@@ -8,8 +8,8 @@
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
-	"keywords": [],
-	"author": "",
+	"keywords": ["Obsidian", "Plugin", "Agile", "Project Management"],
+	"author": "MrDNAlex & NanoDNA-Studios",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
