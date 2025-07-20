@@ -32,7 +32,7 @@ jobs:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     needs: setup
     steps:
-      - name: Build the Website
+      - name: Build the Plugin
         run: npm run build
         shell: bash
 

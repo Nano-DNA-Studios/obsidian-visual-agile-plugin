@@ -44,74 +44,34 @@ jobs:
           echo "Extracted version $version from tag"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-  build-website:
+  build-plugin:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     needs: setup
     steps:
-      - name: Build the Website
+      - name: Build the Plugin
         shell: bash
         run: npm run build
 
-  build-docker:
+  upload-plugin:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
-    needs: [version, build-website]
-    steps:
-      - name: Build Docker Container
-        shell: bash
-        run: docker build -t "ghcr.io/nano-dna-studios/classbackupwebsite:${{ needs.version.outputs.version }}" .
-
-      - name: Enable buildx (only once needed globally)
-        run: |
-          docker buildx create --name builder --use || true
-          docker buildx inspect --bootstrap
-
-      - name: Build Docker Container for Raspberry Pi
-        shell: bash
-        run: docker buildx build --platform linux/arm64/v8 -t "ghcr.io/nano-dna-studios/classbackupwebsite-pi:${{ needs.version.outputs.version }}" --output type=docker,dest=classbackupwebsite-pi.tar .
-
-      - name: Load Docker Image for Raspberry Pi
-        shell: bash
-        run: docker load -i classbackupwebsite-pi.tar
-
-  upload-website:
-    runs-on: ["self-hosted", "run-${{github.run_id}}"]
-    needs: [version, build-website]
+    needs: [version, build-plugin]
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Compress Standalone Source
         shell: bash
-        run: tar -czf ./ClassBackupWebsite-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
+        run: tar -czf ./Obsidian-Agile-Plugin-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
 
       - name: Upload Standalone Source
         uses: actions/upload-artifact@v4
         with:
-          name: ClassBackupWebsite-${{ needs.version.outputs.version }}.tar.gz
-          path: ./ClassBackupWebsite-${{ needs.version.outputs.version }}.tar.gz
+          name: Obsidian-Agile-Plugin-${{ needs.version.outputs.version }}.tar.gz
+          path: ./Obsidian-Agile-Plugin-${{ needs.version.outputs.version }}.tar.gz
           retention-days: 1
 
-      - name: Upload Website to Release
+      - name: Upload Plugin to Release
         working-directory: ./
         shell: bash
         run: |
-          echo "Uploading ClassBackupWebsite-${{ needs.version.outputs.version }}.tar.gz as a Release Asset"
-          gh release upload "${{ github.event.release.tag_name }}" "ClassBackupWebsite-${{ needs.version.outputs.version }}.tar.gz" --repo ${{ github.repository }}
-
-  upload-docker:
-    needs: [build-docker, version]
-    runs-on: ["self-hosted", "run-${{github.run_id}}"]
-    steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push Docker Image
-        shell: bash
-        run: docker push ghcr.io/nano-dna-studios/classbackupwebsite:${{ needs.version.outputs.version }}
-      
-      - name: Push Raspberry Pi Docker Image
-        shell: bash
-        run: docker push ghcr.io/nano-dna-studios/classbackupwebsite-pi:${{ needs.version.outputs.version }}
+          echo "Uploading Obsidian-Agile-Plugin-${{ needs.version.outputs.version }}.tar.gz as a Release Asset"
+          gh release upload "${{ github.event.release.tag_name }}" "Obsidian-Agile-Plugin-${{ needs.version.outputs.version }}.tar.gz" --repo ${{ github.repository }}
