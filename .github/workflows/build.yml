@@ -28,13 +28,17 @@ jobs:
         run: npm install
         shell: bash
 
-  build-website:
+  build-plugin:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     needs: setup
     steps:
       - name: Build the Website
         run: npm run build
         shell: bash
+
+
+
+
 
   build-docker:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
