@@ -49,3 +49,10 @@ jobs:
       - name: Check File is Made
         shell: bash
         run: ls -la ./Obsidian-Agile-Plugin.tar.gz
+
+      - name: Upload Standalone Source
+        uses: actions/upload-artifact@v4
+        with:
+          name: Obsidian-Agile-Plugin.tar.gz
+          path: ./Obsidian-Agile-Plugin.tar.gz
+          retention-days: 1
