@@ -60,18 +60,18 @@ jobs:
     steps:
       - name: Compress Standalone Source
         shell: bash
-        run: tar -czf ./Obsidian-Agile-Plugin-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
+        run: tar -czf ./obsidian-agile-plugin-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
 
       - name: Upload Standalone Source
         uses: actions/upload-artifact@v4
         with:
-          name: Obsidian-Agile-Plugin-v${{ needs.version.outputs.version }}.tar.gz
-          path: ./Obsidian-Agile-Plugin-v${{ needs.version.outputs.version }}.tar.gz
+          name: obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz
+          path: ./obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz
           retention-days: 1
 
       - name: Upload Plugin to Release
         working-directory: ./
         shell: bash
         run: |
-          echo "Uploading Obsidian-Agile-Plugin-v${{ needs.version.outputs.version }}.tar.gz as a Release Asset"
-          gh release upload "${{ github.event.release.tag_name }}" "Obsidian-Agile-Plugin-v${{ needs.version.outputs.version }}.tar.gz" --repo ${{ github.repository }}
+          echo "Uploading obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz as a Release Asset"
+          gh release upload "${{ github.event.release.tag_name }}" "obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz" --repo ${{ github.repository }}
