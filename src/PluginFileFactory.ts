@@ -44,82 +44,107 @@ class PluginFileFactory {
     /**
      * Creates a new Epic file.
      * @param name The name of the Epic.
-     * @param desc The description of the Epic.
+     * @param description The description of the Epic.
      * @returns 
      */
-    public CreateEpic(name: string, desc: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}/${name}.md`;
-        const properties = this.GetEpicProperties();
-        const epicContent = this.GetEpicFileContent(desc);
-        const fileContent = `${properties}\n${epicContent}`;
+    public CreateEpic(name: string, description: string): void {
+        const epicDirectory = `${this.Settings.agileDirectoryPath}/${name}`;
+        const filePath = `${epicDirectory}/${name}.md`;
+        const fileContent = `${this.GetEpicProperties()}\n${this.GetEpicFileContent(description)}`;
+
+        if (this.App.vault.getFolderByPath(epicDirectory)) {
+            new Notice(`Epic Directory '${name}' already exists!`);
+            return;
+        }
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
             new Notice(`Epic '${name}' already exists!`);
             return;
         }
 
-        this.App.vault.create(filePath, fileContent).then((file) => {
-            new Notice(`Epic '${name}' created successfully!`);
-            this.App.workspace.getLeaf(false).openFile(file);
+        this.App.vault.createFolder(epicDirectory).then(() => {
+            new Notice(`Epic Directory '${name}' created successfully!`);
+
+            this.App.vault.create(filePath, fileContent).then((file) => {
+                new Notice(`Epic '${name}' created successfully!`);
+                this.App.workspace.getLeaf(false).openFile(file);
+            }).catch((error) => {
+                new Notice(`Failed to create Epic: ${error}`);
+            });
         }).catch((error) => {
-            new Notice(`Failed to create Epic: ${error}`);
+            new Notice(`Failed to create Epic Directory: ${error}`);
+            return;
         });
     }
 
     /**
      * Creates a new Story file.
-     * @param name The name of the Story.
-     * @param desc The description of the Story.
-     * @param epic The name of the Epic the Story belongs to.
+     * @param storyName The name of the Story.
+     * @param description The description of the Story.
+     * @param epicName The name of the Epic the Story belongs to.
      * @returns 
      */
-    public CreateStory(name: string, desc: string, epic: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}/${name}.md`;
-        const properties = this.GetStoryProperties(epic);
-        const storyContent = this.GetStoryFileContent(desc);
-        const fileContent = `${properties}\n${storyContent}`;
+    public CreateStory(storyName: string, description: string, epicName: string): void {
+        const storyDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}`;
+        const filePath = `${storyDirectory}/${storyName}.md`;
+        const fileContent = `${this.GetStoryProperties(epicName)}\n${this.GetStoryFileContent(description)}`;
 
-        if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Story '${name}' already exists!`);
+        if (this.App.vault.getFolderByPath(storyDirectory)) {
+            new Notice(`Story Directory '${storyName}' already exists!`);
             return;
         }
 
-        this.App.vault.create(filePath, fileContent).then((file) => {
-            new Notice(`Story '${name}' created successfully!`);
-            this.App.workspace.getLeaf(false).openFile(file);
+        if (this.App.vault.getAbstractFileByPath(filePath)) {
+            new Notice(`Story '${storyName}' already exists!`);
+            return;
+        }
+
+        this.App.vault.createFolder(storyDirectory).then(() => {
+            new Notice(`Story Directory '${storyName}' created successfully!`);
+
+            this.App.vault.create(filePath, fileContent).then((file) => {
+                new Notice(`Story '${storyName}' created successfully!`);
+                this.App.workspace.getLeaf(false).openFile(file);
+            }).catch((error) => {
+                new Notice(`Failed to create Story: ${error}`);
+            });
         }).catch((error) => {
-            new Notice(`Failed to create Story: ${error}`);
+            new Notice(`Failed to create Story Directory: ${error}`);
+            return;
         });
     }
 
     /**
      * Creates a new Task file.
-     * @param name The name of the Task.
+     * @param taskName The name of the Task.
      * @param desc The description of the Task.
-     * @param epic The name of the Epic the Task belongs to.
-     * @param story The name of the Story the Task belongs to.
+     * @param epicName The name of the Epic the Task belongs to.
+     * @param storyName The name of the Story the Task belongs to.
      * @param priority The priority level of the Task.
      * @returns 
      */
-    public CreateTask(name: string, desc: string, epic: string, story: string, priority: string): void {
-        const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${name}.md`;
-        const properties = this.GetTaskProperties(epic, story, priority);
-        const taskContent = this.GetTaskFileContent(desc);
-        const fileContent = `${properties}\n${taskContent}`;
+    public CreateTask(taskName: string, desc: string, epicName: string, storyName: string, priority: string): void {
+        const taskDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}`;
+        const filePath = `${taskDirectory}/${taskName}.md`;
+        
+        //const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${taskName}.md`;
+        //const properties = this.GetTaskProperties(epicName, storyName, priority);
+        //const taskContent = this.GetTaskFileContent(desc);
+        const fileContent = `${this.GetTaskProperties(epicName, storyName, priority)}\n${this.GetTaskFileContent(desc)}`;
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Task '${name}' already exists!`);
+            new Notice(`Task '${taskName}' already exists!`);
             return;
         }
 
         this.App.vault.create(filePath, fileContent).then((file) => {
-            new Notice(`Task '${name}' created successfully!`);
+            new Notice(`Task '${taskName}' created successfully!`);
             this.App.workspace.getLeaf(false).openFile(file);
         }).catch((error) => {
             new Notice(`Failed to create Task: ${error}`);
         });
     }
-    
+
     /**
      * Creates a new Task file.
      * @param epicName The name of the Epic the Task belongs to.
@@ -138,7 +163,7 @@ class PluginFileFactory {
             "    - Agile",
             "Completed: false",
             `Date Created: ${this.GetTodaysDate()}`,
-            "Date Finished: yyyy-mm-dd",
+            "Date Finished: ",
             "---"
         ].join("\n");
     }
@@ -156,7 +181,7 @@ class PluginFileFactory {
             "    - Story",
             "    - Agile",
             `Date Created: ${this.GetTodaysDate()}`,
-            "Date Finished: yyyy-mm-dd",
+            "Date Finished: ",
             "---"
         ].join("\n");
     }
