@@ -9,6 +9,12 @@ class PluginFileFactory {
 
     /**
      * @protected
+     * The name of the Tasks directory.
+     */
+    private TASKS_DIRECTORY_NAME = "Tasks";
+
+    /**
+     * @protected
      * The Obsidian App instance for accessing vault and workspace functionality.
      */
     App: App;
@@ -108,6 +114,13 @@ class PluginFileFactory {
             }).catch((error) => {
                 new Notice(`Failed to create Story: ${error}`);
             });
+
+            this.App.vault.createFolder(`${storyDirectory}/${this.TASKS_DIRECTORY_NAME}`).then(() => {
+                new Notice(`Tasks Directory for Story '${storyName}' created successfully!`);
+            }).catch((error) => {
+                new Notice(`Failed to create Tasks Directory: ${error}`);
+            });
+
         }).catch((error) => {
             new Notice(`Failed to create Story Directory: ${error}`);
             return;
@@ -124,18 +137,18 @@ class PluginFileFactory {
      * @returns 
      */
     public CreateTask(taskName: string, desc: string, epicName: string, storyName: string, priority: string): void {
-        const taskDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}/Tasks`;
+        const taskDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}/${this.TASKS_DIRECTORY_NAME}`;
         const filePath = `${taskDirectory}/${taskName}.md`;
         const fileContent = `${this.GetTaskProperties(epicName, storyName, priority)}\n${this.GetTaskFileContent(desc)}`;
+
+        if (!this.App.vault.getFolderByPath(taskDirectory)) {
+            new Notice(`Task Directory '${taskName}' Does Not Exist!`);
+            return;
+        }
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
             new Notice(`Task '${taskName}' already exists!`);
             return;
-        }
-
-        if (!this.App.vault.getFolderByPath(taskDirectory)) {
-            this.App.vault.createFolder(taskDirectory);
-            new Notice(`Task Directory '${taskName}' created successfully!`);
         }
 
         this.App.vault.create(filePath, fileContent).then((file) => {
