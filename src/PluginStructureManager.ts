@@ -19,6 +19,10 @@ class PluginStructureManager {
      */
     Settings: AgileProjectPluginSettings;
 
+    /**
+     * @param app The Obsidian App instance for accessing vault and workspace functionality.
+     * @param settings The settings for the Agile Project Plugin.
+     */
     constructor(app: App, settings: AgileProjectPluginSettings) {
         this.App = app;
         this.Settings = settings;
@@ -73,14 +77,15 @@ class PluginStructureManager {
      * @returns An array of Epic names.
      */
     public GetEpics(): string[] {
-        const epicsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}`);
+        const epicsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}`);
+
         if (!epicsDir) {
             new Notice(`Epics directory '${this.Settings.agileEpicsDirectoryName}' not found.`);
             return [];
         }
 
-        const epicFiles = epicsDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md"));
-        const epicNames = epicFiles.map(file => file.name.replace(".md", ""));
+        const epicFolders = epicsDir.children.filter(item => item instanceof TFolder);
+        const epicNames = epicFolders.map(folder => folder.name);
 
         return epicNames;
     }
@@ -91,23 +96,15 @@ class PluginStructureManager {
      * @returns An array of Story names.
      */
     public async GetStories(epicName: string): Promise<string[]> {
-        const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}`);
+        const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${epicName}`);
 
         if (!storiesDir) {
             new Notice(`Stories directory '${this.Settings.agileStoriesDirectoryName}' not found.`);
             return [];
         }
 
-        const storyFiles: TFile[] = storiesDir.children.filter(item => item instanceof TFile && item.name.endsWith(".md")) as TFile[];
-        const matches = await Promise.all(
-            storyFiles.map(async file => {
-                const content = await this.App.vault.read(file);
-                return content.includes(`Epic: \"[[${epicName}]]\"`);
-            })
-        );
-
-        const storyFilesOfEpic = storyFiles.filter((_, i) => matches[i]);
-        const storyNames = storyFilesOfEpic.map(file => file.name.replace(".md", ""));
+        const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder) as TFolder[];
+        const storyNames = storyFolders.map(folder => folder.name);
 
         return storyNames;
     }

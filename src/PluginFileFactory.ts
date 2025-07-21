@@ -124,17 +124,18 @@ class PluginFileFactory {
      * @returns 
      */
     public CreateTask(taskName: string, desc: string, epicName: string, storyName: string, priority: string): void {
-        const taskDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}`;
+        const taskDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}/Tasks`;
         const filePath = `${taskDirectory}/${taskName}.md`;
-        
-        //const filePath = `${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}/${taskName}.md`;
-        //const properties = this.GetTaskProperties(epicName, storyName, priority);
-        //const taskContent = this.GetTaskFileContent(desc);
         const fileContent = `${this.GetTaskProperties(epicName, storyName, priority)}\n${this.GetTaskFileContent(desc)}`;
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
             new Notice(`Task '${taskName}' already exists!`);
             return;
+        }
+
+        if (!this.App.vault.getFolderByPath(taskDirectory)) {
+            this.App.vault.createFolder(taskDirectory);
+            new Notice(`Task Directory '${taskName}' created successfully!`);
         }
 
         this.App.vault.create(filePath, fileContent).then((file) => {
