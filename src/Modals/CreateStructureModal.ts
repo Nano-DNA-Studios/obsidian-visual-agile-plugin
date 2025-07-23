@@ -41,61 +41,6 @@ class CreateStructureModal extends Modal {
             });
         });
 
-
-
-
-        // contentEl.createEl('ul', {}, (ul) => {
-        //     const parentLi = ul.createEl('li', { text: this.Plugin.Settings.agileDirectoryPath });
-
-        //     const nestedUl = parentLi.createEl('ul');
-        //     const epic1Li = nestedUl.createEl('li', { text: "Epic 1" });
-        //     const epic2Li = nestedUl.createEl('li', { text: "Epic 2" });
-
-        //     epic1Li.createEl('ul', {}, (subUl) => {
-        //         const story1Li = subUl.createEl('li', { text: "Story 1" });
-        //         story1Li.createEl('ul', {}, (storyUl) => {
-        //             const taskDir = storyUl.createEl('li', { text: "Tasks" });
-        //             taskDir.createEl('ul', {}, (taskUl) => {
-        //                 taskUl.createEl('li', { text: "Task 1" });
-        //                 taskUl.createEl('li', { text: "Task 2" });
-        //                 taskUl.createEl('li', { text: "Task 3" });
-        //             });
-        //         });
-
-        //         const story2Li = subUl.createEl('li', { text: "Story 2" });
-        //         story2Li.createEl('ul', {}, (storyUl) => {
-        //             const taskDir = storyUl.createEl('li', { text: "Tasks" });
-        //             taskDir.createEl('ul', {}, (taskUl) => {
-        //                 taskUl.createEl('li', { text: "Task 1" });
-        //                 taskUl.createEl('li', { text: "Task 2" });
-        //                 taskUl.createEl('li', { text: "Task 3" });
-        //             });
-        //         });
-        //     });
-
-        //    epic2Li.createEl('ul', {}, (subUl) => {
-        //        const story1Li = subUl.createEl('li', { text: "Story 1" });
-        //         story1Li.createEl('ul', {}, (storyUl) => {
-        //             const taskDir = storyUl.createEl('li', { text: "Tasks" });
-        //             taskDir.createEl('ul', {}, (taskUl) => {
-        //                 taskUl.createEl('li', { text: "Task 1" });
-        //                 taskUl.createEl('li', { text: "Task 2" });
-        //                 taskUl.createEl('li', { text: "Task 3" });
-        //             });
-        //         });
-
-        //         const story2Li = subUl.createEl('li', { text: "Story 2" });
-        //         story2Li.createEl('ul', {}, (storyUl) => {
-        //             const taskDir = storyUl.createEl('li', { text: "Tasks" });
-        //             taskDir.createEl('ul', {}, (taskUl) => {
-        //                 taskUl.createEl('li', { text: "Task 1" });
-        //                 taskUl.createEl('li', { text: "Task 2" });
-        //                 taskUl.createEl('li', { text: "Task 3" });
-        //             });
-        //         });
-        //    });
-        // });
-
         contentEl.createEl('p', { text: 'Click "Yes" to create this structure automatically' });
 
         let resultDiv = contentEl.createDiv({ cls: 'result-div' });
