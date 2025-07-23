@@ -1,7 +1,6 @@
 import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
 import "../../styles.css";
-import { get } from "http";
 
 /**
  * Modal for creating the Agile Project structure in the vault.
@@ -85,7 +84,6 @@ Projects and Stories
             └── Task 3
     `.trim();
     }
-
 
     onClose() {
         const { contentEl } = this;

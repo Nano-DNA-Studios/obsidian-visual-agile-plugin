@@ -1,5 +1,5 @@
 import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
-import { App, Notice, TFile, TFolder } from "obsidian";
+import { App, Notice, TFolder } from "obsidian";
 
 /**
  * Manager class for the structure of the Agile Project Plugin.
