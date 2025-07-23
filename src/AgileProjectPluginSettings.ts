@@ -5,9 +5,9 @@
  */
 interface AgileProjectPluginSettings {
 	agileDirectoryPath: string;
-	agileEpicsDirectoryName: string;
-	agileStoriesDirectoryName: string;
-	agileTasksDirectoryName: string;
+	//agileEpicsDirectoryName: string;
+	//agileStoriesDirectoryName: string;
+	//agileTasksDirectoryName: string;
 	mySetting: string;
 }
 
@@ -17,9 +17,9 @@ interface AgileProjectPluginSettings {
  */
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
 	agileDirectoryPath: 'Projects and Stories',
-	agileEpicsDirectoryName: 'Epics',
-	agileStoriesDirectoryName: 'Stories',
-	agileTasksDirectoryName: 'Tasks',
+	//agileEpicsDirectoryName: 'Epics',
+	//agileStoriesDirectoryName: 'Stories',
+	//agileTasksDirectoryName: 'Tasks',
 	mySetting: 'default'
 }
 

@@ -62,10 +62,16 @@ class PluginStructureManager {
      * @returns An array of Epic names.
      */
     public GetEpics(): string[] {
+
+        if (!this.IsValidStructure()) {
+            new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
+            return [];
+        }
+
         const epicsDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}`);
 
         if (!epicsDir) {
-            new Notice(`Epics directory '${this.Settings.agileEpicsDirectoryName}' not found.`);
+            new Notice(`Epic directory not found.`);
             return [];
         }
 
@@ -81,10 +87,16 @@ class PluginStructureManager {
      * @returns An array of Story names.
      */
     public async GetStories(epicName: string): Promise<string[]> {
+
+        if (!this.IsValidStructure()) {
+            new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
+            return [];
+        }
+
         const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${epicName}`);
 
         if (!storiesDir) {
-            new Notice(`Stories directory '${this.Settings.agileStoriesDirectoryName}' not found.`);
+            new Notice(`Story directory not found.`);
             return [];
         }
 
