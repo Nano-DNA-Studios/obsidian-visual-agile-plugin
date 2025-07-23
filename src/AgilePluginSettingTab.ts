@@ -44,42 +44,6 @@ class AgilePluginSettingTab extends PluginSettingTab {
                     this.Plugin.Settings.agileDirectoryPath = value;
                     await this.Plugin.saveSettings();
                 }));
-
-        // const agileEpicsDirectoryName = new Setting(containerEl)
-        //     .setName('Epics Directory Name')
-        //     .setDesc('The name of the directory where Agile Epics are stored.')
-        //     .addText(text => text
-        //         .setPlaceholder('Enter directory name')
-        //         .setValue(this.Plugin.Settings.agileEpicsDirectoryName)
-        //         .onChange(async (value) => {
-        //             this.Plugin.StructureManager.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileEpicsDirectoryName, value);
-        //             this.Plugin.Settings.agileEpicsDirectoryName = value;
-        //             await this.Plugin.saveSettings();
-        //         }));
-
-        // const agileStoriesDirectoryName = new Setting(containerEl)
-        //     .setName('Stories Directory Name')
-        //     .setDesc('The name of the directory where Agile Stories are stored.')
-        //     .addText(text => text
-        //         .setPlaceholder('Enter directory name')
-        //         .setValue(this.Plugin.Settings.agileStoriesDirectoryName)
-        //         .onChange(async (value) => {
-        //             this.Plugin.StructureManager.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileStoriesDirectoryName, value);
-        //             this.Plugin.Settings.agileStoriesDirectoryName = value;
-        //             await this.Plugin.saveSettings();
-        //         }));
-
-        // const agileTasksDirectoryName = new Setting(containerEl)
-        //     .setName('Tasks Directory Name')
-        //     .setDesc('The name of the directory where Agile Tasks are stored.')
-        //     .addText(text => text
-        //         .setPlaceholder('Enter directory name')
-        //         .setValue(this.Plugin.Settings.agileTasksDirectoryName)
-        //         .onChange(async (value) => {
-        //             this.Plugin.StructureManager.RenameSubdirectory(this.Plugin.Settings.agileDirectoryPath, this.Plugin.Settings.agileTasksDirectoryName, value);
-        //             this.Plugin.Settings.agileTasksDirectoryName = value;
-        //             await this.Plugin.saveSettings();
-        //         }));
     }
 }
 
