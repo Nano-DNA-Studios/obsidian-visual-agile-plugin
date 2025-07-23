@@ -81,3 +81,11 @@ This file contains styles for various components of the plugin, including modals
     font-family: inherit;
     font-size: 14px;
 }
+
+.code-block {
+    background-color: var(--background-secondary);
+    padding: 10px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
