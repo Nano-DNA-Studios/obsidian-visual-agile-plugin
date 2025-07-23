@@ -33,13 +33,7 @@ class PluginStructureManager {
      * This includes the main Agile directory and subdirectories for Epics, Stories, and Tasks
      */
     public CreateStructure(): void {
-        this.App.vault.createFolder(this.Settings.agileDirectoryPath).then((agileFolder) => {
-            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileEpicsDirectoryName}`);
-            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileStoriesDirectoryName}`);
-            this.App.vault.createFolder(`${agileFolder.path}/${this.Settings.agileTasksDirectoryName}`);
-
-            new Notice('Agile Project Structure created successfully!');
-        });
+        this.App.vault.createFolder(this.Settings.agileDirectoryPath).then((agileFolder) => new Notice('Agile Project Structure created successfully!'));
     }
 
     /**
@@ -57,15 +51,6 @@ class PluginStructureManager {
 
         if (parentDir.children.length == 0) {
             new Notice(`Parent directory '${this.Settings.agileDirectoryPath}' is empty.`);
-            return false;
-        }
-
-        let epicDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileEpicsDirectoryName}`);
-        let storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileStoriesDirectoryName}`);
-        let tasksDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${this.Settings.agileTasksDirectoryName}`);
-
-        if (!epicDir || !storiesDir || !tasksDir) {
-            new Notice(`One or more required directories are missing in '${this.Settings.agileDirectoryPath}'.`);
             return false;
         }
 
