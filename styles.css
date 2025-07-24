@@ -52,7 +52,7 @@ This file contains styles for various components of the plugin, including modals
   display: flex;
   justify-content: space-around;
   flex-direction: row;
-  margin-top: 20px;
+  gap: 5px;
 }
 
 .result-button {

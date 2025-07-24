@@ -31,16 +31,14 @@ class CreateStructureModal extends Modal {
         contentEl.createEl('h1', { text: 'Creating Agile Project Structure' });
         contentEl.createEl('p', { text: 'Agile Project Directory not detected in the Vault.' });
         contentEl.createEl('p', { text: 'This plugin requires a specific directory structure to function properly.' });
-        contentEl.createEl('p', { text: 'This will be created automatically by pressing \"Yes\".' });
-        contentEl.createEl('p', { text: 'As your Agile Project grows it will take the following form' });
+        contentEl.createEl('p', { text: 'The \"Projects and Stories\" directory is created by clicking \"Yes\".' });
+        contentEl.createEl('p', { text: 'As your Agile Project grows it will take the following form :' });
 
         contentEl.createEl('pre', { cls: 'code-block' }, (pre) => {
             pre.createEl('code', {
                 text: this.getStructure(),
             });
         });
-
-        contentEl.createEl('p', { text: 'Click "Yes" to create this structure automatically' });
 
         let resultDiv = contentEl.createDiv({ cls: 'result-div' });
         let yesBtn = resultDiv.createEl('button', { text: 'Yes', cls: 'result-button' });
