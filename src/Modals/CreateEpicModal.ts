@@ -29,7 +29,6 @@ class CreateEpicModal extends CreateFileModal {
         let createBtn = contentEl.createEl('button', { text: 'Create', cls: 'full-width' });
 
         createBtn.addEventListener('click', async () => {
-
             this.Plugin.FileFactory.CreateEpic(nameInput.value, descInput.value);
             this.close();
         });

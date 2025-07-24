@@ -57,6 +57,10 @@ class CreateStructureModal extends Modal {
         });
     }
 
+    /**
+     * Get the directory structure for the Agile Project. (This is for Visual Display)
+     * @returns A string representation of the Agile Project directory structure.
+     */
     private getStructure(): string {
         return `
 Projects and Stories

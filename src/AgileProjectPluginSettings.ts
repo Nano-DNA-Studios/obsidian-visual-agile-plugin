@@ -5,7 +5,6 @@
  */
 interface AgileProjectPluginSettings {
 	agileDirectoryPath: string;
-	mySetting: string;
 }
 
 /**
@@ -14,7 +13,6 @@ interface AgileProjectPluginSettings {
  */
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
 	agileDirectoryPath: 'Projects and Stories',
-	mySetting: 'default'
 }
 
 export { DEFAULT_SETTINGS }
