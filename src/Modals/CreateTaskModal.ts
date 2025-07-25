@@ -60,12 +60,8 @@ class CreateTaskModal extends CreateFileModal {
      */
     private UpdateStoryDropdown(epicName: string, storyDropdown: HTMLSelectElement): void {
         storyDropdown.empty();
-        this.Plugin.StructureManager.GetStories(epicName).then((stories) => {
-            stories.forEach(story => {
-                storyDropdown.createEl('option', { text: story, value: story });
-            });
-        }).catch((error) => {
-            new Notice(`Failed to update stories: ${error}`);
+        this.Plugin.StructureManager.GetStories(epicName).forEach(story => {
+            storyDropdown.createEl('option', { text: story, value: story });
         });
     }
 }
