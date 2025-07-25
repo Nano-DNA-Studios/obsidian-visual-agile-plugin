@@ -70,8 +70,6 @@ class AgileDisplayMarkdownProcessor {
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
 
-        this.OpenLeafOnClick(epicElement, epic, `${this.Plugin.Settings.agileDirectoryPath}/${epic}/${epic}.md`);
-
         const title = document.createElement("h2");
         title.textContent = epic;
         epicElement.appendChild(title);
@@ -80,22 +78,20 @@ class AgileDisplayMarkdownProcessor {
         description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
         epicElement.appendChild(description);
 
-        
-
         const stories = this.Plugin.StructureManager.GetStories(epic);
 
         stories.forEach(story => {
             this.ProcessStory(epic, story, epicElement);
         });
 
+        this.OpenLeafOnClick(epicElement, epic, this.Plugin.StructureManager.GetEpicFilePath(epic));
+
         element.appendChild(epicElement);
     }
 
-    private ProcessStory(epic:string, story: string, element: HTMLElement): void {
+    private ProcessStory(epic: string, story: string, element: HTMLElement): void {
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
-
-        this.OpenLeafOnClick(storyElement, story, `${this.Plugin.Settings.agileDirectoryPath}/${epic}/${story}/${story}.md`);
 
         const title = document.createElement("h4");
         title.textContent = story;
@@ -104,6 +100,8 @@ class AgileDisplayMarkdownProcessor {
         const description = document.createElement("p");
         description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
         storyElement.appendChild(description);
+
+        this.OpenLeafOnClick(storyElement, story, this.Plugin.StructureManager.GetStoryFilePath(epic, story));
 
         element.appendChild(storyElement);
     }

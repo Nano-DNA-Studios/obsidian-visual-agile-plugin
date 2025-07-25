@@ -1,5 +1,5 @@
 import { AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
-import { App, Notice, TFolder } from "obsidian";
+import { App, Notice, TFile, TFolder } from "obsidian";
 
 /**
  * Manager class for the structure of the Agile Project Plugin.
@@ -58,7 +58,7 @@ class PluginStructureManager {
     }
 
     public GetEpicDirectories(): TFolder[] {
-        
+
         if (!this.IsValidStructure()) {
             new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
             return [];
@@ -74,6 +74,25 @@ class PluginStructureManager {
         const epicFolders = epicsDir.children.filter(item => item instanceof TFolder);
 
         return epicFolders as TFolder[];
+    }
+
+    public GetEpicFilePath(epicName: string): string {
+        const epicDirectories = this.GetEpicDirectories();
+        const epicPath = epicDirectories.find(folder => folder.name === epicName)?.path;
+
+        if (!epicPath) {
+            new Notice(`Epic '${epicName}' does not exist.`);
+            return '';
+        }
+
+        const epicFile = this.App.vault.getAbstractFileByPath(`${epicPath}/${epicName}.md`);
+
+        if (!epicFile) {
+            new Notice(`Epic file '${epicName}.md' does not exist.`);
+            return '';
+        }
+
+        return epicFile.path;
     }
 
     /**
@@ -104,6 +123,25 @@ class PluginStructureManager {
 
         const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder) as TFolder[];
         return storyFolders;
+    }
+
+    public GetStoryFilePath(epicName: string, storyName: string): string {
+        const storyDirectories = this.GetStoryDirectories(epicName);
+        const storyPath = storyDirectories.find(folder => folder.name === storyName)?.path;
+
+        if (!storyPath) {
+            new Notice(`Story '${storyName}' does not exist.`);
+            return '';
+        }
+
+        const storyFile = this.App.vault.getAbstractFileByPath(`${storyPath}/${storyName}.md`);
+
+        if (!storyFile) {
+            new Notice(`Story file '${storyName}.md' does not exist.`);
+            return '';
+        }
+
+        return storyFile.path;
     }
 
     /**
