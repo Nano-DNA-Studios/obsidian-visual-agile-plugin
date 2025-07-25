@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, Plugin } from "obsidian";
+import { App, Plugin, TFile } from "obsidian";
 
 
 class AgileDisplayMarkdownProcessor {
@@ -66,10 +66,11 @@ class AgileDisplayMarkdownProcessor {
         element.appendChild(wrapper);
     }
 
-
     private ProcessEpic(epic: string, element: HTMLElement): void {
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
+
+        this.OpenLeafOnClick(epicElement, epic, `${this.Plugin.Settings.agileDirectoryPath}/${epic}/${epic}.md`);
 
         const title = document.createElement("h2");
         title.textContent = epic;
@@ -79,28 +80,22 @@ class AgileDisplayMarkdownProcessor {
         description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
         epicElement.appendChild(description);
 
-        //const childrenElement = document.createElement("div");
-        //childrenElement.className = "story-wrapper";
+        
 
         const stories = this.Plugin.StructureManager.GetStories(epic);
-        
+
         stories.forEach(story => {
-            this.ProcessStory(story, epicElement);
+            this.ProcessStory(epic, story, epicElement);
         });
-
-
-        //epicElement.addEventListener('click', async () => {
-            //this.Plugin.FileFactory.CreateEpic(nameInput.value, descInput.value);
-            //this.close();
-        //});
-
 
         element.appendChild(epicElement);
     }
 
-    private ProcessStory(story: string, element: HTMLElement): void {
+    private ProcessStory(epic:string, story: string, element: HTMLElement): void {
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
+
+        this.OpenLeafOnClick(storyElement, story, `${this.Plugin.Settings.agileDirectoryPath}/${epic}/${story}/${story}.md`);
 
         const title = document.createElement("h4");
         title.textContent = story;
@@ -115,6 +110,14 @@ class AgileDisplayMarkdownProcessor {
 
     // Additional methods for processing can be added here
 
+    private OpenLeafOnClick(element: HTMLElement, text: string, path: string): void {
+        element.addEventListener('click', async () => {
+            const file = await this.App.vault.getAbstractFileByPath(path);
+            if (file) {
+                this.App.workspace.getLeaf(false).openFile(file as TFile);
+            }
+        });
+    }
 
 
 

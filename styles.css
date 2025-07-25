@@ -106,16 +106,14 @@ This file contains styles for various components of the plugin, including modals
   flex-direction: column;
   border-radius: 10px;
   padding: 5px;
-  background-color: var(--background-secondary);
-  border-color: var(--background-secondary);
 }
 
 .epic-wrapper:hover {
-  background-color: hsl(var(--background-secondary) / 120%);
+  background-color: color-mix(in srgb, var(--background-primary), purple 20%);
   cursor: pointer;
   /* optional */
 
-  transition: 0.4s ease-in-out;
+  transition: 0.4s ease;
 }
 
 .story-wrapper {
@@ -124,11 +122,25 @@ This file contains styles for various components of the plugin, including modals
   display: flex;
   flex-direction: column;
   padding-left: 20px;
-  background-color: var(--background-secondary);
-  border-color: var(--background-secondary);
 }
 
 .story-wrapper:hover {
-  transition: 0.4s ease-in-out;
-  background-color: hsl(var(--background-secondary) / 140%);
+  transition: 0.4s ease;
+  background-color: color-mix(in srgb, var(--background-primary), lightgreen 20%);
+}
+
+
+
+
+.task-wrapper {
+  padding: 5px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.task-wrapper:hover {
+  transition: 0.4s ease;
+  background-color: color-mix(in srgb, var(--background-primary), lightblue 20%);
 }
