@@ -57,12 +57,8 @@ class PluginStructureManager {
         return true;
     }
 
-    /**
-     * Gets the names of all Epics in the Agile Project.
-     * @returns An array of Epic names.
-     */
-    public GetEpics(): string[] {
-
+    public GetEpicDirectories(): TFolder[] {
+        
         if (!this.IsValidStructure()) {
             new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
             return [];
@@ -76,9 +72,38 @@ class PluginStructureManager {
         }
 
         const epicFolders = epicsDir.children.filter(item => item instanceof TFolder);
+
+        return epicFolders as TFolder[];
+    }
+
+    /**
+     * Gets the names of all Epics in the Agile Project.
+     * @returns An array of Epic names.
+     */
+    public GetEpics(): string[] {
+
+        const epicFolders = this.GetEpicDirectories();
         const epicNames = epicFolders.map(folder => folder.name);
 
         return epicNames;
+    }
+
+    public GetStoryDirectories(epicName: string): TFolder[] {
+
+        if (!this.IsValidStructure()) {
+            new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
+            return [];
+        }
+
+        const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${epicName}`);
+
+        if (!storiesDir) {
+            new Notice(`Story directory not found.`);
+            return [];
+        }
+
+        const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder) as TFolder[];
+        return storyFolders;
     }
 
     /**
@@ -86,7 +111,7 @@ class PluginStructureManager {
      * @param epicName The name of the Epic to get Stories from.
      * @returns An array of Story names.
      */
-    public async GetStories(epicName: string): Promise<string[]> {
+    public GetStories(epicName: string): string[] {
 
         if (!this.IsValidStructure()) {
             new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);

@@ -21,8 +21,7 @@ This file contains styles for various components of the plugin, including modals
   justify-content: center;
 }
 
-.file-create-description-div
-{
+.file-create-description-div {
   width: 100%;
   gap: 10px;
   display: flex;
@@ -70,22 +69,66 @@ This file contains styles for various components of the plugin, including modals
 }
 
 .form-textarea {
-    min-height: 100px;
-    resize: vertical;
-    padding: 8px 10px;
-    width: 100%;
-    border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
-    background-color: var(--background-secondary);
-    color: var(--text-normal);
-    font-family: inherit;
-    font-size: 14px;
+  min-height: 100px;
+  resize: vertical;
+  padding: 8px 10px;
+  width: 100%;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background-color: var(--background-secondary);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: 14px;
 }
 
 .code-block {
-    background-color: var(--background-secondary);
-    padding: 10px;
-    border-radius: 8px;
-    white-space: pre-wrap;
-    font-family: monospace;
+  background-color: var(--background-secondary);
+  padding: 10px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+
+
+.agile-display-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--background-primary);
+  border-radius: 10px;
+  border: 3px solid var(--background-modifier-border);
+}
+
+.epic-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: var(--background-secondary);
+  border-color: var(--background-secondary);
+}
+
+.epic-wrapper:hover {
+  background-color: hsl(var(--background-secondary) / 120%);
+  cursor: pointer;
+  /* optional */
+
+  transition: 0.4s ease-in-out;
+}
+
+.story-wrapper {
+  padding: 5px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  background-color: var(--background-secondary);
+  border-color: var(--background-secondary);
+}
+
+.story-wrapper:hover {
+  transition: 0.4s ease-in-out;
+  background-color: hsl(var(--background-secondary) / 140%);
 }
