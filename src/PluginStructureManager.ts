@@ -19,6 +19,10 @@ class PluginStructureManager {
      */
     Settings: AgileProjectPluginSettings;
 
+    private TASK_DIR_NAME = 'Tasks';
+
+    private MARKDOWN_EXTENSION = /\.md$/;
+
     /**
      * @param app The Obsidian App instance for accessing vault and workspace functionality.
      * @param settings The settings for the Agile Project Plugin.
@@ -100,10 +104,8 @@ class PluginStructureManager {
      * @returns An array of Epic names.
      */
     public GetEpics(): string[] {
-
         const epicFolders = this.GetEpicDirectories();
         const epicNames = epicFolders.map(folder => folder.name);
-
         return epicNames;
     }
 
@@ -150,23 +152,67 @@ class PluginStructureManager {
      * @returns An array of Story names.
      */
     public GetStories(epicName: string): string[] {
-
-        if (!this.IsValidStructure()) {
-            new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
-            return [];
-        }
-
-        const storiesDir = this.App.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}/${epicName}`);
-
-        if (!storiesDir) {
-            new Notice(`Story directory not found.`);
-            return [];
-        }
-
-        const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder) as TFolder[];
+        const storyFolders: TFolder[] = this.GetStoryDirectories(epicName);
         const storyNames = storyFolders.map(folder => folder.name);
-
         return storyNames;
+    }
+
+    public GetTaskDirectories(epicName: string, storyName: string): TFolder[] {
+        const storyDirectories = this.GetStoryDirectories(epicName);
+        const storyDir = storyDirectories.find(folder => folder.name === storyName);
+
+        if (!storyDir) {
+            new Notice(`Story '${storyName}' does not exist in Epic '${epicName}'.`);
+            return [];
+        }
+
+        const tasksDir = storyDir.children.filter(
+            item => item instanceof TFolder && item.name === this.TASK_DIR_NAME
+        ) as TFolder[];
+
+        if (tasksDir.length === 0) {
+            new Notice(`Tasks directory not found in '${storyName}'.`);
+        }
+
+        return tasksDir;
+    }
+
+
+    public GetTasks(epicName: string, storyName: string): string[] {
+        const taskDirectories = this.GetTaskDirectories(epicName, storyName);
+        if (!taskDirectories || taskDirectories.length === 0) return [];
+
+        const tasksDir = taskDirectories[0];
+        if (!(tasksDir instanceof TFolder)) {
+            new Notice(`Tasks directory not found.`);
+            return [];
+        }
+
+        const taskNames = tasksDir.children
+            .filter(item => item instanceof TFile)
+            .map(file => file.name.replace(this.MARKDOWN_EXTENSION, ''));
+
+        return taskNames;
+    }
+
+    public GetTaskFilePath(epicName: string, storyName: string, taskName: string): string {
+        const taskDirectories = this.GetTaskDirectories(epicName, storyName);
+        if (!taskDirectories || taskDirectories.length === 0) return '';
+
+        const tasksDir = taskDirectories[0];
+        if (!(tasksDir instanceof TFolder)) {
+            new Notice(`Tasks directory not found.`);
+            return '';
+        }
+
+        const taskFile = tasksDir.children.find(task => task.name.replace(this.MARKDOWN_EXTENSION, '') === taskName);
+
+        if (!taskFile) {
+            new Notice(`Task file '${taskName}' does not exist.`);
+            return '';
+        }
+
+        return taskFile.path;
     }
 
     /**

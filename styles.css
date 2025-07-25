@@ -142,5 +142,5 @@ This file contains styles for various components of the plugin, including modals
 
 .task-wrapper:hover {
   transition: 0.4s ease;
-  background-color: color-mix(in srgb, var(--background-primary), lightblue 20%);
+  background-color: color-mix(in srgb, var(--background-primary), aqua 20%);
 }

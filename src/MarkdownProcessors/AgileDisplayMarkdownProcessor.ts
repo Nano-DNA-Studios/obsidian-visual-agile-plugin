@@ -84,7 +84,7 @@ class AgileDisplayMarkdownProcessor {
             this.ProcessStory(epic, story, epicElement);
         });
 
-        this.OpenLeafOnClick(epicElement, epic, this.Plugin.StructureManager.GetEpicFilePath(epic));
+        this.OpenLeafOnClick(epicElement, this.Plugin.StructureManager.GetEpicFilePath(epic));
 
         element.appendChild(epicElement);
     }
@@ -101,14 +101,37 @@ class AgileDisplayMarkdownProcessor {
         description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
         storyElement.appendChild(description);
 
-        this.OpenLeafOnClick(storyElement, story, this.Plugin.StructureManager.GetStoryFilePath(epic, story));
+        const tasks = this.Plugin.StructureManager.GetTasks(epic, story);
+
+        tasks.forEach(task => {
+            this.ProcessTask(epic, story, task, storyElement);
+        });
+
+        this.OpenLeafOnClick(storyElement, this.Plugin.StructureManager.GetStoryFilePath(epic, story));
 
         element.appendChild(storyElement);
     }
 
+    private ProcessTask(epic: string, story: string, task: string, element: HTMLElement): void {
+        const taskElement = document.createElement("div");
+        taskElement.className = "task-wrapper";
+
+        const title = document.createElement("h5");
+        title.textContent = task;
+        taskElement.appendChild(title);
+
+        const description = document.createElement("p");
+        description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
+        taskElement.appendChild(description);
+
+        this.OpenLeafOnClick(taskElement, this.Plugin.StructureManager.GetTaskFilePath(epic, story, task));
+
+        element.appendChild(taskElement);
+    }
+
     // Additional methods for processing can be added here
 
-    private OpenLeafOnClick(element: HTMLElement, text: string, path: string): void {
+    private OpenLeafOnClick(element: HTMLElement, path: string): void {
         element.addEventListener('click', async () => {
             const file = await this.App.vault.getAbstractFileByPath(path);
             if (file) {
@@ -116,9 +139,6 @@ class AgileDisplayMarkdownProcessor {
             }
         });
     }
-
-
-
 }
 
 export default AgileDisplayMarkdownProcessor;
