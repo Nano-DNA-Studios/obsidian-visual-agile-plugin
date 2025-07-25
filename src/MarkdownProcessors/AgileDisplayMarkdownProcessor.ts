@@ -116,7 +116,7 @@ class AgileDisplayMarkdownProcessor {
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
-        const title = document.createElement("h5");
+        const title = document.createElement("h6");
         title.textContent = task;
         taskElement.appendChild(title);
 

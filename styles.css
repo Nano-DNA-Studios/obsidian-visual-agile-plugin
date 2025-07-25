@@ -107,11 +107,9 @@ This file contains styles for various components of the plugin, including modals
 }
 
 .epic-wrapper:hover {
+  transition: 0.4s ease;
   background-color: color-mix(in srgb, var(--background-primary), purple 20%);
   cursor: pointer;
-  /* optional */
-
-  transition: 0.4s ease;
 }
 
 .story-wrapper {
