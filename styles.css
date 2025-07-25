@@ -89,8 +89,6 @@ This file contains styles for various components of the plugin, including modals
   font-family: monospace;
 }
 
-
-
 .agile-display-wrapper {
   display: flex;
   flex-direction: column;
@@ -128,9 +126,6 @@ This file contains styles for various components of the plugin, including modals
   transition: 0.4s ease;
   background-color: color-mix(in srgb, var(--background-primary), lightgreen 20%);
 }
-
-
-
 
 .task-wrapper {
   padding: 5px;
