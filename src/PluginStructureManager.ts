@@ -37,6 +37,8 @@ class PluginStructureManager {
      */
     private OVERVIEW_REGEX = /# Overview\s*-{2,}\s*([\s\S]*?)(?=\n# )/;
 
+    private COMPLETED_REGEX = /completed: (true|false)/;
+
     /**
      * @param app The Obsidian App instance for accessing vault and workspace functionality.
      * @param settings The settings for the Agile Project Plugin.
@@ -284,6 +286,25 @@ class PluginStructureManager {
         }
 
         return match[1].trim();
+    }
+
+    public async IsTaskCompleted(filePath: string): Promise<boolean> {
+        const file = this.App.vault.getAbstractFileByPath(filePath);
+
+        if (!(file instanceof TFile)) {
+            new Notice(`File '${filePath}' not found.`);
+            return false;
+        }
+
+        const markdown = await this.App.vault.read(file);
+        const match = markdown.toLowerCase().match(this.COMPLETED_REGEX);
+
+        if (!match) {
+            new Notice(`Completed section not found in file '${filePath}'.`);
+            return false;
+        }
+
+        return match[1].trim() === 'true';
     }
 
     /**

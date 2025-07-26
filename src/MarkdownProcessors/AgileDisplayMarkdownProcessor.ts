@@ -1,5 +1,11 @@
 import AgileProjectPlugin from "main";
-import { App, MarkdownRenderer, TFile } from "obsidian";
+import { App, MarkdownRenderer, Notice, TFile } from "obsidian";
+
+class AgileDisplaySettings {
+    UsesCompleted: boolean = false;
+    Completed: boolean = false;
+}
+
 
 class AgileDisplayMarkdownProcessor {
 
@@ -30,21 +36,56 @@ class AgileDisplayMarkdownProcessor {
      */
     public RegisterMarkdownProcessor(): void {
         this.Plugin.registerMarkdownCodeBlockProcessor('agile-display', (source, el, ctx) => {
-            this.ProcessMarkdown(source, el);
+
+            const settings: AgileDisplaySettings = this.ProcessMarkdown(source);
+            this.DisplayAgileUI(settings, el);
         });
     }
+
+    private ProcessMarkdown(source: string): AgileDisplaySettings {
+
+        const settings = new AgileDisplaySettings();
+        const lines = source.split('\n');
+
+        if (lines.length === 0) {
+            return settings;
+        }
+
+        lines.forEach(line => {
+
+            line = line.trim();
+            line = line.toLowerCase();
+
+            if (line.startsWith("completed=")) {
+                const completedMatch = line.match(/completed=(true|false)/);
+                if (!completedMatch) {
+                    new Notice("Invalid Completed value in Agile Display Markdown");
+                    return settings;
+                }
+
+                new Notice(`Completed set to ${completedMatch[1]}`);
+
+                settings.UsesCompleted = true;
+                settings.Completed = completedMatch[1] === "true";
+            }
+        });
+
+
+        return settings
+    }
+
 
     /**
      * @public
      * Processes the Markdown content and displays Agile project data in a custom UI.
      */
-    public ProcessMarkdown(markdown: string, element: HTMLElement): void {
+    public DisplayAgileUI(settings: AgileDisplaySettings, element: HTMLElement): void {
 
         const wrapper = document.createElement("div");
         const epics: string[] = this.Plugin.StructureManager.GetEpics();
 
         epics.forEach(epic => {
-            this.ProcessEpic(epic, wrapper);
+            this.ProcessEpic(epic, settings, wrapper);
         });
 
         element.appendChild(wrapper);
@@ -54,7 +95,7 @@ class AgileDisplayMarkdownProcessor {
      * @private
      * Processes an individual Epic and displays its details in the UI.
      */
-    private async ProcessEpic(epic: string, element: HTMLElement): Promise<void> {
+    private async ProcessEpic(epic: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
         const epicFilePath = this.Plugin.StructureManager.GetEpicFilePath(epic);
         const epicDescription = await this.Plugin.StructureManager.ExtractFileOverview(epicFilePath);
         const epicElement = document.createElement("div");
@@ -70,7 +111,7 @@ class AgileDisplayMarkdownProcessor {
         const stories = this.Plugin.StructureManager.GetStories(epic);
 
         stories.forEach(story => {
-            this.ProcessStory(epic, story, epicElement);
+            this.ProcessStory(epic, story, settings, epicElement);
         });
 
         this.OpenLeafOnClick(epicElement, epicFilePath);
@@ -82,7 +123,7 @@ class AgileDisplayMarkdownProcessor {
      * @private
      * Processes an individual Story and displays its details in the UI.
      */
-    private async ProcessStory(epic: string, story: string, element: HTMLElement): Promise<void> {
+    private async ProcessStory(epic: string, story: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
         const storyFilePath = this.Plugin.StructureManager.GetStoryFilePath(epic, story);
         const storyDescription = await this.Plugin.StructureManager.ExtractFileOverview(storyFilePath);
         const storyElement = document.createElement("div");
@@ -98,7 +139,7 @@ class AgileDisplayMarkdownProcessor {
         const tasks = this.Plugin.StructureManager.GetTasks(epic, story);
 
         tasks.forEach(task => {
-            this.ProcessTask(epic, story, task, storyElement);
+            this.ProcessTask(epic, story, task, settings, storyElement);
         });
 
         this.OpenLeafOnClick(storyElement, storyFilePath);
@@ -113,7 +154,7 @@ class AgileDisplayMarkdownProcessor {
      * @param task - The Task to be processed.
      * @param element - The parent element to which the Task UI will be appended.
      */
-    private async ProcessTask(epic: string, story: string, task: string, element: HTMLElement): Promise<void> {
+    private async ProcessTask(epic: string, story: string, task: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
         const taskFilePath = this.Plugin.StructureManager.GetTaskFilePath(epic, story, task);
         const taskDescription = await this.Plugin.StructureManager.ExtractFileOverview(taskFilePath);
         const taskElement = document.createElement("div");
@@ -128,7 +169,12 @@ class AgileDisplayMarkdownProcessor {
 
         this.OpenLeafOnClick(taskElement, taskFilePath);
 
-        element.appendChild(taskElement);
+        if (settings.UsesCompleted) {
+            if (settings.Completed === await this.Plugin.StructureManager.IsTaskCompleted(taskFilePath))
+                element.appendChild(taskElement);
+        } else
+            element.appendChild(taskElement);
+
     }
 
     /**

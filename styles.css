@@ -106,6 +106,7 @@ This file contains styles for various components of the plugin, including modals
   flex-direction: column;
   border-radius: 10px;
   padding: 5px;
+  background-color: color-mix(in srgb, var(--background-primary), purple 5%);
 }
 
 .epic-wrapper:hover {
@@ -120,6 +121,7 @@ This file contains styles for various components of the plugin, including modals
   display: flex;
   flex-direction: column;
   margin-left: 30px;
+  background-color: color-mix(in srgb, var(--background-primary), lightgreen 5%);
 }
 
 .story-wrapper:hover {
@@ -133,7 +135,7 @@ This file contains styles for various components of the plugin, including modals
   display: flex;
   flex-direction: column;
   margin-left: 30px;
-  
+  background-color: color-mix(in srgb, var(--background-primary), aqua 5%);
 }
 
 .task-wrapper:hover {
