@@ -26,41 +26,10 @@ class AgileDisplayMarkdownProcessor {
     processMarkdown(markdown: string, element: HTMLElement): void {
 
         const wrapper = document.createElement("div");
-
-        const epicsDir = this.Plugin.StructureManager.GetEpicDirectories();
         const epics: string[] = this.Plugin.StructureManager.GetEpics();
 
         epics.forEach(epic => {
-
-
             this.ProcessEpic(epic, wrapper);
-            // const title = document.createElement("h2");
-            // title.textContent = epic;
-            // wrapper.appendChild(title);
-
-            // const description = document.createElement("p");
-            // description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
-            // wrapper.appendChild(description);
-
-            // const storyDir = this.Plugin.StructureManager.GetStoryDirectories(epic);
-            // const stories: string[] = this.Plugin.StructureManager.GetStories(epic);
-
-            // const childrenWrapper = document.createElement("div");
-
-            // childrenWrapper.className = "children-wrapper";
-
-            // stories.forEach(story => {
-            //     const storyTitle = document.createElement("h4");
-            //     storyTitle.textContent = story;
-            //     childrenWrapper.appendChild(storyTitle);
-
-            //     const storyDescription = document.createElement("p");
-            //     storyDescription.textContent = "This is an example of a custom UI component created using the Obsidian API.";
-            //     childrenWrapper.appendChild(storyDescription);
-            //});
-
-            //wrapper.appendChild(childrenWrapper);
-
         });
 
         element.appendChild(wrapper);
