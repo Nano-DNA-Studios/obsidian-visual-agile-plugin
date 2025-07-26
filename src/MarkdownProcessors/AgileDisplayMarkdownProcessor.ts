@@ -1,6 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, TFile } from "obsidian";
-
+import { App, MarkdownRenderer, TFile } from "obsidian";
 
 class AgileDisplayMarkdownProcessor {
 
@@ -60,13 +59,12 @@ class AgileDisplayMarkdownProcessor {
         const epicDescription = await this.Plugin.StructureManager.ExtractFileOverview(epicFilePath);
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
-        
-        const titleEl = document.createElement("h2");
-        titleEl.textContent = epic;
-        epicElement.appendChild(titleEl);
 
-        const descriptionEl = document.createElement("p");
-        descriptionEl.textContent = epicDescription;
+        const titleDiv = this.GetTitleElement(epic, this.GetEpicSVG());
+        epicElement.appendChild(titleDiv);
+
+        const descriptionEl = document.createElement("div");
+        await MarkdownRenderer.render(this.App, epicDescription, descriptionEl, epicFilePath, this.Plugin);
         epicElement.appendChild(descriptionEl);
 
         const stories = this.Plugin.StructureManager.GetStories(epic);
@@ -90,13 +88,12 @@ class AgileDisplayMarkdownProcessor {
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
 
-        const title = document.createElement("h4");
-        title.textContent = story;
-        storyElement.appendChild(title);
+        const titleDiv = this.GetTitleElement(story, this.GetStorySVG());
+        storyElement.appendChild(titleDiv);
 
-        const description = document.createElement("p");
-        description.textContent = storyDescription;
-        storyElement.appendChild(description);
+        const descriptionEl = document.createElement("div");
+        await MarkdownRenderer.render(this.App, storyDescription, descriptionEl, storyFilePath, this.Plugin);
+        storyElement.appendChild(descriptionEl);
 
         const tasks = this.Plugin.StructureManager.GetTasks(epic, story);
 
@@ -122,13 +119,12 @@ class AgileDisplayMarkdownProcessor {
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
-        const title = document.createElement("h6");
-        title.textContent = task;
-        taskElement.appendChild(title);
+        const titleDiv = this.GetTitleElement(task, this.GetTaskSVG());
+        taskElement.appendChild(titleDiv);
 
-        const description = document.createElement("p");
-        description.textContent = taskDescription;
-        taskElement.appendChild(description);
+        const descriptionEl = document.createElement("div");
+        await MarkdownRenderer.render(this.App, taskDescription, descriptionEl, taskFilePath, this.Plugin);
+        taskElement.appendChild(descriptionEl);
 
         this.OpenLeafOnClick(taskElement, taskFilePath);
 
@@ -148,6 +144,57 @@ class AgileDisplayMarkdownProcessor {
                 this.App.workspace.getLeaf(false).openFile(file as TFile);
             }
         });
+    }
+
+    private GetTitleElement(title: string, svgStr: string): HTMLElement {
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "agile-display-title";
+
+        const icon = document.createElement("div");
+        icon.innerHTML = svgStr
+        titleDiv.appendChild(icon);
+
+        const titleEl = document.createElement("h4");
+        titleEl.textContent = title;
+        titleDiv.appendChild(titleEl);
+
+        return titleDiv;
+    }
+
+    /**
+     * Gets the SVG string for the Epic icon.
+     * @returns SVG string for the Epic icon.
+     * @private
+     */
+    private GetEpicSVG(): string {
+        return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+  <rect width="24" height="24" rx="4" fill="#A259FF"/>
+  <path d="M13 2L6 13H11L11 22L18 11H13L13 2Z" fill="white"/>
+</svg>`;
+    }
+
+    /**
+     * Gets the SVG string for the Story icon.
+     * @returns SVG string for the Story icon.
+     * @private
+     */
+    private GetStorySVG(): string {
+        return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+  <rect width="24" height="24" rx="4" fill="#4CD964"/>
+  <path d="M6 4C6 2.9 6.9 2 8 2H16C17.1 2 18 2.9 18 4V21L12 17L6 21V4Z" fill="white"/>
+</svg>`;
+    }
+
+    /**
+     * Gets the SVG string for the Task icon.
+     * @returns SVG string for the Task icon.
+     * @private
+     */
+    private GetTaskSVG(): string {
+        return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+  <rect width="24" height="24" rx="4" fill="#32ADE6"/>
+  <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="white"/>
+</svg>`;
     }
 }
 

@@ -277,7 +277,13 @@ class PluginStructureManager {
 
         const markdown = await this.App.vault.read(file);
         const match = markdown.match(this.OVERVIEW_REGEX);
-        return match ? match[1].trim() : '';
+
+        if (!match) {
+            new Notice(`Overview section not found in file '${filePath}'.`);
+            return '';
+        }
+
+        return match[1].trim();
     }
 
     /**

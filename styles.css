@@ -89,6 +89,18 @@ This file contains styles for various components of the plugin, including modals
   font-family: monospace;
 }
 
+.agile-display-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+} 
+
+.agile-display-title div {
+  height: 2em;
+  width: auto;
+}
+
 .epic-wrapper {
   display: flex;
   flex-direction: column;
@@ -107,7 +119,7 @@ This file contains styles for various components of the plugin, including modals
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  padding-left: 30px;
+  margin-left: 30px;
 }
 
 .story-wrapper:hover {
@@ -120,7 +132,8 @@ This file contains styles for various components of the plugin, including modals
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  padding-left: 30px;
+  margin-left: 30px;
+  
 }
 
 .task-wrapper:hover {
