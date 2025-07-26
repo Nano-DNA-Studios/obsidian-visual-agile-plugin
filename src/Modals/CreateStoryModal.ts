@@ -1,6 +1,7 @@
 import AgileProjectPlugin from "main";
 import { App } from "obsidian";
 import CreateFileModal from "./CreateFileModal";
+import VaultParser from "src/VaultParser";
 
 /**
  * Modal for creating a new Story in the Agile Project Plugin.
@@ -27,7 +28,7 @@ class CreateStoryModal extends CreateFileModal {
         contentEl.createEl('p', { text: 'Please enter the details for the new story.' });
 
         let nameInput = this.SingleLineInput(contentEl, 'Story Name:', 'Enter story name');
-        let epicSelect = this.SingleLineDropdown(contentEl, 'Epic Name:', this.Plugin.StructureManager.GetEpics());
+        let epicSelect = this.SingleLineDropdown(contentEl, 'Epic Name:', new VaultParser(this.app, this.Plugin).GetEpics());
         let descInput = this.MultiLineInput(contentEl, 'Story Description', 'Enter story description');
 
         let createBtn = contentEl.createEl('button', { text: 'Create', cls: 'full-width' });

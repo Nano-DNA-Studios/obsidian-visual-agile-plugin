@@ -1,11 +1,13 @@
 import AgileProjectPlugin from "main";
 import { App, MarkdownRenderer, Notice, TFile } from "obsidian";
+import MarkdownParser from "src/MarkdownParser";
+import SVGFactory from "src/SVGFactory";
+import VaultParser from "src/VaultParser";
 
 class AgileDisplaySettings {
     UsesCompleted: boolean = false;
     Completed: boolean = false;
 }
-
 
 class AgileDisplayMarkdownProcessor {
 
@@ -82,7 +84,7 @@ class AgileDisplayMarkdownProcessor {
     public DisplayAgileUI(settings: AgileDisplaySettings, element: HTMLElement): void {
 
         const wrapper = document.createElement("div");
-        const epics: string[] = this.Plugin.StructureManager.GetEpics();
+        const epics: string[] = new VaultParser(this.App, this.Plugin).GetEpics();
 
         epics.forEach(epic => {
             this.ProcessEpic(epic, settings, wrapper);
@@ -96,19 +98,22 @@ class AgileDisplayMarkdownProcessor {
      * Processes an individual Epic and displays its details in the UI.
      */
     private async ProcessEpic(epic: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-        const epicFilePath = this.Plugin.StructureManager.GetEpicFilePath(epic);
-        const epicDescription = await this.Plugin.StructureManager.ExtractFileOverview(epicFilePath);
+        const vaultParser = new VaultParser(this.App, this.Plugin);
+        const markdownParser = new MarkdownParser(this.App, this.Plugin);
+
+        const epicFilePath = vaultParser.GetEpicFilePath(epic);
+        const epicDescription = await markdownParser.ExtractFileOverview(epicFilePath);
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
 
-        const titleDiv = this.GetTitleElement(epic, this.GetEpicSVG());
+        const titleDiv = this.GetTitleElement(epic, SVGFactory.GetEpicSVG());
         epicElement.appendChild(titleDiv);
 
         const descriptionEl = document.createElement("div");
         await MarkdownRenderer.render(this.App, epicDescription, descriptionEl, epicFilePath, this.Plugin);
         epicElement.appendChild(descriptionEl);
 
-        const stories = this.Plugin.StructureManager.GetStories(epic);
+        const stories = vaultParser.GetStories(epic);
 
         stories.forEach(story => {
             this.ProcessStory(epic, story, settings, epicElement);
@@ -124,19 +129,24 @@ class AgileDisplayMarkdownProcessor {
      * Processes an individual Story and displays its details in the UI.
      */
     private async ProcessStory(epic: string, story: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-        const storyFilePath = this.Plugin.StructureManager.GetStoryFilePath(epic, story);
-        const storyDescription = await this.Plugin.StructureManager.ExtractFileOverview(storyFilePath);
+        
+        const vaultParser = new VaultParser(this.App, this.Plugin);
+        const markdownParser = new MarkdownParser(this.App, this.Plugin);
+
+
+        const storyFilePath = vaultParser.GetStoryFilePath(epic, story);
+        const storyDescription = await markdownParser.ExtractFileOverview(storyFilePath);
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
 
-        const titleDiv = this.GetTitleElement(story, this.GetStorySVG());
+        const titleDiv = this.GetTitleElement(story, SVGFactory.GetStorySVG());
         storyElement.appendChild(titleDiv);
 
         const descriptionEl = document.createElement("div");
         await MarkdownRenderer.render(this.App, storyDescription, descriptionEl, storyFilePath, this.Plugin);
         storyElement.appendChild(descriptionEl);
 
-        const tasks = this.Plugin.StructureManager.GetTasks(epic, story);
+        const tasks = vaultParser.GetTasks(epic, story);
 
         tasks.forEach(task => {
             this.ProcessTask(epic, story, task, settings, storyElement);
@@ -155,12 +165,16 @@ class AgileDisplayMarkdownProcessor {
      * @param element - The parent element to which the Task UI will be appended.
      */
     private async ProcessTask(epic: string, story: string, task: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-        const taskFilePath = this.Plugin.StructureManager.GetTaskFilePath(epic, story, task);
-        const taskDescription = await this.Plugin.StructureManager.ExtractFileOverview(taskFilePath);
+
+        const vaultParser = new VaultParser(this.App, this.Plugin);
+        const markdownParser = new MarkdownParser(this.App, this.Plugin);
+
+        const taskFilePath = vaultParser.GetTaskFilePath(epic, story, task);
+        const taskDescription = await markdownParser.ExtractFileOverview(taskFilePath);
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
-        const titleDiv = this.GetTitleElement(task, this.GetTaskSVG());
+        const titleDiv = this.GetTitleElement(task, SVGFactory.GetTaskSVG());
         taskElement.appendChild(titleDiv);
 
         const descriptionEl = document.createElement("div");
@@ -170,11 +184,10 @@ class AgileDisplayMarkdownProcessor {
         this.OpenLeafOnClick(taskElement, taskFilePath);
 
         if (settings.UsesCompleted) {
-            if (settings.Completed === await this.Plugin.StructureManager.IsTaskCompleted(taskFilePath))
+            if (settings.Completed === await markdownParser.IsTaskCompleted(taskFilePath))
                 element.appendChild(taskElement);
         } else
             element.appendChild(taskElement);
-
     }
 
     /**
@@ -207,41 +220,7 @@ class AgileDisplayMarkdownProcessor {
         return titleDiv;
     }
 
-    /**
-     * Gets the SVG string for the Epic icon.
-     * @returns SVG string for the Epic icon.
-     * @private
-     */
-    private GetEpicSVG(): string {
-        return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-  <rect width="24" height="24" rx="4" fill="#A259FF"/>
-  <path d="M13 2L6 13H11L11 22L18 11H13L13 2Z" fill="white"/>
-</svg>`;
-    }
-
-    /**
-     * Gets the SVG string for the Story icon.
-     * @returns SVG string for the Story icon.
-     * @private
-     */
-    private GetStorySVG(): string {
-        return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-  <rect width="24" height="24" rx="4" fill="#4CD964"/>
-  <path d="M6 4C6 2.9 6.9 2 8 2H16C17.1 2 18 2.9 18 4V21L12 17L6 21V4Z" fill="white"/>
-</svg>`;
-    }
-
-    /**
-     * Gets the SVG string for the Task icon.
-     * @returns SVG string for the Task icon.
-     * @private
-     */
-    private GetTaskSVG(): string {
-        return `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-  <rect width="24" height="24" rx="4" fill="#32ADE6"/>
-  <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="white"/>
-</svg>`;
-    }
+    
 }
 
 export default AgileDisplayMarkdownProcessor;
