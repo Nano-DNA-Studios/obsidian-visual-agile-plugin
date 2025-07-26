@@ -2,8 +2,6 @@ import { App, Notice, TFile, TFolder } from "obsidian";
 import AgileProjectPlugin from "main";
 
 class VaultParser {
-
-
     /**
      * @protected
      * The Obsidian App instance for accessing vault and workspace functionality.
@@ -38,9 +36,6 @@ class VaultParser {
         this.App = app;
         this.Plugin = plugin;
     }
-
-    //Code for parsing vaults in Obsidian, this means getting the Vault structure, files, and directories.
-
 
     /**
      * Gets the directories for all Epics in the Agile Project.

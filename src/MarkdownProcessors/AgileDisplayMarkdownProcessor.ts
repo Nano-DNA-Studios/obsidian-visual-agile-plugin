@@ -133,7 +133,6 @@ class AgileDisplayMarkdownProcessor {
         const vaultParser = new VaultParser(this.App, this.Plugin);
         const markdownParser = new MarkdownParser(this.App, this.Plugin);
 
-
         const storyFilePath = vaultParser.GetStoryFilePath(epic, story);
         const storyDescription = await markdownParser.ExtractFileOverview(storyFilePath);
         const storyElement = document.createElement("div");

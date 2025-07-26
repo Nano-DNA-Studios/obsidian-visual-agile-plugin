@@ -1,16 +1,6 @@
 
-
 class SVGFactory {
-    // private App: App;
-    // private Plugin: AgileProjectPlugin;
-
-    // constructor(app: App, plugin: AgileProjectPlugin) {
-    //     this.App = app;
-    //     this.Plugin = plugin;
-    // }
-
-
-/**
+    /**
      * Gets the SVG string for the Epic icon.
      * @returns SVG string for the Epic icon.
      * @public

@@ -6,7 +6,6 @@ class MarkdownParser {
     //code for parsing markdown content
     //This includes parsing headings, lists, and other markdown elements.
 
-
     App: App;
 
     Plugin: AgileProjectPlugin;
@@ -16,15 +15,16 @@ class MarkdownParser {
         this.Plugin = plugin;
     }
 
-
-
-
     /**
-         * @protected
-         * The regular expression for extracting the Overview section from a Markdown file.
-         */
+     * @protected
+     * The regular expression for extracting the Overview section from a Markdown file.
+     */
     private OVERVIEW_REGEX = /# Overview\s*-{2,}\s*([\s\S]*?)(?=\n# )/;
 
+    /**
+     * @protected
+     * The regular expression for checking if a Task is completed.
+     */
     private COMPLETED_REGEX = /completed: (true|false)/;
 
     public async ExtractFileOverview(filePath: string): Promise<string> {
@@ -64,10 +64,6 @@ class MarkdownParser {
 
         return match[1].trim() === 'true';
     }
-
-
-
-
 
     public ParseHeadings(markdown: string): string[] {
         const headingRegex = /^(#+)\s+(.*)$/gm;
