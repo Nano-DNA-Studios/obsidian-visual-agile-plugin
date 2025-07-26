@@ -89,16 +89,6 @@ This file contains styles for various components of the plugin, including modals
   font-family: monospace;
 }
 
-.agile-display-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  background-color: var(--background-primary);
-  border-radius: 10px;
-  border: 3px solid var(--background-modifier-border);
-}
-
 .epic-wrapper {
   display: flex;
   flex-direction: column;

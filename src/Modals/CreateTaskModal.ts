@@ -1,4 +1,4 @@
-import { App, Notice } from "obsidian";
+import { App } from "obsidian";
 import CreateFileModal from "./CreateFileModal";
 import AgileProjectPlugin from "main";
 import "../../styles.css";

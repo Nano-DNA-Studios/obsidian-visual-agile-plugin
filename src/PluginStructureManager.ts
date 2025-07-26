@@ -19,8 +19,16 @@ class PluginStructureManager {
      */
     Settings: AgileProjectPluginSettings;
 
+    /**
+     * @protected
+     * The name of the Agile Project directory.
+     */
     private TASK_DIR_NAME = 'Tasks';
 
+    /**
+     * @protected
+     * The regular expression for matching Markdown file extensions.
+     */
     private MARKDOWN_EXTENSION = /\.md$/;
 
     /**
@@ -61,6 +69,10 @@ class PluginStructureManager {
         return true;
     }
 
+    /**
+     * Gets the directories for all Epics in the Agile Project.
+     * @returns An array of TFolder objects representing the Epic directories.
+     */
     public GetEpicDirectories(): TFolder[] {
 
         if (!this.IsValidStructure()) {
@@ -80,6 +92,11 @@ class PluginStructureManager {
         return epicFolders as TFolder[];
     }
 
+    /**
+     * Gets the file path for a specific Epic.
+     * @param epicName The name of the Epic to get the file path for.
+     * @returns The file path of the Epic, or an empty string if not found.
+     */
     public GetEpicFilePath(epicName: string): string {
         const epicDirectories = this.GetEpicDirectories();
         const epicPath = epicDirectories.find(folder => folder.name === epicName)?.path;
@@ -109,6 +126,11 @@ class PluginStructureManager {
         return epicNames;
     }
 
+    /**
+     * Gets the directories for all Stories in a specific Epic.
+     * @param epicName The name of the Epic to get Stories from.
+     * @returns An array of TFolder objects representing the Story directories.
+     */
     public GetStoryDirectories(epicName: string): TFolder[] {
 
         if (!this.IsValidStructure()) {
@@ -127,6 +149,12 @@ class PluginStructureManager {
         return storyFolders;
     }
 
+    /**
+     * Gets the file path for a specific Story.
+     * @param epicName The name of the Epic to get the Story from.
+     * @param storyName The name of the Story to get the file path for.
+     * @returns The file path of the Story, or an empty string if not found.
+     */
     public GetStoryFilePath(epicName: string, storyName: string): string {
         const storyDirectories = this.GetStoryDirectories(epicName);
         const storyPath = storyDirectories.find(folder => folder.name === storyName)?.path;
@@ -157,6 +185,12 @@ class PluginStructureManager {
         return storyNames;
     }
 
+    /**
+     * Gets the directories for all Tasks in a specific Story.
+     * @param epicName The name of the Epic to get the Tasks from.
+     * @param storyName The name of the Story to get the Task directories for.
+     * @returns An array of TFolder objects representing the Task directories.
+     */
     public GetTaskDirectories(epicName: string, storyName: string): TFolder[] {
         const storyDirectories = this.GetStoryDirectories(epicName);
         const storyDir = storyDirectories.find(folder => folder.name === storyName);
@@ -177,7 +211,12 @@ class PluginStructureManager {
         return tasksDir;
     }
 
-
+    /**
+     * Gets the names of all Tasks in a specific Story.
+     * @param epicName The name of the Epic to get the Tasks from.
+     * @param storyName The name of the Story to get the Task directories for.
+     * @returns An array of Task names.
+     */
     public GetTasks(epicName: string, storyName: string): string[] {
         const taskDirectories = this.GetTaskDirectories(epicName, storyName);
         if (!taskDirectories || taskDirectories.length === 0) return [];
@@ -195,6 +234,13 @@ class PluginStructureManager {
         return taskNames;
     }
 
+    /**
+     * Gets the file path of a specific Task.
+     * @param epicName The name of the Epic to get the Task from.
+     * @param storyName The name of the Story to get the Task from.
+     * @param taskName The name of the Task to get the file path for.
+     * @returns The file path of the Task, or an empty string if not found.
+     */
     public GetTaskFilePath(epicName: string, storyName: string, taskName: string): string {
         const taskDirectories = this.GetTaskDirectories(epicName, storyName);
         if (!taskDirectories || taskDirectories.length === 0) return '';
