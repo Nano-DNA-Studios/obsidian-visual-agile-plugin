@@ -10,20 +10,36 @@ class AgileDisplayMarkdownProcessor {
      */
     protected App: App;
 
+    /**
+     * @protected
+     * The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     protected Plugin: AgileProjectPlugin;
 
+    /**
+     * @param App - The Obsidian App instance.
+     * @param Plugin - The AgileProjectPlugin instance.
+     */
     constructor(App: App, Plugin: AgileProjectPlugin) {
         this.App = App;
         this.Plugin = Plugin;
     }
 
+    /**
+     * @public
+     * Registers the Markdown processor for displaying Agile project data.
+     */
     public RegisterMarkdownProcessor(): void {
         this.Plugin.registerMarkdownCodeBlockProcessor('agile-display', (source, el, ctx) => {
-            this.processMarkdown(source, el);
+            this.ProcessMarkdown(source, el);
         });
     }
 
-    processMarkdown(markdown: string, element: HTMLElement): void {
+    /**
+     * @public
+     * Processes the Markdown content and displays Agile project data in a custom UI.
+     */
+    public ProcessMarkdown(markdown: string, element: HTMLElement): void {
 
         const wrapper = document.createElement("div");
         const epics: string[] = this.Plugin.StructureManager.GetEpics();
@@ -35,6 +51,10 @@ class AgileDisplayMarkdownProcessor {
         element.appendChild(wrapper);
     }
 
+    /**
+     * @private
+     * Processes an individual Epic and displays its details in the UI.
+     */
     private ProcessEpic(epic: string, element: HTMLElement): void {
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
@@ -58,6 +78,10 @@ class AgileDisplayMarkdownProcessor {
         element.appendChild(epicElement);
     }
 
+    /**
+     * @private
+     * Processes an individual Story and displays its details in the UI.
+     */
     private ProcessStory(epic: string, story: string, element: HTMLElement): void {
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
@@ -81,6 +105,13 @@ class AgileDisplayMarkdownProcessor {
         element.appendChild(storyElement);
     }
 
+    /**
+     * Processes an individual Task and displays its details in the UI.
+     * @param epic - The Epic to which the Task belongs.
+     * @param story - The Story to which the Task belongs.
+     * @param task - The Task to be processed.
+     * @param element - The parent element to which the Task UI will be appended.
+     */
     private ProcessTask(epic: string, story: string, task: string, element: HTMLElement): void {
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
@@ -98,8 +129,12 @@ class AgileDisplayMarkdownProcessor {
         element.appendChild(taskElement);
     }
 
-    // Additional methods for processing can be added here
-
+    /**
+     * @private
+     * Adds a click event listener to the element that opens the corresponding file in a new leaf.
+     * @param element - The HTML element to attach the click event to.
+     * @param path - The file path to open when the element is clicked.
+     */
     private OpenLeafOnClick(element: HTMLElement, path: string): void {
         element.addEventListener('click', async () => {
             const file = await this.App.vault.getAbstractFileByPath(path);

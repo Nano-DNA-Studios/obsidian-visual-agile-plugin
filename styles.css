@@ -117,7 +117,7 @@ This file contains styles for various components of the plugin, including modals
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
+  padding-left: 30px;
 }
 
 .story-wrapper:hover {
@@ -130,7 +130,7 @@ This file contains styles for various components of the plugin, including modals
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
+  padding-left: 30px;
 }
 
 .task-wrapper:hover {
