@@ -120,7 +120,7 @@ This file contains styles for various components of the plugin, including modals
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+
   background-color: color-mix(in srgb, var(--background-primary), lightgreen 5%);
 }
 
@@ -134,7 +134,7 @@ This file contains styles for various components of the plugin, including modals
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+
   background-color: color-mix(in srgb, var(--background-primary), aqua 5%);
 }
 

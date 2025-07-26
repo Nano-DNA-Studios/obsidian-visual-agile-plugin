@@ -133,18 +133,6 @@ export default class AgileProjectPlugin extends Plugin {
 			description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
 			wrapper.appendChild(description);
 
-			// const wrapper = document.createElement("div");
-			// wrapper.className = "custom-ui-wrapper";
-
-			// const label = document.createElement("label");
-			// label.textContent = "Source:";
-			// wrapper.appendChild(label);
-
-			// const input = document.createElement("input");
-			// input.type = "text";
-			// input.value = source;
-			// wrapper.appendChild(input);
-
 			el.appendChild(wrapper);
 		});
 

@@ -1,13 +1,9 @@
 import AgileProjectPlugin from "main";
 import { App, MarkdownRenderer, Notice, TFile } from "obsidian";
+import AgileDisplaySettings from "src/AgileDisplaySettings";
 import MarkdownParser from "src/MarkdownParser";
 import SVGFactory from "src/SVGFactory";
 import VaultParser from "src/VaultParser";
-
-class AgileDisplaySettings {
-    UsesCompleted: boolean = false;
-    Completed: boolean = false;
-}
 
 class AgileDisplayMarkdownProcessor {
 
@@ -38,44 +34,11 @@ class AgileDisplayMarkdownProcessor {
      */
     public RegisterMarkdownProcessor(): void {
         this.Plugin.registerMarkdownCodeBlockProcessor('agile-display', (source, el, ctx) => {
-
-            const settings: AgileDisplaySettings = this.ProcessMarkdown(source);
+            const settings = new AgileDisplaySettings();
+            settings.ProcessSettings(source);
             this.DisplayAgileUI(settings, el);
         });
     }
-
-    private ProcessMarkdown(source: string): AgileDisplaySettings {
-
-        const settings = new AgileDisplaySettings();
-        const lines = source.split('\n');
-
-        if (lines.length === 0) {
-            return settings;
-        }
-
-        lines.forEach(line => {
-
-            line = line.trim();
-            line = line.toLowerCase();
-
-            if (line.startsWith("completed=")) {
-                const completedMatch = line.match(/completed=(true|false)/);
-                if (!completedMatch) {
-                    new Notice("Invalid Completed value in Agile Display Markdown");
-                    return settings;
-                }
-
-                new Notice(`Completed set to ${completedMatch[1]}`);
-
-                settings.UsesCompleted = true;
-                settings.Completed = completedMatch[1] === "true";
-            }
-        });
-
-
-        return settings
-    }
-
 
     /**
      * @public
@@ -115,13 +78,14 @@ class AgileDisplayMarkdownProcessor {
 
         const stories = vaultParser.GetStories(epic);
 
-        stories.forEach(story => {
-            this.ProcessStory(epic, story, settings, epicElement);
-        });
+        await Promise.all(stories.map(story => {
+            return this.ProcessStory(epic, story, settings, epicElement);
+        }));
 
         this.OpenLeafOnClick(epicElement, epicFilePath);
 
-        element.appendChild(epicElement);
+        if (epicElement.childElementCount > 2)
+            element.appendChild(epicElement);
     }
 
     /**
@@ -129,7 +93,7 @@ class AgileDisplayMarkdownProcessor {
      * Processes an individual Story and displays its details in the UI.
      */
     private async ProcessStory(epic: string, story: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-        
+
         const vaultParser = new VaultParser(this.App, this.Plugin);
         const markdownParser = new MarkdownParser(this.App, this.Plugin);
 
@@ -147,13 +111,14 @@ class AgileDisplayMarkdownProcessor {
 
         const tasks = vaultParser.GetTasks(epic, story);
 
-        tasks.forEach(task => {
-            this.ProcessTask(epic, story, task, settings, storyElement);
-        });
+        await Promise.all(tasks.map(task => {
+            return this.ProcessTask(epic, story, task, settings, storyElement);
+        }));
 
         this.OpenLeafOnClick(storyElement, storyFilePath);
 
-        element.appendChild(storyElement);
+        if (storyElement.childElementCount > 2)
+            element.appendChild(storyElement);
     }
 
     /**
@@ -218,8 +183,6 @@ class AgileDisplayMarkdownProcessor {
 
         return titleDiv;
     }
-
-    
 }
 
 export default AgileDisplayMarkdownProcessor;
