@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, Plugin, TFile } from "obsidian";
+import { App, TFile } from "obsidian";
 
 
 class AgileDisplayMarkdownProcessor {
@@ -55,17 +55,19 @@ class AgileDisplayMarkdownProcessor {
      * @private
      * Processes an individual Epic and displays its details in the UI.
      */
-    private ProcessEpic(epic: string, element: HTMLElement): void {
+    private async ProcessEpic(epic: string, element: HTMLElement): Promise<void> {
+        const epicFilePath = this.Plugin.StructureManager.GetEpicFilePath(epic);
+        const epicDescription = await this.Plugin.StructureManager.ExtractFileOverview(epicFilePath);
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
+        
+        const titleEl = document.createElement("h2");
+        titleEl.textContent = epic;
+        epicElement.appendChild(titleEl);
 
-        const title = document.createElement("h2");
-        title.textContent = epic;
-        epicElement.appendChild(title);
-
-        const description = document.createElement("p");
-        description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
-        epicElement.appendChild(description);
+        const descriptionEl = document.createElement("p");
+        descriptionEl.textContent = epicDescription;
+        epicElement.appendChild(descriptionEl);
 
         const stories = this.Plugin.StructureManager.GetStories(epic);
 
@@ -73,7 +75,7 @@ class AgileDisplayMarkdownProcessor {
             this.ProcessStory(epic, story, epicElement);
         });
 
-        this.OpenLeafOnClick(epicElement, this.Plugin.StructureManager.GetEpicFilePath(epic));
+        this.OpenLeafOnClick(epicElement, epicFilePath);
 
         element.appendChild(epicElement);
     }
@@ -82,7 +84,9 @@ class AgileDisplayMarkdownProcessor {
      * @private
      * Processes an individual Story and displays its details in the UI.
      */
-    private ProcessStory(epic: string, story: string, element: HTMLElement): void {
+    private async ProcessStory(epic: string, story: string, element: HTMLElement): Promise<void> {
+        const storyFilePath = this.Plugin.StructureManager.GetStoryFilePath(epic, story);
+        const storyDescription = await this.Plugin.StructureManager.ExtractFileOverview(storyFilePath);
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
 
@@ -91,7 +95,7 @@ class AgileDisplayMarkdownProcessor {
         storyElement.appendChild(title);
 
         const description = document.createElement("p");
-        description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
+        description.textContent = storyDescription;
         storyElement.appendChild(description);
 
         const tasks = this.Plugin.StructureManager.GetTasks(epic, story);
@@ -100,7 +104,7 @@ class AgileDisplayMarkdownProcessor {
             this.ProcessTask(epic, story, task, storyElement);
         });
 
-        this.OpenLeafOnClick(storyElement, this.Plugin.StructureManager.GetStoryFilePath(epic, story));
+        this.OpenLeafOnClick(storyElement, storyFilePath);
 
         element.appendChild(storyElement);
     }
@@ -112,7 +116,9 @@ class AgileDisplayMarkdownProcessor {
      * @param task - The Task to be processed.
      * @param element - The parent element to which the Task UI will be appended.
      */
-    private ProcessTask(epic: string, story: string, task: string, element: HTMLElement): void {
+    private async ProcessTask(epic: string, story: string, task: string, element: HTMLElement): Promise<void> {
+        const taskFilePath = this.Plugin.StructureManager.GetTaskFilePath(epic, story, task);
+        const taskDescription = await this.Plugin.StructureManager.ExtractFileOverview(taskFilePath);
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
@@ -121,10 +127,10 @@ class AgileDisplayMarkdownProcessor {
         taskElement.appendChild(title);
 
         const description = document.createElement("p");
-        description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
+        description.textContent = taskDescription;
         taskElement.appendChild(description);
 
-        this.OpenLeafOnClick(taskElement, this.Plugin.StructureManager.GetTaskFilePath(epic, story, task));
+        this.OpenLeafOnClick(taskElement, taskFilePath);
 
         element.appendChild(taskElement);
     }

@@ -32,6 +32,12 @@ class PluginStructureManager {
     private MARKDOWN_EXTENSION = /\.md$/;
 
     /**
+     * @protected
+     * The regular expression for extracting the Overview section from a Markdown file.
+     */
+    private OVERVIEW_REGEX = /# Overview\s*-{2,}\s*([\s\S]*?)(?=\n# )/;
+
+    /**
      * @param app The Obsidian App instance for accessing vault and workspace functionality.
      * @param settings The settings for the Agile Project Plugin.
      */
@@ -259,6 +265,19 @@ class PluginStructureManager {
         }
 
         return taskFile.path;
+    }
+
+    public async ExtractFileOverview(filePath: string): Promise<string> {
+        const file = this.App.vault.getAbstractFileByPath(filePath);
+        
+        if (!(file instanceof TFile)) {
+            new Notice(`File '${filePath}' not found.`);
+            return '';
+        }
+
+        const markdown = await this.App.vault.read(file);
+        const match = markdown.match(this.OVERVIEW_REGEX);
+        return match ? match[1].trim() : '';
     }
 
     /**
