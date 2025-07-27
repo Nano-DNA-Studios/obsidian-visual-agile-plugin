@@ -46,6 +46,8 @@ export default class AgileProjectPlugin extends Plugin {
 		this.StructureManager = new PluginStructureManager(this.app, this.Settings);
 		this.FileFactory = new PluginFileFactory(this.app, this.Settings);
 
+		new AgileDisplayMarkdownProcessor(this.app, this).RegisterMarkdownProcessor();
+
 		setTimeout(() => {
 			if (!this.StructureManager.IsValidStructure()) {
 				new Notice(`Invalid structure! Please create a folder named '${this.Settings.agileDirectoryPath}' in the root of your vault.`);
@@ -85,55 +87,6 @@ export default class AgileProjectPlugin extends Plugin {
 			id: 'create-agile-task',
 			name: 'Create New Task File',
 			callback: () => new CreateTaskModal(this.app, this).open()
-		});
-
-		new AgileDisplayMarkdownProcessor(this.app, this).RegisterMarkdownProcessor();
-
-
-		this.registerMarkdownCodeBlockProcessor("custom-ui", (source, el, ctx) => {
-			el.innerHTML = "";
-
-			const wrapper = document.createElement("div");
-
-			const epicsDir = this.app.vault.getFolderByPath(`${this.Settings.agileDirectoryPath}`);
-
-			if (!epicsDir) {
-				new Notice(`Epic directory not found.`);
-				return;
-			}
-
-			const epicFolders = epicsDir.children.filter(item => item instanceof TFolder);
-
-			epicFolders.forEach(folder => {
-				const epicName = folder.name;
-
-				const epicLink = document.createElement("a");
-				epicLink.href = `obsidian://open?vault=${this.app.vault.getName()}&file=${encodeURIComponent(folder.path+ '/' + epicName)}`;
-				epicLink.textContent = epicName;
-				epicLink.target = "_blank";
-
-				wrapper.appendChild(epicLink);
-
-				const title = document.createElement("h3");
-				title.textContent = "Custom UI Example";
-				wrapper.appendChild(title);
-
-				const description = document.createElement("p");
-				description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
-				wrapper.appendChild(description);
-
-			});
-
-
-			const title = document.createElement("h3");
-			title.textContent = "Custom UI Example";
-			wrapper.appendChild(title);
-
-			const description = document.createElement("p");
-			description.textContent = "This is an example of a custom UI component created using the Obsidian API.";
-			wrapper.appendChild(description);
-
-			el.appendChild(wrapper);
 		});
 
 		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));

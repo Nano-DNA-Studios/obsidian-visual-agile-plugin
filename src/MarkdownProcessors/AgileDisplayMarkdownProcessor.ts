@@ -50,14 +50,13 @@ class AgileDisplayMarkdownProcessor {
         const epics: string[] = new VaultParser(this.App, this.Plugin).GetEpics();
 
         await Promise.all(epics.map(epic => {
-
-            if (settings.FilterEpic && !epic.toLowerCase().includes(settings.Epic))
+            if (settings.UseEpicFilter && !epic.toLowerCase().includes(settings.EpicFilter))
                 return;
 
             return this.ProcessEpic(epic, settings, wrapper);
         }));
 
-        if (wrapper.childElementCount > 0){
+        if (wrapper.childElementCount > 0) {
             element.appendChild(wrapper);
             return;
         }
@@ -71,10 +70,9 @@ class AgileDisplayMarkdownProcessor {
      */
     private async ProcessEpic(epic: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
         const vaultParser = new VaultParser(this.App, this.Plugin);
-        const markdownParser = new MarkdownParser(this.App, this.Plugin);
 
         const epicFilePath = vaultParser.GetEpicFilePath(epic);
-        const epicDescription = await markdownParser.ExtractFileOverview(epicFilePath);
+        const epicDescription = await this.GetDescription(epicFilePath, settings);
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
 
@@ -88,8 +86,7 @@ class AgileDisplayMarkdownProcessor {
         const stories = vaultParser.GetStories(epic);
 
         await Promise.all(stories.map(story => {
-
-            if (settings.FilterStory && !story.toLowerCase().includes(settings.Story))
+            if (settings.UseStoryFilter && !story.toLowerCase().includes(settings.StoryFilter))
                 return;
 
             return this.ProcessStory(epic, story, settings, epicElement);
@@ -106,12 +103,10 @@ class AgileDisplayMarkdownProcessor {
      * Processes an individual Story and displays its details in the UI.
      */
     private async ProcessStory(epic: string, story: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-
         const vaultParser = new VaultParser(this.App, this.Plugin);
-        const markdownParser = new MarkdownParser(this.App, this.Plugin);
 
         const storyFilePath = vaultParser.GetStoryFilePath(epic, story);
-        const storyDescription = await markdownParser.ExtractFileOverview(storyFilePath);
+        const storyDescription = await this.GetDescription(storyFilePath, settings);
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
 
@@ -125,8 +120,7 @@ class AgileDisplayMarkdownProcessor {
         const tasks = vaultParser.GetTasks(epic, story);
 
         await Promise.all(tasks.map(task => {
-
-            if (settings.FilterTask && !task.toLowerCase().includes(settings.Task))
+            if (settings.UseTaskFilter && !task.toLowerCase().includes(settings.TaskFilter))
                 return;
 
             return this.ProcessTask(epic, story, task, settings, storyElement);
@@ -151,7 +145,7 @@ class AgileDisplayMarkdownProcessor {
         const markdownParser = new MarkdownParser(this.App, this.Plugin);
 
         const taskFilePath = vaultParser.GetTaskFilePath(epic, story, task);
-        const taskDescription = await markdownParser.ExtractFileOverview(taskFilePath);
+        const taskDescription = await this.GetDescription(taskFilePath, settings);
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
@@ -214,6 +208,16 @@ class AgileDisplayMarkdownProcessor {
         errorWrapper.appendChild(description);
 
         return errorWrapper;
+    }
+
+    private async GetDescription(filePath: string, settings: AgileDisplaySettings): Promise<string> {
+        const markdownParser = new MarkdownParser(this.App, this.Plugin);
+        const description = await markdownParser.ExtractFileOverview(filePath);
+
+        if (settings.UseShortDescription)
+            return description.split('\n')[0];
+
+        return description;
     }
 }
 

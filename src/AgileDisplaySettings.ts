@@ -1,19 +1,61 @@
 import { Notice } from "obsidian";
 
+/**
+ * @public
+ * Class representing the settings for displaying Agile project data in Markdown.
+ */
 class AgileDisplaySettings {
 
+    /**
+     * Used to indicate whether to filter tasks by their completion status.
+     */
     UsesCompleted: boolean = false;
+
+    /**
+     * Used to filter tasks by their completion status.
+     */
     Completed: boolean = false;
 
-    FilterEpic: boolean = false;
-    Epic: string = "";
+    /**
+     * Used to indicate whether to filter epics by their title.
+     */
+    UseEpicFilter: boolean = false;
 
-    FilterStory: boolean = false;
-    Story: string = "";
+    /**
+     * Used to filter epics by their title.
+     */
+    EpicFilter: string = "";
 
-    FilterTask: boolean = false;
-    Task: string = "";
+    /**
+     * Used to indicate whether to filter stories by their title.
+     */
+    UseStoryFilter: boolean = false;
 
+    /**
+     * Used to filter stories by their title.
+     */
+    StoryFilter: string = "";
+
+    /**
+     * Used to indicate whether to filter tasks by their title.
+     */
+    UseTaskFilter: boolean = false;
+
+    /**
+     * Used to filter tasks by their title.
+     */
+    TaskFilter: string = "";
+
+    /**
+     * Used to indicate whether to filter tasks by their short description.
+     */
+    UseShortDescription: boolean = true;
+
+    /**
+     * Processes the settings from the given source string.
+     * @param source The source string containing the settings.
+     * @returns void
+     */
     public ProcessSettings(source: string): void {
         const lines = source.split('\n');
 
@@ -29,9 +71,15 @@ class AgileDisplaySettings {
             this.ParseEpicProperty(line);
             this.ParseStoryProperty(line);
             this.ParseTaskProperty(line);
+            this.ParseShortDescriptionProperty(line);
         });
     }
 
+    /**
+     * Parses the completed property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
     private ParseCompletedProperty(line: string): void {
         if (!line.startsWith("completed="))
             return;
@@ -47,6 +95,11 @@ class AgileDisplaySettings {
         this.Completed = completedMatch[1] === "true";
     }
 
+    /**
+     * Parses the epic property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
     private ParseEpicProperty(line: string): void {
         if (!line.startsWith("epic="))
             return;
@@ -58,12 +111,17 @@ class AgileDisplaySettings {
             return;
         }
 
-        this.FilterEpic = true;
-        this.Epic = epicMatch[1].trim();
+        this.UseEpicFilter = true;
+        this.EpicFilter = epicMatch[1].trim();
 
-        new Notice(`Filtering epics by: ${this.Epic}`);
+        new Notice(`Filtering epics by: ${this.EpicFilter}`);
     }
 
+    /**
+     * Parses the story property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
     private ParseStoryProperty(line: string): void {
         if (!line.startsWith("story="))
             return;
@@ -75,12 +133,17 @@ class AgileDisplaySettings {
             return;
         }
 
-        this.FilterStory = true;
-        this.Story = storyMatch[1].trim();
+        this.UseStoryFilter = true;
+        this.StoryFilter = storyMatch[1].trim();
 
-        new Notice(`Filtering stories by: ${this.Story}`);
+        new Notice(`Filtering stories by: ${this.StoryFilter}`);
     }
 
+    /**
+     * Parses the task property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
     private ParseTaskProperty(line: string): void {
         if (!line.startsWith("task="))
             return;
@@ -92,10 +155,29 @@ class AgileDisplaySettings {
             return;
         }
 
-        this.FilterTask = true;
-        this.Task = taskMatch[1].trim();
+        this.UseTaskFilter = true;
+        this.TaskFilter = taskMatch[1].trim();
 
-        new Notice(`Filtering tasks by: ${this.Task}`);
+        new Notice(`Filtering tasks by: ${this.TaskFilter}`);
+    }
+
+    /**
+     * Parses the short description property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
+    private ParseShortDescriptionProperty(line: string): void {
+        if (!line.startsWith("shortdescription="))
+            return;
+
+        const shortDescriptionMatch = line.match(/shortdescription=(true|false)/);
+
+        if (!shortDescriptionMatch) {
+            new Notice("Invalid Short Description value in Agile Display Markdown");
+            return;
+        }
+
+        this.UseShortDescription = shortDescriptionMatch[1] === "true";
     }
 }
 
