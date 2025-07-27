@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, MarkdownRenderer, Notice, TFile } from "obsidian";
+import { App, MarkdownRenderer, TFile } from "obsidian";
 import AgileDisplaySettings from "src/AgileDisplaySettings";
 import MarkdownParser from "src/MarkdownParser";
 import SVGFactory from "src/SVGFactory";
@@ -44,16 +44,25 @@ class AgileDisplayMarkdownProcessor {
      * @public
      * Processes the Markdown content and displays Agile project data in a custom UI.
      */
-    public DisplayAgileUI(settings: AgileDisplaySettings, element: HTMLElement): void {
+    public async DisplayAgileUI(settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
 
         const wrapper = document.createElement("div");
         const epics: string[] = new VaultParser(this.App, this.Plugin).GetEpics();
 
-        epics.forEach(epic => {
-            this.ProcessEpic(epic, settings, wrapper);
-        });
+        await Promise.all(epics.map(epic => {
 
-        element.appendChild(wrapper);
+            if (settings.FilterEpic && !epic.toLowerCase().includes(settings.Epic))
+                return;
+
+            return this.ProcessEpic(epic, settings, wrapper);
+        }));
+
+        if (wrapper.childElementCount > 0){
+            element.appendChild(wrapper);
+            return;
+        }
+
+        element.appendChild(this.GetErrorElement());
     }
 
     /**
@@ -79,6 +88,10 @@ class AgileDisplayMarkdownProcessor {
         const stories = vaultParser.GetStories(epic);
 
         await Promise.all(stories.map(story => {
+
+            if (settings.FilterStory && !story.toLowerCase().includes(settings.Story))
+                return;
+
             return this.ProcessStory(epic, story, settings, epicElement);
         }));
 
@@ -112,6 +125,10 @@ class AgileDisplayMarkdownProcessor {
         const tasks = vaultParser.GetTasks(epic, story);
 
         await Promise.all(tasks.map(task => {
+
+            if (settings.FilterTask && !task.toLowerCase().includes(settings.Task))
+                return;
+
             return this.ProcessTask(epic, story, task, settings, storyElement);
         }));
 
@@ -182,6 +199,21 @@ class AgileDisplayMarkdownProcessor {
         titleDiv.appendChild(titleEl);
 
         return titleDiv;
+    }
+
+    private GetErrorElement(): HTMLElement {
+        const message = "No Agile Structures found with the specified filter Settings.";
+
+        const errorWrapper = document.createElement("div");
+        errorWrapper.className = "agile-display-error";
+
+        errorWrapper.appendChild(this.GetTitleElement(message, SVGFactory.GetWarningSVG()));
+
+        const description = document.createElement("h6");
+        description.textContent = "Modify the settings to display Agile Structures.";
+        errorWrapper.appendChild(description);
+
+        return errorWrapper;
     }
 }
 

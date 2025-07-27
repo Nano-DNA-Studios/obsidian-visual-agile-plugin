@@ -35,6 +35,15 @@ class SVGFactory {
   <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="white"/>
 </svg>`;
     }
+
+    public static GetWarningSVG(): string{
+        return `
+<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+  <rect width="24" height="24" rx="4" fill="#FFA726"/> <!-- orange background -->
+  <path d="M11 7h2v6h-2V7zm0 8h2v2h-2v-2z" fill="white"/> <!-- exclamation mark -->
+</svg>
+`;
+    }
 }
 
 export default SVGFactory;

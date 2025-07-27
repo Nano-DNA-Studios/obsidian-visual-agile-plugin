@@ -142,3 +142,16 @@ This file contains styles for various components of the plugin, including modals
   transition: 0.4s ease;
   background-color: color-mix(in srgb, var(--background-primary), aqua 20%);
 }
+
+.agile-display-error {
+  padding: 5px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: color-mix(in srgb, var(--background-primary), yellow 5%);
+}
+
+.agile-display-error:hover {
+  transition: 0.4s ease;
+  background-color: color-mix(in srgb, var(--background-primary), yellow 20%);
+}
