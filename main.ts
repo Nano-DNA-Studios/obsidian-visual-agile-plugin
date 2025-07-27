@@ -1,4 +1,4 @@
-import { Notice, Plugin, TFolder } from 'obsidian';
+import { Notice, Plugin } from 'obsidian';
 import AgilePluginSettingTab from 'src/AgilePluginSettingTab';
 import { DEFAULT_SETTINGS, AgileProjectPluginSettings } from 'src/AgileProjectPluginSettings';
 import AgileDisplayMarkdownProcessor from 'src/MarkdownProcessors/AgileDisplayMarkdownProcessor';

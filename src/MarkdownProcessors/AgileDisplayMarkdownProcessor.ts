@@ -180,6 +180,12 @@ class AgileDisplayMarkdownProcessor {
         });
     }
 
+    /**
+     * Creates a title element with an SVG icon.
+     * @param title The title text.
+     * @param svgStr The SVG string for the icon.
+     * @returns The title element.
+     */
     private GetTitleElement(title: string, svgStr: string): HTMLElement {
         const titleDiv = document.createElement("div");
         titleDiv.className = "agile-display-title";
@@ -195,6 +201,10 @@ class AgileDisplayMarkdownProcessor {
         return titleDiv;
     }
 
+    /**
+     * Creates an error element to display when no Agile Structures are found.
+     * @returns The error element.
+     */
     private GetErrorElement(): HTMLElement {
         const message = "No Agile Structures found with the specified filter Settings.";
 
@@ -210,6 +220,12 @@ class AgileDisplayMarkdownProcessor {
         return errorWrapper;
     }
 
+    /**
+     * Gets the description of a task from its file.
+     * @param filePath The file path of the task.
+     * @param settings The display settings for the task.
+     * @returns The description of the task.
+     */
     private async GetDescription(filePath: string, settings: AgileDisplaySettings): Promise<string> {
         const markdownParser = new MarkdownParser(this.App, this.Plugin);
         const description = await markdownParser.ExtractFileOverview(filePath);

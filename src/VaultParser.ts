@@ -10,12 +10,6 @@ class VaultParser {
 
     /**
      * @protected
-     * The settings for the Agile Project Plugin.
-     */
-    //Settings: AgileProjectPluginSettings;
-
-    /**
-     * @protected
      * The AgileProjectPlugin instance for accessing plugin-specific functionality.
      */
     protected Plugin: AgileProjectPlugin;
@@ -32,6 +26,10 @@ class VaultParser {
      */
     private MARKDOWN_EXTENSION = /\.md$/;
 
+    /**
+     * @param app The App instance for accessing Obsidian's API.
+     * @param plugin The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         this.App = app;
         this.Plugin = plugin;

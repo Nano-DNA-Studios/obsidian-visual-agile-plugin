@@ -1,15 +1,28 @@
 import AgileProjectPlugin from "main";
 import { App, Notice, TFile } from "obsidian";
 
-
+/**
+ * MarkdownParser class for parsing Markdown files in the Agile Project Plugin.
+ */
 class MarkdownParser {
-    //code for parsing markdown content
-    //This includes parsing headings, lists, and other markdown elements.
 
+    /**
+     * @public
+     * The Obsidian App instance for accessing vault and workspace functionality.
+     */
     App: App;
 
+    /**
+     * @public
+     * The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     Plugin: AgileProjectPlugin;
 
+    /**
+     * @public
+     * @param app The App instance for accessing Obsidian's API.
+     * @param plugin The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         this.App = app;
         this.Plugin = plugin;
@@ -27,6 +40,11 @@ class MarkdownParser {
      */
     private COMPLETED_REGEX = /completed: (true|false)/;
 
+    /**
+     * Extracts the Overview section from a Markdown file.
+     * @param filePath The path to the Markdown file.
+     * @returns A promise that resolves to the Overview section text.
+     */
     public async ExtractFileOverview(filePath: string): Promise<string> {
         const file = this.App.vault.getAbstractFileByPath(filePath);
 
@@ -46,6 +64,11 @@ class MarkdownParser {
         return match[1].trim();
     }
 
+    /**
+     * Checks if a Task is completed based on the 'completed' field in the Markdown file.
+     * @param filePath The path to the Markdown file.
+     * @returns A promise that resolves to true if the task is completed, false otherwise.
+     */
     public async IsTaskCompleted(filePath: string): Promise<boolean> {
         const file = this.App.vault.getAbstractFileByPath(filePath);
 
@@ -64,31 +87,6 @@ class MarkdownParser {
 
         return match[1].trim() === 'true';
     }
-
-    public ParseHeadings(markdown: string): string[] {
-        const headingRegex = /^(#+)\s+(.*)$/gm;
-        const headings: string[] = [];
-        let match;
-
-        while ((match = headingRegex.exec(markdown)) !== null) {
-            headings.push(match[2]);
-        }
-
-        return headings;
-    }
-
-    public ParseLists(markdown: string): string[] {
-        const listRegex = /^\s*[-*]\s+(.*)$/gm;
-        const lists: string[] = [];
-        let match;
-
-        while ((match = listRegex.exec(markdown)) !== null) {
-            lists.push(match[1]);
-        }
-
-        return lists;
-    }
-
 }
 
 export default MarkdownParser;

@@ -36,6 +36,10 @@ class SVGFactory {
 </svg>`;
     }
 
+    /**
+     * Gets the SVG string for the Warning icon.
+     * @returns SVG string for the Warning icon.
+     */
     public static GetWarningSVG(): string{
         return `
 <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
