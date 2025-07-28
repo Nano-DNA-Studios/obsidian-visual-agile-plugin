@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, MarkdownRenderer, Notice, TFile } from "obsidian";
+import { App, MarkdownRenderer, TFile } from "obsidian";
 import AgileDisplaySettings from "src/AgileDisplaySettings";
 import MarkdownParser from "src/MarkdownParser";
 import SVGFactory from "src/SVGFactory";
@@ -19,8 +19,16 @@ class AgileDisplayMarkdownProcessor {
      */
     protected Plugin: AgileProjectPlugin;
 
+    /**
+     * @protected
+     * The VaultParser instance for accessing vault and workspace functionality.
+     */
     private VaultParser: VaultParser;
 
+    /**
+     * @protected
+     * The MarkdownParser instance for parsing Markdown files.
+     */
     private MarkdownParser: MarkdownParser;
 
     /**
@@ -41,9 +49,28 @@ class AgileDisplayMarkdownProcessor {
      */
     public RegisterMarkdownProcessor(): void {
         this.Plugin.registerMarkdownCodeBlockProcessor('agile-display', (source, el, ctx) => {
+
             const settings = new AgileDisplaySettings();
             settings.ProcessSettings(source);
             this.DisplayAgileUI(settings, el);
+
+
+            if (!settings.UseHotreload)
+                return;
+            
+            //Reload when the element is in view
+            const observer = new IntersectionObserver((entries) => {
+                if (!entries[0].isIntersecting)
+                    return;
+
+                const settings = new AgileDisplaySettings();
+                settings.ProcessSettings(source);
+
+                el.innerHTML = ""; // clear old
+                this.DisplayAgileUI(settings, el);
+            });
+
+            observer.observe(el);
         });
     }
 
@@ -312,7 +339,7 @@ class AgileDisplayMarkdownProcessor {
 
         const sortedItems = itemsWithPriority.map(obj => obj.item);
 
-        if (settings.UseReverseSorting) 
+        if (settings.UseReverseSorting)
             sortedItems.reverse();
 
         return sortedItems;

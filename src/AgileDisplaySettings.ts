@@ -82,6 +82,11 @@ class AgileDisplaySettings {
     UseReverseSorting: boolean = false;
 
     /**
+     * Used to indicate whether to use hot-reload for the Agile Display.
+     */
+    UseHotreload: boolean = true;
+
+    /**
      * Processes the settings from the given source string.
      * @param source The source string containing the settings.
      * @returns void
@@ -105,6 +110,7 @@ class AgileDisplaySettings {
             this.ParsePriorityProperty(line);
             this.ParseSortingProperty(line);
             this.ParseReverseSortingProperty(line);
+            this.ParseHotreloadProperty(line);
         });
     }
 
@@ -146,8 +152,6 @@ class AgileDisplaySettings {
 
         this.UseEpicFilter = true;
         this.EpicFilter = epicMatch[1].trim();
-
-        new Notice(`Filtering epics by: ${this.EpicFilter}`);
     }
 
     /**
@@ -168,8 +172,6 @@ class AgileDisplaySettings {
 
         this.UseStoryFilter = true;
         this.StoryFilter = storyMatch[1].trim();
-
-        new Notice(`Filtering stories by: ${this.StoryFilter}`);
     }
 
     /**
@@ -190,8 +192,6 @@ class AgileDisplaySettings {
 
         this.UseTaskFilter = true;
         this.TaskFilter = taskMatch[1].trim();
-
-        new Notice(`Filtering tasks by: ${this.TaskFilter}`);
     }
 
     /**
@@ -293,6 +293,25 @@ class AgileDisplaySettings {
         }
 
         this.UseReverseSorting = reverseMatch[1] === "true";
+    }
+
+    /**
+     * Parses the hot-reload property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
+    private ParseHotreloadProperty(line: string): void {
+        if (!line.startsWith("hotreload="))
+            return;
+
+        const hotreloadMatch = line.match(/hotreload=(true|false)/);
+
+        if (!hotreloadMatch) {
+            new Notice("Invalid Hot Reload value in Agile Display Markdown");
+            return;
+        }
+
+        this.UseHotreload = hotreloadMatch[1] === "true";
     }
 }
 

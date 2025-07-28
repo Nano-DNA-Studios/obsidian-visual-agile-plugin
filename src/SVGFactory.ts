@@ -49,25 +49,17 @@ class SVGFactory {
         `;
   }
 
-/**
- * Gets the SVG string for the High Priority icon.
- * @returns SVG string for the High Priority icon.
- */
+  /**
+   * Gets the SVG string for the High Priority icon.
+   * @returns SVG string for the High Priority icon.
+   */
   public static GetHighPrioritySVG(): string {
-    return `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-                <rect width="24" height="24" rx="4" fill="#D32F2F"/>
-                <path d="M6 20l6-6 6 6" stroke="white" stroke-width="2"/>
-                <path d="M6 17l6-6 6 6" stroke="white" stroke-width="2"/>
-                <path d="M6 14l6-6 6 6" stroke="white" stroke-width="2"/>
-              </svg>
-              `;
-
-//     return `
-//     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-//   <rect width="24" height="24" rx="4" fill="#EF5350"/>
-//   <path d="M6 14l6-6 6 6" stroke="white" stroke-width="2"/>
-// </svg>
-// `;
+    return `
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+      <rect width="24" height="24" rx="4" fill="#EF5350"/>
+      <path d="M6 14l6-6 6 6" stroke="white" stroke-width="2"/>
+    </svg>
+`;
   }
 
   /**
@@ -77,10 +69,10 @@ class SVGFactory {
   public static GetMediumPrioritySVG(): string {
     return `
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-  <rect width="24" height="24" rx="4" fill="#FBC02D"/>
-  <rect x="6" y="9" width="12" height="2" fill="white"/>
-  <rect x="6" y="13" width="12" height="2" fill="white"/>
-</svg>
+        <rect width="24" height="24" rx="4" fill="#FBC02D"/>
+        <rect x="6" y="9" width="12" height="2" fill="white"/>
+        <rect x="6" y="13" width="12" height="2" fill="white"/>
+      </svg>
       `;
   }
 
@@ -90,23 +82,12 @@ class SVGFactory {
    */
   public static GetLowPrioritySVG(): string {
     return `
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-  <rect width="24" height="24" rx="4" fill="#2962FF"/>
-  <path d="M6 8l6 6 6-6" stroke="white" stroke-width="2"/>
-  <path d="M6 11l6 6 6-6" stroke="white" stroke-width="2"/>
-  <path d="M6 14l6 6 6-6" stroke="white" stroke-width="2"/>
-</svg>
-      `;
-
-// return `
-// <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-//   <rect width="24" height="24" rx="4" fill="#82B1FF"/>
-//   <path d="M6 12l6 6 6-6" stroke="white" stroke-width="2"/>
-// </svg>
-// `;
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+      <rect width="24" height="24" rx="4" fill="#82B1FF"/>
+      <path d="M6 12l6 6 6-6" stroke="white" stroke-width="2"/>
+    </svg>
+`;
   }
-
-
 }
 
 export default SVGFactory;
