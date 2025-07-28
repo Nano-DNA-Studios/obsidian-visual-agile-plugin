@@ -149,7 +149,7 @@ class AgileDisplayMarkdownProcessor {
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
-        const titleDiv = this.GetTitleElement(task, SVGFactory.GetTaskSVG());
+        const titleDiv = this.GetTaskTitleElement(task, await markdownParser.ExtractTaskPriority(taskFilePath));
         taskElement.appendChild(titleDiv);
 
         const descriptionEl = document.createElement("div");
@@ -201,6 +201,25 @@ class AgileDisplayMarkdownProcessor {
         return titleDiv;
     }
 
+    private GetTaskTitleElement(task: string, priority: string): HTMLElement {
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "agile-display-title";
+
+        const icon = document.createElement("div");
+        icon.innerHTML = SVGFactory.GetTaskSVG();
+        titleDiv.appendChild(icon);
+
+        const priorityIcon = document.createElement("div");
+        priorityIcon.innerHTML = this.GetPriorityIconSVG(priority);
+        titleDiv.appendChild(priorityIcon);
+
+        const titleEl = document.createElement("h4");
+        titleEl.textContent = task;
+        titleDiv.appendChild(titleEl);
+
+        return titleDiv;
+    }
+
     /**
      * Creates an error element to display when no Agile Structures are found.
      * @returns The error element.
@@ -234,6 +253,19 @@ class AgileDisplayMarkdownProcessor {
             return description.split('\n')[0];
 
         return description;
+    }
+
+    private GetPriorityIconSVG(priority: string): string {
+        switch (priority.toLowerCase()) {
+            case 'high':
+                return SVGFactory.GetHighPrioritySVG();
+            case 'medium':
+                return SVGFactory.GetMediumPrioritySVG();
+            case 'low':
+                return SVGFactory.GetLowPrioritySVG();
+            default:
+                return SVGFactory.GetWarningSVG(); // Default to warning if priority is unknown
+        }
     }
 }
 

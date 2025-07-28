@@ -87,6 +87,25 @@ class MarkdownParser {
 
         return match[1].trim() === 'true';
     }
+
+    public async ExtractTaskPriority(filePath: string): Promise<string> {
+        const file = this.App.vault.getAbstractFileByPath(filePath);
+
+        if (!(file instanceof TFile)) {
+            new Notice(`File '${filePath}' not found.`);
+            return '';
+        }
+
+        const markdown = await this.App.vault.read(file);
+        const priorityMatch = markdown.match(/priority:\s*(\w+)/i);
+
+        if (!priorityMatch) {
+            new Notice(`Priority section not found in file '${filePath}'.`);
+            return '';
+        }
+
+        return priorityMatch[1].trim();
+    }
 }
 
 export default MarkdownParser;
