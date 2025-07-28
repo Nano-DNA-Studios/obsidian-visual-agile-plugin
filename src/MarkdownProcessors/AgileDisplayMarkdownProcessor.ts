@@ -1,5 +1,5 @@
 import AgileProjectPlugin from "main";
-import { App, MarkdownRenderer, TFile } from "obsidian";
+import { App, MarkdownRenderer, Notice, TFile } from "obsidian";
 import AgileDisplaySettings from "src/AgileDisplaySettings";
 import MarkdownParser from "src/MarkdownParser";
 import SVGFactory from "src/SVGFactory";
@@ -55,7 +55,10 @@ class AgileDisplayMarkdownProcessor {
 
         const wrapper = document.createElement("div");
         wrapper.className = "agile-display-wrapper";
-        const epics: string[] = new VaultParser(this.App, this.Plugin).GetEpics();
+        let epics: string[] = new VaultParser(this.App, this.Plugin).GetEpics();
+
+        if (settings.UseSorting && settings.UseAlphabeticSorting)
+            epics = settings.UseReverseSorting ? epics.sort((a, b) => b.localeCompare(a)) : epics.sort((a, b) => a.localeCompare(b));
 
         await Promise.all(epics.map(epic => {
             if (settings.UseEpicFilter && !epic.toLowerCase().includes(settings.EpicFilter))
@@ -89,7 +92,10 @@ class AgileDisplayMarkdownProcessor {
         await MarkdownRenderer.render(this.App, epicDescription, descriptionEl, epicFilePath, this.Plugin);
         epicElement.appendChild(descriptionEl);
 
-        const stories = this.VaultParser.GetStories(epic);
+        let stories = this.VaultParser.GetStories(epic);
+
+        if (settings.UseSorting && settings.UseAlphabeticSorting)
+            stories = settings.UseReverseSorting ? stories.sort((a, b) => b.localeCompare(a)) : stories.sort((a, b) => a.localeCompare(b));
 
         await Promise.all(stories.map(story => {
             if (settings.UseStoryFilter && !story.toLowerCase().includes(settings.StoryFilter))
@@ -121,7 +127,13 @@ class AgileDisplayMarkdownProcessor {
         await MarkdownRenderer.render(this.App, storyDescription, descriptionEl, storyFilePath, this.Plugin);
         storyElement.appendChild(descriptionEl);
 
-        const tasks = this.VaultParser.GetTasks(epic, story);
+        let tasks = this.VaultParser.GetTasks(epic, story);
+
+        if (settings.UseSorting && settings.UseAlphabeticSorting)
+            tasks = settings.UseReverseSorting ? tasks.sort((a, b) => b.localeCompare(a)) : tasks.sort((a, b) => a.localeCompare(b));
+
+        if (settings.UseSorting && settings.UsePrioritySorting)
+            tasks = await this.SortByPriority(settings, tasks, epic, story);
 
         await Promise.all(tasks.map(task => {
             if (settings.UseTaskFilter && !task.toLowerCase().includes(settings.TaskFilter))
@@ -276,6 +288,34 @@ class AgileDisplayMarkdownProcessor {
             default:
                 return SVGFactory.GetWarningSVG(); // Default to warning if priority is unknown
         }
+    }
+
+    private async SortByPriority(settings: AgileDisplaySettings, items: string[], epic: string, story: string): Promise<string[]> {
+        if (!settings.UseSorting || !settings.UsePrioritySorting) return items;
+
+        const priorityOrder: Record<string, number> = {
+            "high": 1,
+            "medium": 2,
+            "low": 3
+        };
+
+        const itemsWithPriority = await Promise.all(items.map(async (item) => {
+            const filePath = this.VaultParser.GetTaskFilePath(epic, story, item);
+            const priority = await this.MarkdownParser.ExtractTaskPriority(filePath);
+            return {
+                item,
+                priorityValue: priorityOrder[priority.toLowerCase()] || 0
+            };
+        }));
+
+        itemsWithPriority.sort((a, b) => a.priorityValue - b.priorityValue);
+
+        const sortedItems = itemsWithPriority.map(obj => obj.item);
+
+        if (settings.UseReverseSorting) 
+            sortedItems.reverse();
+
+        return sortedItems;
     }
 }
 

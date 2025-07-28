@@ -62,6 +62,26 @@ class AgileDisplaySettings {
     Priority: string = "";
 
     /**
+     * Used to indicate whether to sort the tasks.
+     */
+    UseSorting: boolean = false;
+
+    /**
+     * Used to indicate whether to sort tasks alphabetically.
+     */
+    UseAlphabeticSorting: boolean = false;
+
+    /**
+     * Used to indicate whether to sort tasks by their priority.
+     */
+    UsePrioritySorting: boolean = false;
+
+    /**
+     * Used to indicate whether to sort tasks in reverse order.
+     */
+    UseReverseSorting: boolean = false;
+
+    /**
      * Processes the settings from the given source string.
      * @param source The source string containing the settings.
      * @returns void
@@ -83,6 +103,8 @@ class AgileDisplaySettings {
             this.ParseTaskProperty(line);
             this.ParseShortDescriptionProperty(line);
             this.ParsePriorityProperty(line);
+            this.ParseSortingProperty(line);
+            this.ParseReverseSortingProperty(line);
         });
     }
 
@@ -224,7 +246,54 @@ class AgileDisplaySettings {
         }
     }
 
+    /**
+     * Parses the sorting property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
+    private ParseSortingProperty(line: string): void {
+        if (!line.startsWith("sort="))
+            return;
 
+        const sortMatch = line.match(/sort=(alphabetic|priority)/);
+
+        if (!sortMatch) {
+            new Notice("Invalid Sort value in Agile Display Markdown");
+            return;
+        }
+
+        this.UseSorting = true;
+
+        switch (sortMatch[1]) {
+            case "alphabetic":
+                this.UseAlphabeticSorting = true;
+                break;
+            case "priority":
+                this.UsePrioritySorting = true;
+                break;
+            default:
+                new Notice("Unknown Sort value in Agile Display Markdown");
+        }
+    }
+
+    /**
+     * Parses the reverse sorting property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
+    private ParseReverseSortingProperty(line: string): void {
+        if (!line.startsWith("reverse="))
+            return;
+
+        const reverseMatch = line.match(/reverse=(true|false)/);
+
+        if (!reverseMatch) {
+            new Notice("Invalid Reverse Sort value in Agile Display Markdown");
+            return;
+        }
+
+        this.UseReverseSorting = reverseMatch[1] === "true";
+    }
 }
 
 export default AgileDisplaySettings;
