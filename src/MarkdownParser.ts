@@ -88,6 +88,11 @@ class MarkdownParser {
         return match[1].trim() === 'true';
     }
 
+    /**
+     * Extracts the Task priority from a Markdown file.
+     * @param filePath The path to the Markdown file.
+     * @returns A promise that resolves to the Task priority.
+     */
     public async ExtractTaskPriority(filePath: string): Promise<string> {
         const file = this.App.vault.getAbstractFileByPath(filePath);
 

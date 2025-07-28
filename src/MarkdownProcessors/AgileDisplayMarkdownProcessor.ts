@@ -19,6 +19,10 @@ class AgileDisplayMarkdownProcessor {
      */
     protected Plugin: AgileProjectPlugin;
 
+    private VaultParser: VaultParser;
+
+    private MarkdownParser: MarkdownParser;
+
     /**
      * @param App - The Obsidian App instance.
      * @param Plugin - The AgileProjectPlugin instance.
@@ -26,6 +30,9 @@ class AgileDisplayMarkdownProcessor {
     constructor(App: App, Plugin: AgileProjectPlugin) {
         this.App = App;
         this.Plugin = Plugin;
+
+        this.VaultParser = new VaultParser(App, Plugin);
+        this.MarkdownParser = new MarkdownParser(App, Plugin);
     }
 
     /**
@@ -47,6 +54,7 @@ class AgileDisplayMarkdownProcessor {
     public async DisplayAgileUI(settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
 
         const wrapper = document.createElement("div");
+        wrapper.className = "agile-display-wrapper";
         const epics: string[] = new VaultParser(this.App, this.Plugin).GetEpics();
 
         await Promise.all(epics.map(epic => {
@@ -69,9 +77,7 @@ class AgileDisplayMarkdownProcessor {
      * Processes an individual Epic and displays its details in the UI.
      */
     private async ProcessEpic(epic: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-        const vaultParser = new VaultParser(this.App, this.Plugin);
-
-        const epicFilePath = vaultParser.GetEpicFilePath(epic);
+        const epicFilePath = this.VaultParser.GetEpicFilePath(epic);
         const epicDescription = await this.GetDescription(epicFilePath, settings);
         const epicElement = document.createElement("div");
         epicElement.className = "epic-wrapper";
@@ -83,7 +89,7 @@ class AgileDisplayMarkdownProcessor {
         await MarkdownRenderer.render(this.App, epicDescription, descriptionEl, epicFilePath, this.Plugin);
         epicElement.appendChild(descriptionEl);
 
-        const stories = vaultParser.GetStories(epic);
+        const stories = this.VaultParser.GetStories(epic);
 
         await Promise.all(stories.map(story => {
             if (settings.UseStoryFilter && !story.toLowerCase().includes(settings.StoryFilter))
@@ -103,9 +109,7 @@ class AgileDisplayMarkdownProcessor {
      * Processes an individual Story and displays its details in the UI.
      */
     private async ProcessStory(epic: string, story: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
-        const vaultParser = new VaultParser(this.App, this.Plugin);
-
-        const storyFilePath = vaultParser.GetStoryFilePath(epic, story);
+        const storyFilePath = this.VaultParser.GetStoryFilePath(epic, story);
         const storyDescription = await this.GetDescription(storyFilePath, settings);
         const storyElement = document.createElement("div");
         storyElement.className = "story-wrapper";
@@ -117,7 +121,7 @@ class AgileDisplayMarkdownProcessor {
         await MarkdownRenderer.render(this.App, storyDescription, descriptionEl, storyFilePath, this.Plugin);
         storyElement.appendChild(descriptionEl);
 
-        const tasks = vaultParser.GetTasks(epic, story);
+        const tasks = this.VaultParser.GetTasks(epic, story);
 
         await Promise.all(tasks.map(task => {
             if (settings.UseTaskFilter && !task.toLowerCase().includes(settings.TaskFilter))
@@ -140,16 +144,17 @@ class AgileDisplayMarkdownProcessor {
      * @param element - The parent element to which the Task UI will be appended.
      */
     private async ProcessTask(epic: string, story: string, task: string, settings: AgileDisplaySettings, element: HTMLElement): Promise<void> {
+        const taskFilePath = this.VaultParser.GetTaskFilePath(epic, story, task);
+        const priority = await this.MarkdownParser.ExtractTaskPriority(taskFilePath);
 
-        const vaultParser = new VaultParser(this.App, this.Plugin);
-        const markdownParser = new MarkdownParser(this.App, this.Plugin);
+        if (settings.UsePriorityFilter && priority.toLowerCase() !== settings.Priority.toLowerCase())
+            return;
 
-        const taskFilePath = vaultParser.GetTaskFilePath(epic, story, task);
         const taskDescription = await this.GetDescription(taskFilePath, settings);
         const taskElement = document.createElement("div");
         taskElement.className = "task-wrapper";
 
-        const titleDiv = this.GetTaskTitleElement(task, await markdownParser.ExtractTaskPriority(taskFilePath));
+        const titleDiv = this.GetTaskTitleElement(task, priority);
         taskElement.appendChild(titleDiv);
 
         const descriptionEl = document.createElement("div");
@@ -159,7 +164,7 @@ class AgileDisplayMarkdownProcessor {
         this.OpenLeafOnClick(taskElement, taskFilePath);
 
         if (settings.UsesCompleted) {
-            if (settings.Completed === await markdownParser.IsTaskCompleted(taskFilePath))
+            if (settings.Completed === await this.MarkdownParser.IsTaskCompleted(taskFilePath))
                 element.appendChild(taskElement);
         } else
             element.appendChild(taskElement);
@@ -255,6 +260,11 @@ class AgileDisplayMarkdownProcessor {
         return description;
     }
 
+    /**
+     * Gets the SVG representation of the priority icon.
+     * @param priority The priority level.
+     * @returns The SVG string for the priority icon.
+     */
     private GetPriorityIconSVG(priority: string): string {
         switch (priority.toLowerCase()) {
             case 'high':

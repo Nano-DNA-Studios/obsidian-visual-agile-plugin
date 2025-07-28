@@ -49,7 +49,10 @@ class SVGFactory {
         `;
   }
 
-
+/**
+ * Gets the SVG string for the High Priority icon.
+ * @returns SVG string for the High Priority icon.
+ */
   public static GetHighPrioritySVG(): string {
     return `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
                 <rect width="24" height="24" rx="4" fill="#D32F2F"/>
@@ -67,6 +70,10 @@ class SVGFactory {
 // `;
   }
 
+  /**
+   * Gets the SVG string for the Medium Priority icon.
+   * @returns SVG string for the Medium Priority icon.
+   */
   public static GetMediumPrioritySVG(): string {
     return `
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
@@ -77,6 +84,10 @@ class SVGFactory {
       `;
   }
 
+  /**
+   * Gets the SVG string for the Low Priority icon.
+   * @returns SVG string for the Low Priority icon.
+   */
   public static GetLowPrioritySVG(): string {
     return `
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">

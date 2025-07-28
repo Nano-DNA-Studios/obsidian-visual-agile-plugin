@@ -89,6 +89,12 @@ This file contains styles for various components of the plugin, including modals
   font-family: monospace;
 }
 
+.agile-display-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .agile-display-title {
   display: flex;
   flex-direction: row;
@@ -106,6 +112,7 @@ This file contains styles for various components of the plugin, including modals
   flex-direction: column;
   border-radius: 10px;
   padding: 5px;
+  gap: 10px;
   background-color: color-mix(in srgb, var(--background-primary), purple 5%);
 }
 
@@ -121,6 +128,7 @@ This file contains styles for various components of the plugin, including modals
   display: flex;
   flex-direction: column;
   margin-left: 30px;
+  gap: 10px;
   background-color: color-mix(in srgb, var(--background-primary), lightgreen 5%);
 }
 

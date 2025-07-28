@@ -52,6 +52,16 @@ class AgileDisplaySettings {
     UseShortDescription: boolean = true;
 
     /**
+     * Used to filter tasks by their Priority.
+     */
+    UsePriorityFilter: boolean = false;
+
+    /**
+     * Used to filter tasks by their priority.
+     */
+    Priority: string = "";
+
+    /**
      * Processes the settings from the given source string.
      * @param source The source string containing the settings.
      * @returns void
@@ -72,6 +82,7 @@ class AgileDisplaySettings {
             this.ParseStoryProperty(line);
             this.ParseTaskProperty(line);
             this.ParseShortDescriptionProperty(line);
+            this.ParsePriorityProperty(line);
         });
     }
 
@@ -179,6 +190,41 @@ class AgileDisplaySettings {
 
         this.UseShortDescription = shortDescriptionMatch[1] === "true";
     }
+
+    /**
+     * Parses the priority property from the given line.
+     * @param line The line to parse.
+     * @returns void
+     */
+    private ParsePriorityProperty(line: string): void {
+        if (!line.startsWith("priority="))
+            return;
+
+        const priorityMatch = line.match(/priority=(high|medium|low)/);
+
+        if (!priorityMatch) {
+            new Notice("Invalid Priority value in Agile Display Markdown");
+            return;
+        }
+
+        this.UsePriorityFilter = true;
+
+        switch (priorityMatch[1]) {
+            case "high":
+                this.Priority = "High";
+                break;
+            case "medium":
+                this.Priority = "Medium";
+                break;
+            case "low":
+                this.Priority = "Low";
+                break;
+            default:
+                new Notice("Unknown Priority value in Agile Display Markdown");
+        }
+    }
+
+
 }
 
 export default AgileDisplaySettings;
