@@ -1,6 +1,9 @@
 import { App, Notice, TFile, TFolder } from "obsidian";
 import AgileProjectPlugin from "main";
 
+/**
+ * VaultParser class for parsing the vault structure in the Agile Project Plugin.
+ */
 class VaultParser {
     /**
      * @protected

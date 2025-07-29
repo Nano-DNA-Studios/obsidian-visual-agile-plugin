@@ -1,4 +1,7 @@
 
+/**
+ * Factory Class for generating SVG icons used in the Agile Project Plugin.
+ */
 class SVGFactory {
   /**
    * Gets the SVG string for the Epic icon.
