@@ -16,3 +16,8 @@ Once installed, the Plugin will request to create a folder structure to store Ep
 Once the structure has been created you can use the ``Update Agile`` Ribbon Icon to create new Epics, Stories and Tasks. They can be linked together within the modal and a name and description can be populated upon creation aswell as Priority level.
 
 The Agile files can also be created using commands in the Command Palette.
+
+TODO :
+Need to add the contents of the Help Page
+Need to re-explain and redo how this plugin works
+Need to add the help page
