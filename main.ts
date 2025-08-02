@@ -7,6 +7,7 @@ import CreateNewAgileFileModal from 'src/Modals/CreateNewAgileFileModal';
 import CreateStoryModal from 'src/Modals/CreateStoryModal';
 import CreateStructureModal from 'src/Modals/CreateStructureModal';
 import CreateTaskModal from 'src/Modals/CreateTaskModal';
+import HelpScreenModal from 'src/Modals/HelpScreenModal';
 import PluginFileFactory from 'src/PluginFileFactory';
 import PluginStructureManager from 'src/PluginStructureManager';
 
@@ -87,6 +88,12 @@ export default class AgileProjectPlugin extends Plugin {
 			id: 'create-agile-task',
 			name: 'Create New Task File',
 			callback: () => new CreateTaskModal(this.app, this).open()
+		});
+
+		this.addCommand({
+			id: 'agile-help-screen',
+			name: 'Open Agile Help Screen',
+			callback: () => new HelpScreenModal(this.app, this).open()
 		});
 
 		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
