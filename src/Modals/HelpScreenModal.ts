@@ -13,29 +13,58 @@ class HelpScreenModal extends Modal {
 
     onOpen() {
         const { contentEl } = this;
-
         contentEl.addClass('centered-modal');
+
+        // Title
         contentEl.createEl('h1', { text: 'Agile Plugin Help' });
 
-        contentEl.createEl('p', { text: 'This Plugin is used to keep track and manage tasks using an Agile format. Using this Plugin, you can organize Tasks using Epics and Stories just like in Jira. ' });
-        contentEl.createEl('p', { text: `Your Epics, Stories and Tasks will each have a file to represent them, and will be stored under \"${this.Plugin.Settings.agileDirectoryPath}\". This can be changed in the Settings. The files will be organized under the following format. (Display the Organization format?)` });
-        contentEl.createEl('p', { text: 'To use this Plugin and create new Agile Files, you can use the Ribbon Icons listed on the left side. It has the name \"Update Agile\". Additionally you can use Commands through the Command Palette (Ctrl + P), search for \"Agile\" in the Command Palette. The Ribbon Icon can be removed in the Settings.' });
-        contentEl.createEl('p', { text: 'The Plugin also comes with a Custom Code Block to Display your Agile Structures. Create a Code Block with the Type \"agile-display\". This will display your Epics, Stories and Tasks in an Organized, Hierarchical fashion.' });
+        // Intro
+        contentEl.createEl('p', { text: 'Use this plugin to manage tasks in an Agile format, similar to Jira. Organize your work with Epics, Stories, and Tasks.' });
 
-        contentEl.createEl('p', { text: 'The Agile Display also has some Settings that can be Edited, they are as Follows :' });
-        contentEl.createEl('p', { text: 'Epic - Filters the Epics that are displayed, can be any Characters or Words' });
-        contentEl.createEl('p', { text: 'Story - Filters the Stories that are displayed, can be any Characters or Words' });
-        contentEl.createEl('p', { text: 'Task - Filters the Tasks that are displayed, can be any Characters or Words' });
-        contentEl.createEl('p', { text: 'ShortDescription - Toggles displaying only 1 line from the Description, or all lines. True = 1 line, False = All lines' });
-        contentEl.createEl('p', { text: 'Completed - Toggles Displaying Only Completed or Uncompleted Tasks, True = Completed Tasks, False = Uncompleted Tasks.' });
-        contentEl.createEl('p', { text: 'Sort - Options for Sorting the Names of the Structures, Can be sorted Alphabetically or by Priority, use keywords \"Alphabetical\" or \"Priority\"' });
-        contentEl.createEl('p', { text: 'Priority - Shows only the Tasks of a certain Priority. (Low, Medium, High)' });
-        contentEl.createEl('p', { text: 'HotReload - Toggles if the Display will reload when back in view, otherwise it will only reload when Obsidian reloads. True if unmentioned, Can be set to False' });
+        // Folder Info
+        contentEl.createEl('p', { text: `Each Epic, Story, and Task is stored as a file under "${this.Plugin.Settings.agileDirectoryPath}". You can change this path in the settings.` });
 
-        contentEl.createEl('p', { text: 'Example :' });
-        contentEl.createEl('pre', { text: '```agile-display\nEpic=Epic Name\nStory=Story Name\nTask=Task Name\nShortDescription=true\nCompleted=true\nSort=Alphabetical\nPriority=Medium\nHotReload=true\n```' });
+        // Usage
+        contentEl.createEl('h2', { text: 'Creating Agile Files' });
+        contentEl.createEl('p', { text: 'Use the "Update Agile" icon on the left sidebar or press Ctrl + P and search for "Agile" to use commands. You can hide the sidebar icon in Settings.' });
 
-        contentEl.createEl('p', { text: 'If your Agile Display yields no results it will display a message saying no Structures are found.' });
+        // Display
+        contentEl.createEl('h2', { text: 'Agile Display' });
+        contentEl.createEl('p', { text: 'To show your Agile structure, use a code block like this:' });
+
+        contentEl.createEl('pre', {}, (pre) => {
+            pre.createEl('code', {
+                text: this.GetAgileDisplayCodeBlock()
+            });
+        });
+
+        // Settings list
+        contentEl.createEl('h3', { text: 'Display Options' });
+
+        const options = [
+            ['Epic', 'Filter Epics by name'],
+            ['Story', 'Filter Stories by name'],
+            ['Task', 'Filter Tasks by name'],
+            ['ShortDescription', 'true = 1 line; false = full description'],
+            ['Completed', 'true = only completed; false = only incomplete'],
+            ['Sort', '"Alphabetical" or "Priority"'],
+            ['Priority', 'Filter by Low, Medium, or High'],
+            ['HotReload', 'true = auto-refresh on view; false = refresh on restart']
+        ];
+
+        for (const [key, desc] of options) {
+            contentEl.createEl('p', {}, (el) => {
+                el.createEl('b', { text: `${key}: ` });
+                el.appendText(desc);
+            });
+        }
+
+        // End note
+        contentEl.createEl('p', { text: 'If nothing matches your filters, the display will say "No Structures Found."' });
+    }
+
+    private GetAgileDisplayCodeBlock(): string {
+        return `\`\`\`agile-display\nEpic=Epic Name\nStory=Story Name\nTask=Task Name\nShortDescription=true\nCompleted=true\nSort=Alphabetical\nPriority=Medium\nHotReload=true\n\`\`\``;
     }
 
     onClose(): void {
