@@ -61,6 +61,9 @@ class HelpScreenModal extends Modal {
 
         // End note
         contentEl.createEl('p', { text: 'If nothing matches your filters, the display will say "No Structures Found."' });
+
+
+        
     }
 
     private GetAgileDisplayCodeBlock(): string {
