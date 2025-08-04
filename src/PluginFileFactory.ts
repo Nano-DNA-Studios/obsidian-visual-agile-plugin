@@ -49,30 +49,30 @@ class PluginFileFactory {
 
     /**
      * Creates a new Epic file.
-     * @param name The name of the Epic.
+     * @param epicName The name of the Epic.
      * @param description The description of the Epic.
      * @returns 
      */
-    public CreateEpic(name: string, description: string): void {
-        const epicDirectory = `${this.Settings.agileDirectoryPath}/${name}`;
-        const filePath = `${epicDirectory}/${name}.md`;
-        const fileContent = `${this.GetEpicProperties()}\n${this.GetEpicFileContent(description)}`;
+    public CreateEpic(epicName: string, description: string): void {
+        const epicDirectory = `${this.Settings.agileDirectoryPath}/${epicName}`;
+        const filePath = `${epicDirectory}/${epicName}.md`;
+        const fileContent = `${this.GetEpicProperties()}\n${this.GetEpicFileContent(epicName, description)}`;
 
         if (this.App.vault.getFolderByPath(epicDirectory)) {
-            new Notice(`Epic Directory '${name}' already exists!`);
+            new Notice(`Epic Directory '${epicName}' already exists!`);
             return;
         }
 
         if (this.App.vault.getAbstractFileByPath(filePath)) {
-            new Notice(`Epic '${name}' already exists!`);
+            new Notice(`Epic '${epicName}' already exists!`);
             return;
         }
 
         this.App.vault.createFolder(epicDirectory).then(() => {
-            new Notice(`Epic Directory '${name}' created successfully!`);
+            new Notice(`Epic Directory '${epicName}' created successfully!`);
 
             this.App.vault.create(filePath, fileContent).then((file) => {
-                new Notice(`Epic '${name}' created successfully!`);
+                new Notice(`Epic '${epicName}' created successfully!`);
                 this.App.workspace.getLeaf(false).openFile(file);
             }).catch((error) => {
                 new Notice(`Failed to create Epic: ${error}`);
@@ -93,7 +93,7 @@ class PluginFileFactory {
     public CreateStory(storyName: string, description: string, epicName: string): void {
         const storyDirectory = `${this.Settings.agileDirectoryPath}/${epicName}/${storyName}`;
         const filePath = `${storyDirectory}/${storyName}.md`;
-        const fileContent = `${this.GetStoryProperties(epicName)}\n${this.GetStoryFileContent(description)}`;
+        const fileContent = `${this.GetStoryProperties(epicName)}\n${this.GetStoryFileContent(storyName, description)}`;
 
         if (this.App.vault.getFolderByPath(storyDirectory)) {
             new Notice(`Story Directory '${storyName}' already exists!`);
@@ -236,29 +236,54 @@ class PluginFileFactory {
      * @param description The description of the Story.
      * @returns The frontmatter properties for the Story file.
      */
-    private GetStoryFileContent(description: string): string {
+    private GetStoryFileContent(storyName: string, description: string): string {
         return [
             "# Overview",
             "---",
             `${description}`,
             "# Tasks",
             "---",
+           "## Uncompleted",
+            "---",
+            "```agile-display",
+            `Story=${storyName}`,
+            "Completed=False",
+            "```",
+            "## Completed",
+            "---",
+            "```agile-display",
+            `Story=${storyName}`,
+            "Completed=True",
+            "```",
             ""
         ].join("\n");
     }
 
     /**
      * Gets the frontmatter properties for an Epic file.
+     * @param epicName The name of the Epic.
      * @param description The description of the Epic.
      * @returns The frontmatter properties for the Epic file.
      */
-    private GetEpicFileContent(description: string): string {
+    private GetEpicFileContent(epicName: string, description: string): string {
         return [
             "# Overview",
             "---",
             `${description}`,
             "# Stories",
             "---",
+            "## Uncompleted",
+            "---",
+            "```agile-display",
+            `Epic=${epicName}`,
+            "Completed=False",
+            "```",
+            "## Completed",
+            "---",
+            "```agile-display",
+            `Epic=${epicName}`,
+            "Completed=True",
+            "```",
             ""
         ].join("\n");
     }
