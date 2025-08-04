@@ -57,7 +57,7 @@ class AgileDisplayMarkdownProcessor {
 
             if (!settings.UseHotreload)
                 return;
-            
+
             //Reload when the element is in view
             const observer = new IntersectionObserver((entries) => {
                 if (!entries[0].isIntersecting)

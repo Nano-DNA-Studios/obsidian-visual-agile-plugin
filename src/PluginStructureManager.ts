@@ -19,7 +19,7 @@ class PluginStructureManager {
      */
     Settings: AgileProjectPluginSettings;
 
-    
+
     /**
      * @param app The Obsidian App instance for accessing vault and workspace functionality.
      * @param settings The settings for the Agile Project Plugin.
