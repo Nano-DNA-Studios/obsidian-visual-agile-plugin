@@ -243,7 +243,7 @@ class PluginFileFactory {
             `${description}`,
             "# Tasks",
             "---",
-           "## Uncompleted",
+            "## Uncompleted",
             "---",
             "```agile-display",
             `Story=${storyName}`,
