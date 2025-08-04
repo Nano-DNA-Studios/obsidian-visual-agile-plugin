@@ -1,4 +1,4 @@
-# Obsidian Agile Plugin
+# Obsidian Visual Agile Plugin
 The Obsidian Agile Plugin is used to replicate Jira Task tracking and management within the Obsidian Markdown Editor.
 
 Tasks are organized under Epics and Stories to better Categorize them and come with a custom Markdown Processor to Display them.

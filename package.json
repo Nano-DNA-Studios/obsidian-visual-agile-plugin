@@ -1,14 +1,14 @@
 {
-	"name": "obsidian-agile-plugin",
+	"name": "obsidian-visual-agile-plugin",
 	"version": "1.0.0",
-	"description": "A Obsidian Plugin for Agile Project Management",
+	"description": "A Obsidian Plugin for Visualizing and Managing Projects using an Agile format",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
-	"keywords": ["Obsidian", "Plugin", "Agile", "Project Management"],
+	"keywords": ["Obsidian", "Plugin", "Agile", "Project Management", "Visual"],
 	"author": "MrDNAlex & NanoDNA-Studios",
 	"license": "MIT",
 	"devDependencies": {
