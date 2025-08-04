@@ -88,6 +88,5 @@ Alternatively, you can manually install this plugin by creating a directory with
 
 Restart Obsidian and refresh the ``Installed Plugins`` list and activate it. Enjoy!
 
-
 # Contact
 For Additional Support, Contact MrDNAlex through the email : ``Mr.DNAlex.2003@gmail.com``.
