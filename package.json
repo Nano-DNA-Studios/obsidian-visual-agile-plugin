@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-visual-agile-plugin",
+	"name": "visual-agile",
 	"version": "1.0.0",
 	"description": "A Obsidian Plugin for Visualizing and Managing Projects using an Agile format",
 	"main": "main.js",

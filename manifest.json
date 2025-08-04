@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-visual-agile-plugin",
-	"name": "Visual Agile Plugin",
+	"id": "visual-agile",
+	"name": "Visual Agile",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "A Obsidian Plugin for Visualizing and Managing Projects using an Agile format",
