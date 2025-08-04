@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-agile-project-plugin",
+	"name": "obsidian-agile-plugin",
 	"version": "0.1.0",
 	"description": "A Obsidian Plugin for Agile Project Management",
 	"main": "main.js",
