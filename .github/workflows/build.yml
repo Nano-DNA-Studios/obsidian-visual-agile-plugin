@@ -42,17 +42,43 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps: 
-      - name: Compress Plugin Source
+
+      - name: Copy Manifest 
+        run: cp manifest.json dist/manifest.json
         shell: bash
-        run: tar -czf ./obsidian-agile-plugin.tar.gz -C ./dist .
+
+      # - name: Compress Plugin Source
+      #   shell: bash
+      #   run: tar -czf ./obsidian-agile-plugin.tar.gz -C ./dist .
 
       - name: Check File is Made
         shell: bash
-        run: ls -la ./obsidian-agile-plugin.tar.gz
+        run: ls ./dist
 
-      - name: Upload Standalone Source
+      - name: Upload Manifest
         uses: actions/upload-artifact@v4
         with:
-          name: obsidian-agile-plugin.tar.gz
-          path: ./obsidian-agile-plugin.tar.gz
+          name: manifest.json
+          path: ./dist/manifest.json
           retention-days: 1
+
+      - name: Upload Main.js
+        uses: actions/upload-artifact@v4
+        with:
+          name: main.js
+          path: ./dist/main.js
+          retention-days: 1
+
+      - name: Upload Main.css
+        uses: actions/upload-artifact@v4
+        with:
+          name: main.css
+          path: ./dist/main.css
+          retention-days: 1
+
+      # - name: Upload Standalone Source
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: obsidian-agile-plugin
+      #     path: ./dist
+      #     retention-days: 1

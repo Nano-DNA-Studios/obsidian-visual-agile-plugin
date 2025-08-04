@@ -58,9 +58,9 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Compress Standalone Source
-        shell: bash
-        run: tar -czf ./obsidian-agile-plugin-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
+      #- name: Compress Standalone Source
+      #  shell: bash
+      #  run: tar -czf ./obsidian-agile-plugin-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
 
       - name: Upload Standalone Source
         uses: actions/upload-artifact@v4
