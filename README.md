@@ -62,7 +62,6 @@ HotReload=true
 ```
 
 ## Display Settings and Filters
-
 - **Epic / Story / Task** — Filters by name (you can use partial matches).
     
 - **ShortDescription** — If `true`, only shows 1 line of each description.
@@ -77,6 +76,18 @@ HotReload=true
 ---
 
 If nothing matches your filters, it will show "No Structures Found."
+
+# Installation
+You can install this Plugin in 2 ways
+
+## Obsidian Community Plugin
+This plugin can be found within the Community Plugins as through the name ``Agile Plugin``
+
+## Manual Installation
+Alternatively, you can manually install this plugin by creating a directory within the ``plugins`` directory named ``obsidian-agile-plugin``, and placing the ``manifest.json``, ``main.js`` and ``main.css`` files within the directory. 
+
+Restart Obsidian and refresh the ``Installed Plugins`` list and activate it. Enjoy!
+
 
 # Contact
 For Additional Support, Contact MrDNAlex through the email : ``Mr.DNAlex.2003@gmail.com``.
