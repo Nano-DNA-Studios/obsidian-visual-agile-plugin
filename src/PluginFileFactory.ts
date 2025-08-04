@@ -248,12 +248,14 @@ class PluginFileFactory {
             "```agile-display",
             `Story=${storyName}`,
             "Completed=False",
+            "HotReload=False",
             "```",
             "## Completed",
             "---",
             "```agile-display",
             `Story=${storyName}`,
             "Completed=True",
+            "HotReload=False",
             "```",
             ""
         ].join("\n");
@@ -277,12 +279,14 @@ class PluginFileFactory {
             "```agile-display",
             `Epic=${epicName}`,
             "Completed=False",
+            "HotReload=False",
             "```",
             "## Completed",
             "---",
             "```agile-display",
             `Epic=${epicName}`,
             "Completed=True",
+            "HotReload=False",
             "```",
             ""
         ].join("\n");
