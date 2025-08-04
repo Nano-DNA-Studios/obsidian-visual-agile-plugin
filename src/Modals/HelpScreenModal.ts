@@ -1,11 +1,21 @@
 import AgileProjectPlugin from "main";
 import { App, Modal } from "obsidian";
 
-
+/**
+ * Modal for displaying help information about the Agile Project Plugin.
+ */
 class HelpScreenModal extends Modal {
 
+    /**
+     * The AgileProjectPlugin instance for accessing plugin-specific functionality.
+     */
     private Plugin: AgileProjectPlugin;
 
+    /**
+     * Constructor for the HelpScreenModal.
+     * @param app - The Obsidian App instance.
+     * @param plugin - The AgileProjectPlugin instance.
+     */
     constructor(app: App, plugin: AgileProjectPlugin) {
         super(app);
         this.Plugin = plugin;
@@ -61,11 +71,12 @@ class HelpScreenModal extends Modal {
 
         // End note
         contentEl.createEl('p', { text: 'If nothing matches your filters, the display will say "No Structures Found."' });
-
-
-        
     }
 
+    /**
+     * Gets the code block for displaying Agile project data.
+     * @returns The code block as a string.
+     */
     private GetAgileDisplayCodeBlock(): string {
         return `\`\`\`agile-display\nEpic=Epic Name\nStory=Story Name\nTask=Task Name\nShortDescription=true\nCompleted=true\nSort=Alphabetical\nPriority=Medium\nHotReload=true\n\`\`\``;
     }

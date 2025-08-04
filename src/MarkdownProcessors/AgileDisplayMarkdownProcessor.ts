@@ -245,6 +245,12 @@ class AgileDisplayMarkdownProcessor {
         return titleDiv;
     }
 
+    /**
+     * Creates the title element for a task.
+     * @param task The task name.
+     * @param priority The task priority.
+     * @returns The title element.
+     */
     private GetTaskTitleElement(task: string, priority: string): HTMLElement {
         const titleDiv = document.createElement("div");
         titleDiv.className = "agile-display-title";
@@ -317,6 +323,14 @@ class AgileDisplayMarkdownProcessor {
         }
     }
 
+    /**
+     * Sorts tasks by their priority if the settings require it.
+     * @param settings The display settings for the Agile Display.
+     * @param items The list of task names to sort.
+     * @param epic The name of the Epic containing the tasks.
+     * @param story The name of the Story containing the tasks.
+     * @returns A promise that resolves to the sorted list of task names.
+     */
     private async SortByPriority(settings: AgileDisplaySettings, items: string[], epic: string, story: string): Promise<string[]> {
         if (!settings.UseSorting || !settings.UsePrioritySorting) return items;
 
