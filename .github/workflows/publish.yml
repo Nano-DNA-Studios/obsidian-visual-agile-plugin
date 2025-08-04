@@ -58,20 +58,40 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      #- name: Compress Standalone Source
-      #  shell: bash
-      #  run: tar -czf ./obsidian-agile-plugin-${{ needs.version.outputs.version }}.tar.gz -C ./dist .
+      - name: Copy Manifest 
+        run: cp manifest.json dist/manifest.json
+        shell: bash
+    
+      - name: Check File is Made
+        shell: bash
+        run: ls ./dist
 
-      - name: Upload Standalone Source
+      - name: Upload Manifest
         uses: actions/upload-artifact@v4
         with:
-          name: obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz
-          path: ./obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz
+          name: manifest.json
+          path: ./dist/manifest.json
           retention-days: 1
 
-      - name: Upload Plugin to Release
-        working-directory: ./
-        shell: bash
-        run: |
-          echo "Uploading obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz as a Release Asset"
-          gh release upload "${{ github.event.release.tag_name }}" "obsidian-agile-plugin-v${{ needs.version.outputs.version }}.tar.gz" --repo ${{ github.repository }}
+      - name: Upload Main.js
+        uses: actions/upload-artifact@v4
+        with:
+          name: main.js
+          path: ./dist/main.js
+          retention-days: 1
+
+      - name: Upload Main.css
+        uses: actions/upload-artifact@v4
+        with:
+          name: main.css
+          path: ./dist/main.css
+          retention-days: 1
+
+      - name: Upload main.js
+        run: gh release upload "${{ github.event.release.tag_name }}" ./dist/main.js --repo ${{ github.repository }} --clobber
+
+      - name: Upload manifest.json
+        run: gh release upload "${{ github.event.release.tag_name }}" ./dist/manifest.json --repo ${{ github.repository }} --clobber
+
+      - name: Upload main.css (if exists)
+        run: gh release upload "${{ github.event.release.tag_name }}" ./dist/main.css --repo ${{ github.repository }} --clobber

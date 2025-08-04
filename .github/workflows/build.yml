@@ -42,14 +42,9 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps: 
-
       - name: Copy Manifest 
         run: cp manifest.json dist/manifest.json
         shell: bash
-
-      # - name: Compress Plugin Source
-      #   shell: bash
-      #   run: tar -czf ./obsidian-agile-plugin.tar.gz -C ./dist .
 
       - name: Check File is Made
         shell: bash
@@ -75,10 +70,3 @@ jobs:
           name: main.css
           path: ./dist/main.css
           retention-days: 1
-
-      # - name: Upload Standalone Source
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: obsidian-agile-plugin
-      #     path: ./dist
-      #     retention-days: 1
