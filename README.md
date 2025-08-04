@@ -18,6 +18,4 @@ Once the structure has been created you can use the ``Update Agile`` Ribbon Icon
 The Agile files can also be created using commands in the Command Palette.
 
 TODO :
-Need to add the contents of the Help Page
 Need to re-explain and redo how this plugin works
-Need to add the help page
