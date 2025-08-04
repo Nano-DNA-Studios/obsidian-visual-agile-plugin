@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-agile-plugin",
 	"name": "Agile Plugin",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "A Obsidian Plugin for Agile Project Management",
 	"author": "MrDNAlex & NanoDNA-Studios",
