@@ -1,5 +1,5 @@
-# Obsidian Visual Agile Plugin
-The Obsidian Agile Plugin is used to replicate Jira Task tracking and management within the Obsidian Markdown Editor.
+# Visual Agile Plugin
+The Agile Plugin is used to replicate Jira Task tracking and management within the Markdown Editor.
 
 Tasks are organized under Epics and Stories to better Categorize them and come with a custom Markdown Processor to Display them.
 
@@ -16,7 +16,7 @@ Once installed, you will be prompted to automatically create a Directory where t
 
 You can now use the ``Update Agile`` Ribbon Icon on the left side of the Screen, or the commands in the Command Palette (Ctrl + P) to create new Epics, Stories and Tasks.
 
-Your Agile structures and organization will grow along with your Obsidian Vault. They are stored in the following format.
+Your Agile structures and organization will grow along with your Vault. They are stored in the following format.
 
 ```
 Projects and Stories
@@ -80,13 +80,13 @@ If nothing matches your filters, it will show "No Structures Found."
 # Installation
 You can install this Plugin in 2 ways
 
-## Obsidian Community Plugin
-This plugin can be found within the Community Plugins as through the name ``Agile Plugin``
+## Community Plugin
+This plugin can be found within the Community Plugins as through the name ``Visual Agile``
 
 ## Manual Installation
-Alternatively, you can manually install this plugin by creating a directory within the ``plugins`` directory named ``obsidian-agile-plugin``, and placing the ``manifest.json``, ``main.js`` and ``main.css`` files within the directory. 
+Alternatively, you can manually install this plugin by creating a directory within the ``plugins`` directory named ``visual-agile``, and placing the ``manifest.json``, ``main.js`` and ``main.css`` files within the directory. 
 
-Restart Obsidian and refresh the ``Installed Plugins`` list and activate it. Enjoy!
+Restart and refresh the ``Installed Plugins`` list and activate it. Enjoy!
 
 # Contact
 For Additional Support, Contact MrDNAlex through the email : ``Mr.DNAlex.2003@gmail.com``.
