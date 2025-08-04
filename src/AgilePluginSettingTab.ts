@@ -44,6 +44,16 @@ class AgilePluginSettingTab extends PluginSettingTab {
                     this.Plugin.Settings.agileDirectoryPath = value;
                     await this.Plugin.saveSettings();
                 }));
+
+        new Setting(containerEl)
+            .setName('Use Ribbon Icon')
+            .setDesc('Whether to show the Update Agile icon in the left sidebar. (Requires Reload)')
+            .addToggle(toggle => toggle
+                .setValue(this.Plugin.Settings.showRibbonIcon)
+                .onChange(async (value) => {
+                    this.Plugin.Settings.showRibbonIcon = value;
+                    await this.Plugin.saveSettings();
+                }));
     }
 }
 

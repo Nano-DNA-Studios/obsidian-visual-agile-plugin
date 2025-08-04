@@ -57,10 +57,12 @@ export default class AgileProjectPlugin extends Plugin {
 			}
 		}, 100);
 
-		//Ribbon icon
-		this.addRibbonIcon('sheets-in-box', 'Update Agile', () => {
-			new CreateNewAgileFileModal(this.app, this).open();
-		});
+		if (this.Settings.showRibbonIcon) {
+			//Ribbon icon
+			this.addRibbonIcon('sheets-in-box', 'Update Agile', () => {
+				new CreateNewAgileFileModal(this.app, this).open();
+			});
+		}
 
 		//Settings Tab
 		this.addSettingTab(new AgilePluginSettingTab(this.app, this));

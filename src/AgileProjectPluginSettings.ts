@@ -5,6 +5,7 @@
  */
 interface AgileProjectPluginSettings {
 	agileDirectoryPath: string;
+	showRibbonIcon: boolean;
 }
 
 /**
@@ -13,6 +14,7 @@ interface AgileProjectPluginSettings {
  */
 const DEFAULT_SETTINGS: AgileProjectPluginSettings = {
 	agileDirectoryPath: 'Projects and Stories',
+	showRibbonIcon: true,
 }
 
 export { DEFAULT_SETTINGS }
