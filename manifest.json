@@ -1,10 +1,10 @@
 {
-	"id": "obisidian-agile-project-plugin",
-	"name": "Agile Project Plugin",
-	"version": "0.0.0",
+	"id": "obsidian-visual-agile-plugin",
+	"name": "Visual Agile Plugin",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A Obsidian Plugin for Agile Project Management",
-	"author": "MrDNAlex",
+	"description": "A Obsidian Plugin for Visualizing and Managing Projects using an Agile format",
+	"author": "MrDNAlex & NanoDNA-Studios",
 	"authorUrl": "https://obsidian.md",
 	"fundingUrl": "https://obsidian.md/pricing",
 	"isDesktopOnly": false
