@@ -1,5 +1,4 @@
 # Obsidian Agile Plugin
-
 The Obsidian Agile Plugin is used to replicate Jira Task tracking and management within the Obsidian Markdown Editor.
 
 Tasks are organized under Epics and Stories to better Categorize them and come with a custom Markdown Processor to Display them.
@@ -13,18 +12,43 @@ A Task is a single activity the user will interact with. They are normally repre
 Each of these Agile Structures use a Markdown File.
 
 # How it works
-
 Once installed, you will be prompted to automatically create a Directory where the Agile Structures are Stored. This Directory can be renamed anytime through the Settings.
 
 You can now use the ``Update Agile`` Ribbon Icon on the left side of the Screen, or the commands in the Command Palette (Ctrl + P) to create new Epics, Stories and Tasks.
 
-Your Agile structures and organization will grow along with your Obsidian Vault.
+Your Agile structures and organization will grow along with your Obsidian Vault. They are stored in the following format.
+
+```
+Projects and Stories
+├── Epic 1
+│   ├── Story 1
+│   │   └── Tasks
+│   │       ├── Task 1
+│   │       ├── Task 2
+│   │       └── Task 3
+│   └── Story 2
+│       └── Tasks
+│           ├── Task 1
+│           ├── Task 2
+│           └── Task 3
+└── Epic 2
+    ├── Story 1
+    │   └── Tasks
+    │       ├── Task 1
+    │       ├── Task 2
+    │       └── Task 3
+    └── Story 2
+        └── Tasks
+            ├── Task 1
+            ├── Task 2
+            └── Task 3
+```
 
 These Structures can also be displayed using the ``Agile Display`` a custom UI generated from a Markdown Code Block.
 
 To add a ``Agile Display`` create a Code Block with the type ``agile-display``.
 
-You can customize what the ``Agile Display`` shows by adding some settings a filters within the Code Block, they are as follows:
+You can customize what the ``Agile Display`` shows by adding some settings and filters within the Code Block, they are as follows:
 
 ```agile-display
 Epic=Epic Name
@@ -37,7 +61,7 @@ Priority=Medium
 HotReload=true
 ```
 
-## Display Settings
+## Display Settings and Filters
 
 - **Epic / Story / Task** — Filters by name (you can use partial matches).
     
@@ -50,7 +74,6 @@ HotReload=true
 - **Priority** — Show only tasks with `Low`, `Medium`, or `High` priority.
     
 - **HotReload** — If `true` (default), display auto-refreshes when visible again.
-
 ---
 
 If nothing matches your filters, it will show "No Structures Found."
