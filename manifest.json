@@ -3,7 +3,7 @@
 	"name": "Visual Agile",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A Obsidian Plugin for Visualizing and Managing Projects using an Agile format",
+	"description": "A Plugin for Visualizing and Managing Projects using an Agile format",
 	"author": "MrDNAlex & NanoDNA-Studios",
 	"authorUrl": "https://github.com/MrDNAlex",
 	"isDesktopOnly": false
