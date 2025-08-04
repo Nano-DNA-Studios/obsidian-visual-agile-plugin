@@ -5,7 +5,6 @@
 	"minAppVersion": "0.15.0",
 	"description": "A Obsidian Plugin for Visualizing and Managing Projects using an Agile format",
 	"author": "MrDNAlex & NanoDNA-Studios",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"authorUrl": "https://github.com/MrDNAlex",
 	"isDesktopOnly": false
 }
