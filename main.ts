@@ -97,8 +97,6 @@ export default class AgileProjectPlugin extends Plugin {
 			name: 'Open Agile Help Screen',
 			callback: () => new HelpScreenModal(this.app, this).open()
 		});
-
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
 	}
 
 	/**
