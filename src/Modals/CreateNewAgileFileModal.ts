@@ -44,9 +44,9 @@ class CreateNewAgileFileModal extends Modal {
         let storyBtn = div.createDiv();
         let taskBtn = div.createDiv();
 
-        epicBtn.innerHTML = SVGFactory.GetEpicSVG();
-        storyBtn.innerHTML = SVGFactory.GetStorySVG();
-        taskBtn.innerHTML = SVGFactory.GetTaskSVG();
+        epicBtn.appendChild(this.CreateSVGElement(SVGFactory.GetEpicSVG()));
+        storyBtn.appendChild(this.CreateSVGElement(SVGFactory.GetStorySVG()));
+        taskBtn.appendChild(this.CreateSVGElement(SVGFactory.GetTaskSVG()));
 
         epicBtn.addEventListener('click', () => {
             new CreateEpicModal(this.app, this.Plugin).open();
@@ -71,6 +71,19 @@ class CreateNewAgileFileModal extends Modal {
     onClose(): void {
         let { contentEl } = this;
         contentEl.empty();
+    }
+
+    /**
+     * Creates an SVG element from a string.
+     * @param svgStr The SVG string to convert.
+     * @returns The created SVG element.
+     */
+    private CreateSVGElement(svgStr: string): HTMLElement {
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+        const svgElement = svgDoc.documentElement;
+
+        return svgElement;
     }
 }
 
