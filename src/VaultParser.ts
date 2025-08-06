@@ -56,7 +56,10 @@ class VaultParser {
             return [];
         }
 
-        const epicFolders: TFolder[] = epicsDir.children.filter(item => item instanceof TFolder);
+        const epicFolders: TFolder[] = epicsDir.children.filter(
+            (item): item is TFolder => item instanceof TFolder
+        );
+
         return epicFolders;
     }
 
@@ -113,7 +116,10 @@ class VaultParser {
             return [];
         }
 
-        const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder);
+        const storyFolders: TFolder[] = storiesDir.children.filter(
+            (item): item is TFolder => item instanceof TFolder
+        );
+        
         return storyFolders;
     }
 
@@ -168,7 +174,7 @@ class VaultParser {
             return [];
         }
 
-        const tasksDir : TFolder[] = storyDir.children.filter(
+        const tasksDir: TFolder[] = storyDir.children.filter(
             (item): item is TFolder => item instanceof TFolder && item.name === this.TASK_DIR_NAME
         );
 
