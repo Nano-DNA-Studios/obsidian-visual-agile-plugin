@@ -218,9 +218,8 @@ class AgileDisplayMarkdownProcessor {
     private OpenLeafOnClick(element: HTMLElement, path: string): void {
         element.addEventListener('click', async () => {
             const file = await this.App.vault.getAbstractFileByPath(path);
-            if (file) {
-                this.App.workspace.getLeaf(false).openFile(file as TFile);
-            }
+            if (file && file instanceof TFile)
+                this.App.workspace.getLeaf(false).openFile(file);
         });
     }
 

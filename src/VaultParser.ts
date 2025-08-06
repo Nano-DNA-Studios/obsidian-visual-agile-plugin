@@ -56,9 +56,8 @@ class VaultParser {
             return [];
         }
 
-        const epicFolders = epicsDir.children.filter(item => item instanceof TFolder);
-
-        return epicFolders as TFolder[];
+        const epicFolders: TFolder[] = epicsDir.children.filter(item => item instanceof TFolder);
+        return epicFolders;
     }
 
     /**
@@ -114,7 +113,7 @@ class VaultParser {
             return [];
         }
 
-        const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder) as TFolder[];
+        const storyFolders: TFolder[] = storiesDir.children.filter(item => item instanceof TFolder);
         return storyFolders;
     }
 
@@ -169,9 +168,9 @@ class VaultParser {
             return [];
         }
 
-        const tasksDir = storyDir.children.filter(
-            item => item instanceof TFolder && item.name === this.TASK_DIR_NAME
-        ) as TFolder[];
+        const tasksDir : TFolder[] = storyDir.children.filter(
+            (item): item is TFolder => item instanceof TFolder && item.name === this.TASK_DIR_NAME
+        );
 
         if (tasksDir.length === 0) {
             new Notice(`Tasks directory not found in '${storyName}'.`);
