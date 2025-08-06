@@ -49,11 +49,9 @@ class AgileDisplayMarkdownProcessor {
      */
     public RegisterMarkdownProcessor(): void {
         this.Plugin.registerMarkdownCodeBlockProcessor('agile-display', (source, el, ctx) => {
-
             const settings = new AgileDisplaySettings();
             settings.ProcessSettings(source);
             this.DisplayAgileUI(settings, el);
-
 
             if (!settings.UseHotreload)
                 return;
@@ -66,7 +64,9 @@ class AgileDisplayMarkdownProcessor {
                 const settings = new AgileDisplaySettings();
                 settings.ProcessSettings(source);
 
-                el.innerHTML = ""; // clear old
+                while (el.firstChild)
+                    el.removeChild(el.firstChild);
+
                 this.DisplayAgileUI(settings, el);
             });
 
@@ -218,10 +218,26 @@ class AgileDisplayMarkdownProcessor {
     private OpenLeafOnClick(element: HTMLElement, path: string): void {
         element.addEventListener('click', async () => {
             const file = await this.App.vault.getAbstractFileByPath(path);
-            if (file) {
-                this.App.workspace.getLeaf(false).openFile(file as TFile);
-            }
+            if (file && file instanceof TFile)
+                this.App.workspace.getLeaf(false).openFile(file);
         });
+    }
+
+    /**
+     * Creates an SVG element from a string.
+     * @param svgStr The SVG string to convert.
+     * @returns The created SVG element.
+     */
+    private CreateSVGElement(svgStr: string): HTMLElement{
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+        const svgElement = svgDoc.documentElement;
+
+        // Set the width and height to ensure it displays correctly
+        svgElement.setAttribute("width", "24");
+        svgElement.setAttribute("height", "24");
+
+        return svgElement;
     }
 
     /**
@@ -235,7 +251,7 @@ class AgileDisplayMarkdownProcessor {
         titleDiv.className = "agile-display-title";
 
         const icon = document.createElement("div");
-        icon.innerHTML = svgStr
+        icon.appendChild(this.CreateSVGElement(svgStr));
         titleDiv.appendChild(icon);
 
         const titleEl = document.createElement("h4");
@@ -256,11 +272,11 @@ class AgileDisplayMarkdownProcessor {
         titleDiv.className = "agile-display-title";
 
         const icon = document.createElement("div");
-        icon.innerHTML = SVGFactory.GetTaskSVG();
+        icon.appendChild(this.CreateSVGElement(SVGFactory.GetTaskSVG()));
         titleDiv.appendChild(icon);
 
         const priorityIcon = document.createElement("div");
-        priorityIcon.innerHTML = this.GetPriorityIconSVG(priority);
+        priorityIcon.appendChild(this.CreateSVGElement(this.GetPriorityIconSVG(priority)));
         titleDiv.appendChild(priorityIcon);
 
         const titleEl = document.createElement("h4");
